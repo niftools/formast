@@ -2,3 +2,6 @@
 *.sh	eol=lf
 *.cpp	eol=text
 *.hpp	eol=text
+Doxyfile.in	eol=text
+.gitattributes	eol=text
+CMakeLists.txt	eol=text
