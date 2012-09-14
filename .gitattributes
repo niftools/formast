@@ -1,0 +1,4 @@
+*.rst	eol=text
+*.sh	eol=lf
+*.cpp	eol=text
+*.hpp	eol=text
