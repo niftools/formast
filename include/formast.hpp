@@ -28,18 +28,19 @@ template <typename type>
 class Visitor
 {
 public:
+    // NOTE: *this in initialisation list; sure some compiler will bark...
     Visitor() : _impl(*this) {};
-    virtual type expr(const Expr & e) const {
+    virtual type expr(const Expr & e) {
         return _impl.expr(e);
     };
-    virtual type uint(boost::uint64_t const & n) const = 0;
-    virtual type id(std::string const & i) const = 0;
-    virtual type pos(Expr const & right) const = 0;
-    virtual type neg(Expr const & right) const = 0;
-    virtual type add(Expr const & left, Expr const & right) const = 0;
-    virtual type sub(Expr const & left, Expr const & right) const = 0;
-    virtual type mul(Expr const & left, Expr const & right) const = 0;
-    virtual type div(Expr const & left, Expr const & right) const = 0;
+    virtual type uint(boost::uint64_t const & n) = 0;
+    virtual type id(std::string const & i) = 0;
+    virtual type pos(Expr const & right) = 0;
+    virtual type neg(Expr const & right) = 0;
+    virtual type add(Expr const & left, Expr const & right) = 0;
+    virtual type sub(Expr const & left, Expr const & right) = 0;
+    virtual type mul(Expr const & left, Expr const & right) = 0;
+    virtual type div(Expr const & left, Expr const & right) = 0;
 private:
     formast::detail::visitor::VisitorImpl<type, Visitor<type> > _impl;
 };

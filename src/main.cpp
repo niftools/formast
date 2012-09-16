@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "formast.hpp"
+#include "formast/printer.hpp"
 
 int main(int argc, char **argv)
 {
@@ -32,7 +33,8 @@ int main(int argc, char **argv)
     bool success = formast::parse_xml(iter, end, ast);
 
     if (success && iter == end) {
-        // TODO print AST
+        formast::Printer print(std::cout);
+        print.expr(ast);
     } else {
         std::cerr << "Error: Parsing failed\n";
     }

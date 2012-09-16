@@ -17,6 +17,7 @@ include_directories(${FORMAST_SOURCE_DIR}/include)
 # build library
 add_library(formast SHARED
     src/formast.cpp
+    src/formast/printer.cpp
 )
 
 # build command line tool
@@ -25,6 +26,7 @@ add_executable(formast-cmd
 )
 set_target_properties(formast-cmd
   PROPERTIES OUTPUT_NAME formast)
+target_link_libraries(formast-cmd formast)
 
 # build tests
 enable_testing()

@@ -19,21 +19,21 @@ template<typename type, typename Visitor>
 struct VisitorImpl {
     typedef type result_type;
 
-    VisitorImpl(Visitor const & visitor) : visitor(visitor) {};
+    VisitorImpl(Visitor & visitor) : visitor(visitor) {};
 
-    result_type expr(formast::detail::ast::Expr const & e) const {
+    result_type expr(formast::detail::ast::Expr const & e) {
         return boost::apply_visitor(*this, *e);
     }
 
-    result_type operator()(boost::uint64_t const& n) const {
+    result_type operator()(boost::uint64_t const& n) {
         return visitor.uint(n);
     }
 
-    result_type operator()(std::string const& i) const {
+    result_type operator()(std::string const& i) {
         return visitor.id(i);
     }
 
-    result_type operator()(const formast::detail::ast::unary_op & x) const {
+    result_type operator()(const formast::detail::ast::unary_op & x) {
         switch (x.op) {
         case '-':
             return visitor.neg(x.right);
@@ -44,7 +44,7 @@ struct VisitorImpl {
         }
     }
 
-    result_type operator()(const formast::detail::ast::binary_op & x) const {
+    result_type operator()(const formast::detail::ast::binary_op & x) {
         switch (x.op) {
         case '+':
             return visitor.add(x.left, x.right);
@@ -59,7 +59,7 @@ struct VisitorImpl {
         }
     }
 
-    Visitor const & visitor;
+    Visitor & visitor;
 
 };
 
