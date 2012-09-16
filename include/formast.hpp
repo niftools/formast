@@ -13,7 +13,7 @@ class Expr
 {
 public:
     template<typename Iterator>
-    bool parse_xml(Iterator & iter, Iterator end) {
+    bool parse_xml(Iterator & iter, Iterator end) const {
         // TODO implement
         return false;
     }
@@ -25,7 +25,10 @@ class Visitor
 {
 public:
     typedef type result_type;
-    virtual result_type expr(Expr const & expr) const;
+    virtual result_type expr(Expr const & e) const {
+        // TODO implement
+        return result_type();
+    }
     virtual result_type uint(boost::uint64_t const & n) const = 0;
     virtual result_type id(std::string const & i) const = 0;
     virtual result_type pos(Expr const & right) const = 0;
