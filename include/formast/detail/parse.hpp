@@ -21,6 +21,7 @@ namespace parse
 
 namespace qi = boost::spirit::qi;
 namespace ascii = boost::spirit::ascii;
+namespace ast = formast::detail::ast;
 
 // phoenix functions for constructing the abstract syntax tree with
 // semantic actions
@@ -32,8 +33,8 @@ struct assign_func {
         typedef void type;
     };
 
-    void operator()(formast::detail::ast::Expr & left, const T & right) const {
-        left = formast::detail::ast::Expr(new formast::detail::ast::ExprNode(right));
+    void operator()(ast::Expr & left, const T & right) const {
+        left = ast::Expr(new ast::ExprNode(right));
     }
 };
 
@@ -44,8 +45,8 @@ struct binary_func {
         typedef void type;
     };
 
-    void operator()(formast::detail::ast::Expr & left, formast::detail::ast::Expr const & right) const {
-        left = formast::detail::ast::Expr(new formast::detail::ast::ExprNode(formast::detail::ast::binary_op(Op, left, right)));
+    void operator()(ast::Expr & left, ast::Expr const & right) const {
+        left = ast::Expr(new ast::ExprNode(ast::binary_op(Op, left, right)));
     }
 };
 
@@ -56,8 +57,8 @@ struct unary_func {
         typedef void type;
     };
 
-    void operator()(formast::detail::ast::Expr & right) const {
-        right = formast::detail::ast::Expr(new formast::detail::ast::ExprNode(formast::detail::ast::unary_op(Op, right)));
+    void operator()(ast::Expr & right) const {
+        right = ast::Expr(new ast::ExprNode(ast::unary_op(Op, right)));
     }
 };
 
@@ -96,7 +97,7 @@ boost::phoenix::function<error_handler_> const error_handler = error_handler_();
 // the actual grammar
 
 template <typename Iterator>
-struct parser : qi::grammar<Iterator, formast::detail::ast::Expr(), ascii::space_type> {
+struct parser : qi::grammar<Iterator, ast::Expr(), ascii::space_type> {
 
     parser() : parser::base_type(expr) {
 
@@ -141,7 +142,7 @@ struct parser : qi::grammar<Iterator, formast::detail::ast::Expr(), ascii::space
     on_error<fail>(expr, error_handler(_4, _3, _2));
 }
 
-qi::rule<Iterator, formast::detail::ast::Expr(), ascii::space_type> expr, term, factor;
+qi::rule<Iterator, ast::Expr(), ascii::space_type> expr, term, factor;
 };
 
 
