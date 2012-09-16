@@ -20,9 +20,9 @@ public:
     void sub(Expr const & left, Expr const & right);
     void mul(Expr const & left, Expr const & right);
     void div(Expr const & left, Expr const & right);
-    void open_tag(std::string const & tag, bool final);
-    void close_tag(std::string const & tag, bool final);
-    void indent();
+    virtual void open_tag(std::string const & tag, bool final);
+    virtual void close_tag(std::string const & tag, bool final);
+    virtual void indent();
     std::ostream & os;
     unsigned int level;
 };
