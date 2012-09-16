@@ -15,7 +15,7 @@ bool parse_xml(char const * filename, Expr & e)
     if (!in) {
         std::cerr << "Error: Could not open input file: "
                   << filename << std::endl;
-        return 1;
+        return false;
     }
 
     // disable white space skipping
