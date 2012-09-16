@@ -3,6 +3,7 @@
 
 // this header file provides an implementation of the AST visitor
 
+#include <cassert>
 #include <boost/variant/apply_visitor.hpp>
 #include <stdexcept>
 
@@ -22,6 +23,7 @@ struct VisitorImpl {
     VisitorImpl(Visitor & visitor) : visitor(visitor) {};
 
     result_type expr(formast::detail::ast::Expr const & e) {
+        assert(e != 0);
         return boost::apply_visitor(*this, *e);
     }
 

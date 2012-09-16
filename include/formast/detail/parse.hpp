@@ -7,6 +7,7 @@
 #include <boost/spirit/include/phoenix_function.hpp>
 #include <boost/spirit/include/phoenix_operator.hpp>
 #include <boost/spirit/include/qi.hpp>
+#include <cassert>
 
 #include "formast/detail/ast.hpp"
 
@@ -46,6 +47,8 @@ struct binary_func {
     };
 
     void operator()(ast::Expr & left, ast::Expr const & right) const {
+        assert(left != 0);
+        assert(right != 0);
         left = ast::Expr(new ast::ExprNode(ast::binary_op(Op, left, right)));
     }
 };
@@ -58,6 +61,7 @@ struct unary_func {
     };
 
     void operator()(ast::Expr & right) const {
+        assert(right != 0);
         right = ast::Expr(new ast::ExprNode(ast::unary_op(Op, right)));
     }
 };

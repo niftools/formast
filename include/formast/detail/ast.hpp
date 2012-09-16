@@ -25,10 +25,7 @@ typedef boost::variant<boost::uint64_t, std::string,
 typedef boost::shared_ptr<const ExprNode> Expr;
 
 struct binary_op {
-    binary_op(
-        char op
-        , Expr const & left
-        , Expr const & right)
+    binary_op(char op, Expr const & left, Expr const & right)
         : op(op), left(left), right(right) {}
 
     char op;
@@ -37,9 +34,7 @@ struct binary_op {
 };
 
 struct unary_op {
-    unary_op(
-        char op
-        , Expr const & right)
+    unary_op(char op, Expr const & right)
         : op(op), right(right) {}
 
     char op;

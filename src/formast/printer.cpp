@@ -10,7 +10,7 @@ Printer::Printer(std::ostream & os) : Visitor<void>(), os(os), level(0) {};
 
 void Printer::indent()
 {
-    for (int i; i < level; i++) {
+    for (int i = 0; i < level; i++) {
         os << " ";
     };
 };
