@@ -31,4 +31,10 @@ BOOST_FIXTURE_TEST_CASE(uint_test, ParseFixture)
     parse_check("31415", "<uint>31415</uint>\n");
 }
 
+BOOST_FIXTURE_TEST_CASE(unary_test, ParseFixture)
+{
+    parse_check("+31415", "<pos>\n <uint>31415</uint>\n</pos>\n");
+    parse_check("-31415", "<neg>\n <uint>31415</uint>\n</neg>\n");
+}
+
 BOOST_AUTO_TEST_SUITE_END()

@@ -5,7 +5,6 @@
 // #define BOOST_SPIRIT_QI_DEBUG
 
 #include <boost/spirit/include/phoenix_function.hpp>
-#include <boost/spirit/include/phoenix_operator.hpp>
 #include <boost/spirit/include/qi.hpp>
 #include <cassert>
 
@@ -26,6 +25,19 @@ namespace ast = formast::detail::ast;
 
 // phoenix functions for constructing the abstract syntax tree with
 // semantic actions
+
+template <typename T> // T is a terminal type, i.e. uint64_t or std::string
+struct copy_func {
+    template <typename T1, typename T2 = void>
+    struct result {
+        typedef void type;
+    };
+
+    void operator()(ast::Expr & left, ast::Expr const & right) const {
+        assert(right != 0);
+        left = right;
+    }
+};
 
 template <typename T> // T is a terminal type, i.e. uint64_t or std::string
 struct assign_func {
@@ -60,9 +72,9 @@ struct unary_func {
         typedef void type;
     };
 
-    void operator()(ast::Expr & right) const {
+    void operator()(ast::Expr & left, ast::Expr & right) const {
         assert(right != 0);
-        right = ast::Expr(new ast::ExprNode(ast::unary_op(Op, right)));
+        left = ast::Expr(new ast::ExprNode(ast::unary_op(Op, right)));
     }
 };
 
@@ -72,7 +84,8 @@ boost::phoenix::function<binary_func<'*'> > const mul;
 boost::phoenix::function<binary_func<'/'> > const div;
 boost::phoenix::function<unary_func<'+'> > const pos;
 boost::phoenix::function<unary_func<'-'> > const neg;
-boost::phoenix::function<assign_func<boost::uint64_t> > const assign_uint;
+boost::phoenix::function<assign_func<boost::uint64_t> > const uint;
+boost::phoenix::function<copy_func<boost::uint64_t> > const copy;
 
 // error handler
 
@@ -117,24 +130,24 @@ struct parser : qi::grammar<Iterator, ast::Expr(), ascii::space_type> {
     using qi::fail;
 
     expr =
-        term                            [_val = _1]
+        term                            [copy(_val, _1)]
         >> *(   ('+' > term             [add(_val, _1)])
                 |   ('-' > term         [sub(_val, _1)])
             )
         ;
 
     term =
-        factor                          [_val = _1]
+        factor                          [copy(_val, _1)]
         >> *(   ('*' > factor           [mul(_val, _1)])
                 |   ('/' > factor       [div(_val, _1)])
             )
         ;
 
     factor =
-        uint_                           [assign_uint(_val, _1)]
-        |   '(' > expr                  [_val = _1] > ')'
-        |   ('-' > factor               [neg(_1)])
-        |   ('+' > factor               [pos(_1)])
+        uint_                           [uint(_val, _1)]
+        |   '(' > expr                  [copy(_val, _1)] > ')'
+        |   ('-' > factor               [neg(_val, _1)])
+        |   ('+' > factor               [pos(_val, _1)])
         ;
 
     // Debugging and error handling and reporting support.
