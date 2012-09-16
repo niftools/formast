@@ -13,7 +13,10 @@ class Expr
 {
 public:
     template<typename Iterator>
-    bool parse_xml(Iterator & iter, Iterator end);
+    bool parse_xml(Iterator & iter, Iterator end) {
+        // TODO implement
+        return false;
+    }
 };
 
 //! Visitor for the abstract syntax tree.
