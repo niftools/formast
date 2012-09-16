@@ -4,39 +4,42 @@
 #include <boost/cstdint.hpp>
 #include <string>
 
+#include "formast/detail/ast.hpp"
+#include "formast/detail/visitor.hpp"
+
 //! Namespace for all public declarations.
 namespace formast
 {
 
 //! Expression node of the abstract syntax tree.
-class Expr
+typedef formast::detail::ast::Expr Expr;
+
+template<typename Iterator>
+bool parse_xml(Iterator & iter, Iterator end, Expr & e)
 {
-public:
-    template<typename Iterator>
-    bool parse_xml(Iterator & iter, Iterator end) const {
-        // TODO implement
-        return false;
-    }
-};
+    // TODO implement
+    return false;
+}
 
 //! Visitor for the abstract syntax tree.
 template <typename type>
 class Visitor
 {
 public:
-    typedef type result_type;
-    virtual result_type expr(Expr const & e) const {
-        // TODO implement
-        return result_type();
-    }
-    virtual result_type uint(boost::uint64_t const & n) const = 0;
-    virtual result_type id(std::string const & i) const = 0;
-    virtual result_type pos(Expr const & right) const = 0;
-    virtual result_type neg(Expr const & right) const = 0;
-    virtual result_type add(Expr const & left, Expr const & right) const = 0;
-    virtual result_type sub(Expr const & left, Expr const & right) const = 0;
-    virtual result_type mul(Expr const & left, Expr const & right) const = 0;
-    virtual result_type div(Expr const & left, Expr const & right) const = 0;
+    Visitor() : _impl(*this) {};
+    virtual type expr(const Expr & e) const {
+        return _impl.expr(e);
+    };
+    virtual type uint(boost::uint64_t const & n) const = 0;
+    virtual type id(std::string const & i) const = 0;
+    virtual type pos(Expr const & right) const = 0;
+    virtual type neg(Expr const & right) const = 0;
+    virtual type add(Expr const & left, Expr const & right) const = 0;
+    virtual type sub(Expr const & left, Expr const & right) const = 0;
+    virtual type mul(Expr const & left, Expr const & right) const = 0;
+    virtual type div(Expr const & left, Expr const & right) const = 0;
+private:
+    formast::detail::visitor::VisitorImpl<type, Visitor<type> > _impl;
 };
 
 } // namespace formast
@@ -70,7 +73,7 @@ namely formast::Expr,
 for expressions.
 
 Expressions are created from xml code,
-via formast::Expr::parse_xml().
+via formast::parse_xml().
 
 */
 

@@ -38,14 +38,14 @@ public:
 class ParseFixture
 {
 public:
-    ParseFixture() : expr(), print() {};
+    ParseFixture() : print() {};
     void parse_check(std::string const & in, std::string const & out) const {
+        formast::Expr expr;
         std::string::const_iterator iter = in.begin();
         std::string::const_iterator end = in.end();
-        BOOST_CHECK_EQUAL(expr.parse_xml(iter, end), true);
+        BOOST_CHECK_EQUAL(formast::parse_xml(iter, end, expr), true);
         BOOST_CHECK_EQUAL(print.expr(expr), out);
     };
-    formast::Expr expr;
     Printer print;
 };
 

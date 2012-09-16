@@ -29,7 +29,7 @@ int main(int argc, char **argv)
     Iterator iter(in);
     Iterator end;
     formast::Expr ast;
-    bool success = ast.parse_xml(iter, end);
+    bool success = formast::parse_xml(iter, end, ast);
 
     if (success && iter == end) {
         // TODO print AST
