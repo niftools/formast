@@ -1,6 +1,6 @@
+#include <boost/spirit/include/support_istream_iterator.hpp>
 #include <fstream>
 #include <iostream>
-#include <iterator>
 
 #include "formast.hpp"
 
@@ -25,7 +25,7 @@ int main(int argc, char **argv)
     // disable white space skipping
     in.unsetf(std::ios::skipws);
 
-    typedef std::istream_iterator<char> Iterator;
+    typedef boost::spirit::istream_iterator Iterator;
     Iterator iter(in);
     Iterator end;
     formast::Expr ast;
