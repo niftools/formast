@@ -17,6 +17,7 @@ include_directories(${FORMAST_SOURCE_DIR}/include)
 # build library
 add_library(formast STATIC
     src/formast.cpp
+    src/formast/visitor.cpp
     src/formast/printer.cpp
 )
 

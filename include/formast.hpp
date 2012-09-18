@@ -2,10 +2,10 @@
 #define FORMAST_HPP_INCLUDED
 
 #include <boost/cstdint.hpp>
+#include <boost/shared_ptr.hpp>
 #include <string>
 
 #include "formast/detail/ast.hpp"
-#include "formast/detail/visitor.hpp"
 #include "formast/detail/parse.hpp"
 
 //! Namespace for all public declarations.
@@ -24,25 +24,23 @@ bool parse_xml(Iterator & iter, Iterator end, Expr & e)
 }
 
 //! Visitor for the abstract syntax tree.
-template <typename type>
 class Visitor
 {
 public:
-    // NOTE: *this in initialisation list; sure some compiler will bark...
-    Visitor() : _impl(*this) {};
-    virtual type expr(const Expr & e) {
-        return _impl.expr(e);
-    };
-    virtual type uint(boost::uint64_t const & n) = 0;
-    virtual type id(std::string const & i) = 0;
-    virtual type pos(Expr const & right) = 0;
-    virtual type neg(Expr const & right) = 0;
-    virtual type add(Expr const & left, Expr const & right) = 0;
-    virtual type sub(Expr const & left, Expr const & right) = 0;
-    virtual type mul(Expr const & left, Expr const & right) = 0;
-    virtual type div(Expr const & left, Expr const & right) = 0;
+    Visitor();
+    virtual void expr(Expr const & e);
+    virtual void expr_uint(boost::uint64_t const & n);
+    virtual void expr_id(std::string const & i);
+    virtual void expr_pos(Expr const & right);
+    virtual void expr_neg(Expr const & right);
+    virtual void expr_add(Expr const & left, Expr const & right);
+    virtual void expr_sub(Expr const & left, Expr const & right);
+    virtual void expr_mul(Expr const & left, Expr const & right);
+    virtual void expr_div(Expr const & left, Expr const & right);
 private:
-    formast::detail::visitor::VisitorImpl<type, Visitor<type> > _impl;
+    // pimpl idiom
+    class ExprVisitor;
+    boost::shared_ptr<ExprVisitor> _expr_visitor;
 };
 
 } // namespace formast
@@ -66,7 +64,7 @@ for whatever sofisticated purpose.
 Moreover, the visitor model allows new language features to be added
 with minimal change to the public API.
 
-Simply derive a subclass from formast::Visit
+Simply derive a subclass from formast::Visitor
 and override the desired methods.
 
 \section Expressions
