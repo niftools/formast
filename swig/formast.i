@@ -1,35 +1,17 @@
 %module(directors="1") formast
 %{
-#include <boost/spirit/include/support_istream_iterator.hpp>
-#include <fstream>
-#include <iostream>
-
 #include "formast.hpp"
 
-namespace formast
-{
-
-bool parse_xml(char const * filename, Expr & e)
-{
-    std::ifstream in(filename, std::ios_base::in);
-
-    if (!in) {
-        std::cerr << "Error: Could not open input file: "
-                  << filename << std::endl;
-        return false;
-    }
-
-    // disable white space skipping
-    in.unsetf(std::ios::skipws);
-
-    typedef boost::spirit::istream_iterator Iterator;
-    Iterator iter(in);
-    Iterator end;
-    return parse_xml(iter, end, e);
+#ifdef SWIGPYTHON
+// extra wrapper function to map FILE * to istream, as Python can't do istream
+// TODO: this is a gcc extension, need to find out how to do this on msvc
+#include <ext/stdio_filebuf.h>
+bool parse_xml(FILE * f, formast::Expr & e) {
+    __gnu_cxx::stdio_filebuf<char> ibuf(f, std::ios_base::in);
+    std::istream is(&ibuf);
+    formast::parse_xml(is, e);
 }
-
-}
-
+#endif
 %}
 
 // tell swig about boost::uint64_t
@@ -43,9 +25,13 @@ namespace formast {
     // whence an empty implementation {}
     // so swig will expose the name, but nothing else
     class Expr {};
-
-    bool parse_xml(char const * filename, Expr & e);
 }
+
+#ifdef SWIGPYTHON
+%ignore formast::parse_xml;
+%include "file.i";
+bool parse_xml(FILE * f, formast::Expr & e);
+#endif
 
 %feature("director") formast::Visitor;
 %include "formast.hpp"
