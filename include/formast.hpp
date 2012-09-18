@@ -6,7 +6,6 @@
 #include <string>
 
 #include "formast/detail/ast.hpp"
-#include "formast/detail/parse.hpp"
 
 //! Namespace for all public declarations.
 namespace formast
@@ -15,13 +14,8 @@ namespace formast
 //! Expression node of the abstract syntax tree.
 typedef formast::detail::ast::Expr Expr;
 
-template<typename Iterator>
-bool parse_xml(Iterator & iter, Iterator end, Expr & e)
-{
-    formast::detail::parse::ascii::space_type space;
-    formast::detail::parse::parser<Iterator> parser;
-    return boost::spirit::qi::phrase_parse(iter, end, parser, space, e);
-}
+//! Parse xml into an abstract syntax tree.
+bool parse_xml(std::istream & is, Expr & e);
 
 //! Visitor for the abstract syntax tree.
 class Visitor

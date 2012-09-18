@@ -3,6 +3,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include <boost/lexical_cast.hpp>
+#include<sstream>
 
 #include "formast.hpp"
 #include "formast/printer.hpp"
@@ -27,9 +28,8 @@ public:
     ParseFixture() {};
     void parse_check(std::string const & in, std::string const & out) const {
         formast::Expr expr;
-        std::string::const_iterator iter = in.begin();
-        std::string::const_iterator end = in.end();
-        BOOST_CHECK_EQUAL(formast::parse_xml(iter, end, expr), true);
+        std::istringstream is(in);
+        BOOST_CHECK_EQUAL(formast::parse_xml(is, expr), true);
 
         std::ostringstream os;
         TestPrinter print(os);

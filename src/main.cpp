@@ -23,16 +23,10 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    // disable white space skipping
-    in.unsetf(std::ios::skipws);
-
-    typedef boost::spirit::istream_iterator Iterator;
-    Iterator iter(in);
-    Iterator end;
     formast::Expr ast;
-    bool success = formast::parse_xml(iter, end, ast);
+    bool success = formast::parse_xml(in, ast);
 
-    if (success && iter == end) {
+    if (success) {
         formast::Printer print(std::cout);
         print.expr(ast);
     } else {

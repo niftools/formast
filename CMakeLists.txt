@@ -18,6 +18,7 @@ include_directories(${FORMAST_SOURCE_DIR}/include)
 add_library(formast SHARED
     src/formast.cpp
     src/formast/visitor.cpp
+    src/formast/parse.cpp
     src/formast/printer.cpp
 )
 
