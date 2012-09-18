@@ -4,44 +4,45 @@ e = formast.Expr()
 formast.parse_xml("test.txt", e)
 
 class Visitor(formast.Visitor):
-    def uint(self, v):
+    def expr_uint(self, v):
         print(v)
 
-    def add(self, left, right):
+    def expr_add(self, left, right):
         print "("
         self.expr(left)
         print "+"
         self.expr(right)
         print ")"
 
-    def sub(self, left, right):
+    def expr_sub(self, left, right):
         print "("
         self.expr(left)
         print "+"
         self.expr(right)
         print ")"
 
-    def mul(self, left, right):
+    def expr_mul(self, left, right):
         print "("
         self.expr(left)
         print "*"
         self.expr(right)
         print ")"
 
-    def div(self, left, right):
+    def expr_div(self, left, right):
         print "("
         self.expr(left)
         print "/"
         self.expr(right)
         print ")"
 
-    def neg(self, right):
+    def expr_neg(self, right):
         print "-"
         self.expr(right)
 
-    def pos(self, right):
+    def expr_pos(self, right):
         print "+"
         self.expr(right)
 
 visitor = Visitor()
-print visitor.expr(e)
+visitor.expr(e)
+

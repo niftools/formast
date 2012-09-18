@@ -6,7 +6,8 @@
 
 #include "formast.hpp"
 
-typedef formast::Expr Expr;
+namespace formast
+{
 
 bool parse_xml(char const * filename, Expr & e)
 {
@@ -24,40 +25,27 @@ bool parse_xml(char const * filename, Expr & e)
     typedef boost::spirit::istream_iterator Iterator;
     Iterator iter(in);
     Iterator end;
-    return formast::parse_xml(iter, end, e);
+    return parse_xml(iter, end, e);
 }
 
-class Visitor : public formast::Visitor<void>
-{
-public:
-    void uint(boost::uint64_t const & n) {};
-    void id(std::string const & i) {};
-    void pos(Expr const & right) {};
-    void neg(Expr const & right) {};
-    void add(Expr const & left, Expr const & right) {};
-    void sub(Expr const & left, Expr const & right) {};
-    void mul(Expr const & left, Expr const & right) {};
-    void div(Expr const & left, Expr const & right) {};
-};
+}
 
 %}
 
-class Expr {};
+// tell swig about boost::uint64_t
+namespace boost {
+    typedef unsigned long long uint64_t;
+}
 
-bool parse_xml(char const * filename, Expr & e);
+namespace formast {
+    // Expr is a typedef in formast.hpp
+    // swig will not wrap it unless it has an implementation
+    // whence an empty implementation {}
+    // so swig will expose the name, but nothing else
+    class Expr {};
 
-%feature("director") Visitor;
-class Visitor
-{
-public:
-    Visitor();
-    virtual void expr(const Expr & e);
-    virtual void uint(boost::uint64_t const & n) ;
-    virtual void id(std::string const & i);
-    virtual void pos(Expr const & right);
-    virtual void neg(Expr const & right);
-    virtual void add(Expr const & left, Expr const & right);
-    virtual void sub(Expr const & left, Expr const & right);
-    virtual void mul(Expr const & left, Expr const & right);
-    virtual void div(Expr const & left, Expr const & right);
-};
+    bool parse_xml(char const * filename, Expr & e);
+}
+
+%feature("director") formast::Visitor;
+%include "formast.hpp"

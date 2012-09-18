@@ -15,7 +15,7 @@ include_directories(${Boost_INCLUDE_DIRS})
 include_directories(${FORMAST_SOURCE_DIR}/include)
 
 # build library
-add_library(formast STATIC
+add_library(formast SHARED
     src/formast.cpp
     src/formast/visitor.cpp
     src/formast/printer.cpp
