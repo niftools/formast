@@ -1,7 +1,10 @@
-*.rst	eol=text
-*.sh	eol=lf
-*.cpp	eol=text
-*.hpp	eol=text
-Doxyfile.in	eol=text
-.gitattributes	eol=text
-CMakeLists.txt	eol=text
+*.rst	text
+*.sh	text eol=lf
+*.cpp	text
+*.hpp	text
+*.i	text
+*.py	text
+*.txt	text
+Doxyfile.in	text
+.gitattributes	text
+CMakeLists.txt	text

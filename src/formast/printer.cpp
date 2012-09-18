@@ -6,7 +6,7 @@
 
 using namespace formast;
 
-Printer::Printer(std::ostream & os) : Visitor<void>(), os(os), level(0) {};
+Printer::Printer(std::ostream & os) : Visitor(), os(os), level(0) {};
 
 void Printer::indent()
 {
@@ -34,35 +34,35 @@ void Printer::close_tag(std::string const & tag, bool final)
     os << "</" << tag << ">" << std::endl;
 }
 
-void Printer::uint(boost::uint64_t const & n)
+void Printer::expr_uint(boost::uint64_t const & n)
 {
     open_tag("uint", true);
     os << boost::lexical_cast<std::string>(n);
     close_tag("uint", true);
 }
 
-void Printer::id(std::string const & i)
+void Printer::expr_id(std::string const & i)
 {
     open_tag("id", true);
     os << i;
     close_tag("id", true);
 }
 
-void Printer::pos(Expr const & right)
+void Printer::expr_pos(Expr const & right)
 {
     open_tag("pos", false);
     expr(right);
     close_tag("pos", false);
 }
 
-void Printer::neg(Expr const & right)
+void Printer::expr_neg(Expr const & right)
 {
     open_tag("neg", false);
     expr(right);
     close_tag("neg", false);
 }
 
-void Printer::add(Expr const & left, Expr const & right)
+void Printer::expr_add(Expr const & left, Expr const & right)
 {
     open_tag("add", false);
     expr(left);
@@ -70,7 +70,7 @@ void Printer::add(Expr const & left, Expr const & right)
     close_tag("add", false);
 }
 
-void Printer::sub(Expr const & left, Expr const & right)
+void Printer::expr_sub(Expr const & left, Expr const & right)
 {
     open_tag("sub", false);
     expr(left);
@@ -78,7 +78,7 @@ void Printer::sub(Expr const & left, Expr const & right)
     close_tag("sub", false);
 }
 
-void Printer::mul(Expr const & left, Expr const & right)
+void Printer::expr_mul(Expr const & left, Expr const & right)
 {
     open_tag("mul", false);
     expr(left);
@@ -86,7 +86,7 @@ void Printer::mul(Expr const & left, Expr const & right)
     close_tag("mul", false);
 }
 
-void Printer::div(Expr const & left, Expr const & right)
+void Printer::expr_div(Expr const & left, Expr const & right)
 {
     open_tag("div", false);
     expr(left);
