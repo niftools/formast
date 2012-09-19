@@ -1,4 +1,5 @@
 #include <boost/spirit/include/support_istream_iterator.hpp>
+#include <exception>
 #include <fstream>
 #include <iostream>
 
@@ -24,13 +25,15 @@ int main(int argc, char **argv)
     }
 
     formast::Expr ast;
-    bool success = formast::parse_xml(in, ast);
-
-    if (success) {
-        formast::Printer print(std::cout);
-        print.expr(ast);
-    } else {
+    formast::XmlParser parser;
+    try {
+        ast = parser.parse_stream(in);
+    } catch (std::exception & e) {
         std::cerr << "Error: Parsing failed\n";
+        std::cerr << e.what() << std::endl;
+        return 1;
     }
+    formast::Printer print(std::cout);
+    print.expr(ast);
     return 0;
 };

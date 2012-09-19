@@ -14,8 +14,24 @@ namespace formast
 //! Expression node of the abstract syntax tree.
 typedef formast::detail::ast::Expr Expr;
 
-//! Parse xml into an abstract syntax tree.
-bool parse_xml(std::istream & is, Expr & e);
+//! Abstract base class for parsers.
+class Parser
+{
+public:
+    Parser();
+    //! Parse input stream into an abstract syntax tree.
+    virtual Expr parse_stream(std::istream & is) = 0;
+    //! Parse string into an abstract syntax tree.
+    Expr parse_string(std::string const & s);
+};
+
+//! Parser for the niftools xml format.
+class XmlParser : public Parser
+{
+public:
+    XmlParser();
+    virtual Expr parse_stream(std::istream & is);
+};
 
 //! Visitor for the abstract syntax tree.
 class Visitor

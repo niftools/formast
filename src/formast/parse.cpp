@@ -5,6 +5,7 @@
 #include <boost/spirit/include/qi.hpp>
 #include <boost/spirit/include/support_istream_iterator.hpp>
 #include <cassert>
+#include <sstream>
 
 #include "formast.hpp"
 
@@ -153,7 +154,22 @@ struct parser : qi::grammar<Iterator, ast::Expr(), ascii::space_type> {
 qi::rule<Iterator, ast::Expr(), ascii::space_type> expr, term, factor;
 };
 
-bool formast::parse_xml(std::istream & is, formast::Expr & e)
+formast::Parser::Parser()
+{
+}
+
+formast::Expr formast::Parser::parse_string(std::string const & s)
+{
+    std::istringstream is(s);
+    return parse_stream(is);
+}
+
+formast::XmlParser::XmlParser()
+    : Parser()
+{
+}
+
+formast::Expr formast::XmlParser::parse_stream(std::istream & is)
 {
     // disable white space skipping
     is.unsetf(std::ios::skipws);
@@ -163,6 +179,13 @@ bool formast::parse_xml(std::istream & is, formast::Expr & e)
     iterator_type end;
     parser<iterator_type> parser;
     ascii::space_type space;
+    formast::Expr e;
     bool success = qi::phrase_parse(iter, end, parser, space, e);
-    return success && (iter == end);
+    if (!success) {
+        throw std::runtime_error("Syntax error.");
+    }
+    if (iter != end) {
+        throw std::runtime_error("End of stream not reached.");
+    }
+    return e;
 }

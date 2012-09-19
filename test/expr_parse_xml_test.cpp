@@ -28,8 +28,8 @@ public:
     ParseFixture() {};
     void parse_check(std::string const & in, std::string const & out) const {
         formast::Expr expr;
-        std::istringstream is(in);
-        BOOST_CHECK_EQUAL(formast::parse_xml(is, expr), true);
+        formast::XmlParser parser;
+        BOOST_CHECK_NO_THROW(expr = parser.parse_string(in));
 
         std::ostringstream os;
         TestPrinter print(os);
