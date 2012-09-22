@@ -16,6 +16,7 @@ namespace formast {
     class Expr {};
 }
 
+%include "exception.i"
 %include "std_string.i"
 %ignore formast::Parser::parse_stream;
 %ignore formast::XmlParser::parse_stream;

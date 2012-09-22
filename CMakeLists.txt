@@ -15,12 +15,14 @@ include_directories(${Boost_INCLUDE_DIRS})
 include_directories(${FORMAST_SOURCE_DIR}/include)
 
 # build library
-add_library(formast SHARED
+add_library(formast-lib SHARED
     src/formast.cpp
     src/formast/visitor.cpp
     src/formast/parse.cpp
     src/formast/printer.cpp
 )
+set_target_properties(formast-lib
+  PROPERTIES OUTPUT_NAME formast)
 
 # build command line tool
 add_executable(formast-cmd
@@ -28,8 +30,18 @@ add_executable(formast-cmd
 )
 set_target_properties(formast-cmd
   PROPERTIES OUTPUT_NAME formast)
-target_link_libraries(formast-cmd formast)
+target_link_libraries(formast-cmd formast-lib)
 
 # build tests
 enable_testing()
 add_subdirectory(test)
+
+# build wrappers
+find_package(SWIG REQUIRED)
+include(${SWIG_USE_FILE})
+set(CMAKE_SWIG_FLAGS "-Wall")
+set_source_files_properties(swig/formast.i PROPERTIES CPLUSPLUS ON)
+add_subdirectory(python)
+#add_subdirectory(java)
+#add_subdirectory(csharp)
+#add_subdirectory(php)
