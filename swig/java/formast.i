@@ -1,4 +1,4 @@
-%include "../swig/formast.i"
+%include "../formast.i"
 
 // java specific modifications
 

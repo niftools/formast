@@ -37,11 +37,4 @@ enable_testing()
 add_subdirectory(test)
 
 # build wrappers
-find_package(SWIG REQUIRED)
-include(${SWIG_USE_FILE})
-set(CMAKE_SWIG_FLAGS "-Wall")
-set_source_files_properties(swig/formast.i PROPERTIES CPLUSPLUS ON)
-add_subdirectory(python)
-add_subdirectory(java)
-#add_subdirectory(csharp)
-#add_subdirectory(php)
+add_subdirectory(swig)
