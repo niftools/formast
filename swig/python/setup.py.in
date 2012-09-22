@@ -34,6 +34,7 @@ ext_formast = Extension(
         ],
     include_dirs=['.', 'include'],
     depends=[
+        'formastPYTHON_wrap.h',
         'include/formast/formast.hpp',
         'include/formast/detail/ast.hpp',
     ],
