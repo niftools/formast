@@ -1,7 +1,8 @@
 import formast
 
-e = formast.Expr()
-formast.parse_xml("test.txt", e)
+parser = formast.XmlParser()
+f = open("test.txt", "rb")
+e = parser.parse_string(f.read())
 
 class Printer(formast.Visitor):
     def expr_uint(self, v):
