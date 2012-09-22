@@ -6,7 +6,7 @@
 #include<sstream>
 
 #include "formast.hpp"
-#include "formast/printer.hpp"
+#include "printer.hpp"
 
 // disable indentation and newlines for simpler inline tests
 class TestPrinter : public formast::Printer
