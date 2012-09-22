@@ -38,6 +38,7 @@ class Visitor
 {
 public:
     Visitor();
+    virtual ~Visitor();
     virtual void expr(Expr const & e);
     virtual void expr_uint(boost::uint64_t const & n);
     virtual void expr_id(std::string const & i);

@@ -59,9 +59,12 @@ public:
 
 };
 
-// NOTE: *this in initialisation list; sure some compiler will bark...
 formast::Visitor::Visitor()
-    : _expr_visitor(new ExprVisitor(*this))
+{
+    _expr_visitor = boost::shared_ptr<ExprVisitor>(new ExprVisitor(*this));
+}
+
+formast::Visitor::~Visitor()
 {
 }
 
