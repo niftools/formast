@@ -4,7 +4,9 @@
 *.hpp	text
 *.i	text
 *.py	text
+*.py.in	text
 *.txt	text
 Doxyfile.in	text
 .gitattributes	text
 CMakeLists.txt	text
+MANIFEST.in	text

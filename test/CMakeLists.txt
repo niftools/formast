@@ -1,3 +1,6 @@
+# extra include for printer.hpp
+include_directories(${FORMAST_SOURCE_DIR}/src/app)
+
 foreach(TEST
         header_test
         expr_parse_xml_test

@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "formast.hpp"
-#include "formast/printer.hpp"
+#include "printer.hpp"
 
 int main(int argc, char **argv)
 {

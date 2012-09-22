@@ -16,21 +16,19 @@ include_directories(${FORMAST_SOURCE_DIR}/include)
 
 # build library
 add_library(formast-lib SHARED
-    src/formast.cpp
-    src/formast/visitor.cpp
-    src/formast/parse.cpp
-    src/formast/printer.cpp
+    src/lib/visitor.cpp
+    src/lib/parse.cpp
 )
 set_target_properties(formast-lib
   PROPERTIES OUTPUT_NAME formast)
 
 # build command line tool
-add_executable(formast-cmd
-    src/main.cpp
+add_executable(formast-app
+    src/app/main.cpp
 )
-set_target_properties(formast-cmd
+set_target_properties(formast-app
   PROPERTIES OUTPUT_NAME formast)
-target_link_libraries(formast-cmd formast-lib)
+target_link_libraries(formast-app formast-lib)
 
 # build tests
 enable_testing()
