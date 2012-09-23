@@ -10,4 +10,4 @@ add_subdirectory(java)
 # https://sourceforge.net/tracker/?func=detail&aid=3571029&group_id=1645&atid=301645
 #add_subdirectory(csharp)
 
-#add_subdirectory(php)
+add_subdirectory(php)
