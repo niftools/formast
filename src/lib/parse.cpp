@@ -9,6 +9,35 @@
 
 #include "formast.hpp"
 
+// upgrade structs to fusion sequences
+
+BOOST_FUSION_ADAPT_STRUCT(
+    formast::Attr,
+    (std::string, class_name)
+    (std::string, name)
+    (boost::optional<formast::Doc>, doc)
+)
+
+BOOST_FUSION_ADAPT_STRUCT(
+    formast::Class,
+    (std::string, name)
+    (boost::optional<std::string>, base_name)
+    (boost::optional<formast::Doc>, doc)
+    (boost::optional<formast::Scope>, scope)
+)
+
+BOOST_FUSION_ADAPT_STRUCT(
+    formast::If,
+    (formast::Expr, expr)
+    (formast::Scope, scope)
+)
+
+BOOST_FUSION_ADAPT_STRUCT(
+    formast::IfElifsElse,
+    (std::vector<formast::If>, ifs_)
+    (boost::optional<formast::Scope>, else_)
+)
+
 // a few shorthands
 
 namespace qi = boost::spirit::qi;
