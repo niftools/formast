@@ -9,9 +9,14 @@ Welcome to FormAST's documentation!
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
-
+   user/index
+   development/index
+   api/index
+   additional/authors
+   additional/license
+   additional/changes
 
 Indices and tables
 ==================
