@@ -1,9 +1,9 @@
-.. formast documentation master file, created by
-   sphinx-quickstart on Sun Sep 23 10:35:25 2012.
+.. FormAST documentation master file, created by
+   sphinx-quickstart on Sun Sep 23 11:27:58 2012.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to formast's documentation!
+Welcome to FormAST's documentation!
 ===================================
 
 Contents:

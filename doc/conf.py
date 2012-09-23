@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# formast documentation build configuration file, created by
-# sphinx-quickstart on Sun Sep 23 10:35:25 2012.
+# FormAST documentation build configuration file, created by
+# sphinx-quickstart on Sun Sep 23 11:27:58 2012.
 #
 # This file is execfile()d with the current directory set to its containing dir.
 #
@@ -42,7 +42,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'formast'
+project = 'FormAST'
 copyright = '2012, Amorilia'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -167,7 +167,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'formastdoc'
+htmlhelp_basename = 'FormASTdoc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -186,7 +186,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'formast.tex', 'formast Documentation',
+  ('index', 'FormAST.tex', 'FormAST Documentation',
    'Amorilia', 'manual'),
 ]
 
@@ -216,7 +216,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'formast', 'formast Documentation',
+    ('index', 'formast', 'FormAST Documentation',
      ['Amorilia'], 1)
 ]
 
@@ -230,8 +230,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'formast', 'formast Documentation',
-   'Amorilia', 'formast', 'One line description of project.',
+  ('index', 'FormAST', 'FormAST Documentation',
+   'Amorilia', 'FormAST', 'One line description of project.',
    'Miscellaneous'),
 ]
 
