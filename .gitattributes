@@ -3,6 +3,7 @@
 *.cpp	text
 *.hpp	text
 *.i	text
+*.ini	text
 *.py	text
 *.py.in	text
 *.txt	text

@@ -18,6 +18,7 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/setup.py.in" "${CMAKE_CURRENT_BINARY
 
 file(COPY 
     ${CMAKE_CURRENT_SOURCE_DIR}/MANIFEST.in
+    ${CMAKE_CURRENT_SOURCE_DIR}/tox.ini
     ${FORMAST_SOURCE_DIR}/src
     ${FORMAST_SOURCE_DIR}/include
     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
@@ -35,3 +36,6 @@ add_custom_command(
   COMMAND ${PYTHON_EXECUTABLE} setup.py sdist --format=zip --quiet
   DEPENDS ${SWIG_MODULE_formast_REAL_NAME}
 )
+
+add_test(python-tox
+    ${PYTHON_EXECUTABLE} -c "import tox; tox.cmdline()")
