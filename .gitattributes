@@ -12,4 +12,4 @@ Doxyfile.in	text
 .gitattributes	text
 CMakeLists.txt	text
 MANIFEST.in	text
-Makefile	text
+Makefile	eol=lf
