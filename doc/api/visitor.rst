@@ -17,7 +17,13 @@ and override the desired methods.
 
 .. cpp:class:: formast::Visitor
 
+   Visitor for the abstract syntax tree.
+
    .. cpp:function:: void expr(formast::Expr const & e)
+
+      Visits an :cpp:class:`formast::Expr`,
+      dispatching to the appropriate ``expr_...`` method.
+
    .. cpp:function:: void expr_uint(boost::uint64_t const & n)
    .. cpp:function:: void expr_id(std::string const & i)
    .. cpp:function:: void expr_pos(formast::Expr const & right)
