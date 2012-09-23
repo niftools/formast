@@ -1,5 +1,4 @@
-Main author
------------
+Current Developers
+------------------
 
-amorilia (amorilia@users.sourceforge.net)
-
+* Amorilia (amorilia@users.sourceforge.net)
