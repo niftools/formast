@@ -7,25 +7,19 @@
 
 #include "formast/detail/ast.hpp"
 
-//! Namespace for all public declarations.
 namespace formast
 {
 
-//! Expression node of the abstract syntax tree.
 typedef formast::detail::ast::Expr Expr;
 
-//! Abstract base class for parsers.
 class Parser
 {
 public:
     Parser();
-    //! Parse input stream into an abstract syntax tree.
     virtual Expr parse_stream(std::istream & is) = 0;
-    //! Parse string into an abstract syntax tree.
     Expr parse_string(std::string const & s);
 };
 
-//! Parser for the niftools xml format.
 class XmlParser : public Parser
 {
 public:
@@ -33,7 +27,6 @@ public:
     virtual Expr parse_stream(std::istream & is);
 };
 
-//! Visitor for the abstract syntax tree.
 class Visitor
 {
 public:
@@ -55,38 +48,5 @@ private:
 };
 
 } // namespace formast
-
-/*! \mainpage FormAST Documentation
-
-FormAST stands for *file format abstract syntax tree*.
-It's primary purpose is to expose the abstract syntax tree
-of a file format description.
-
-\section Visitation
-
-Rather than exposing the data structure
-representing the abstract syntax tree directly,
-FormAST exposes the structure by means of
-<a href="http://en.wikipedia.org/wiki/Visitor_pattern">visitation</a>.
-In practice, visitation provides every means for evaluating
-the abstract syntax tree,
-or for compiling it into another tree structure
-for whatever sofisticated purpose.
-Moreover, the visitor model allows new language features to be added
-with minimal change to the public API.
-
-Simply derive a subclass from formast::Visitor
-and override the desired methods.
-
-\section Expressions
-
-For the time being, FormAST exposes just a single node type,
-namely formast::Expr,
-for expressions.
-
-Expressions are created from xml code,
-via formast::parse_xml().
-
-*/
 
 #endif

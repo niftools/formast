@@ -1,5 +1,6 @@
 *.rst	text
-*.sh	text eol=lf
+*.bat	eol=crlf
+*.sh	eol=lf
 *.cpp	text
 *.hpp	text
 *.i	text
@@ -11,3 +12,4 @@ Doxyfile.in	text
 .gitattributes	text
 CMakeLists.txt	text
 MANIFEST.in	text
+Makefile	eol=lf
