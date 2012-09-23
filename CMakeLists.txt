@@ -2,11 +2,6 @@ cmake_minimum_required(VERSION 2.6)
 project(FORMAST)
 file(STRINGS "VERSION" VERSION)
 
-# configuration
-configure_file(
-    ${FORMAST_SOURCE_DIR}/Doxyfile.in
-    ${FORMAST_SOURCE_DIR}/Doxyfile)
-
 # find boost
 find_package(Boost 1.48.0 REQUIRED COMPONENTS unit_test_framework)
 include_directories(${Boost_INCLUDE_DIRS})
