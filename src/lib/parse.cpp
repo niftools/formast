@@ -23,19 +23,19 @@ BOOST_FUSION_ADAPT_STRUCT(
     (std::string, name)
     (boost::optional<std::string>, base_name)
     (boost::optional<formast::Doc>, doc)
-    (boost::optional<formast::Scope>, scope)
+    (boost::optional<formast::Stats>, stats)
 )
 
 BOOST_FUSION_ADAPT_STRUCT(
     formast::If,
     (formast::Expr, expr)
-    (formast::Scope, scope)
+    (formast::Stats, stats)
 )
 
 BOOST_FUSION_ADAPT_STRUCT(
     formast::IfElifsElse,
     (std::vector<formast::If>, ifs_)
-    (boost::optional<formast::Scope>, else_)
+    (boost::optional<formast::Stats>, else_)
 )
 
 // a few shorthands

@@ -73,14 +73,20 @@ void formast::Visitor::expr(Expr const & e)
     _expr_visitor->expr(e);
 }
 
-void formast::Visitor::scope(Scope const & scope)
+void formast::Visitor::top(Top const & top)
 {
     // TODO: implement dispatch
 };
 
-void formast::Visitor::scope_attr(Attr const & attr) {};
-void formast::Visitor::scope_class(Class const & class_) {};
-void formast::Visitor::scope_if_elifs_else(IfElifsElse const & ifelifselse) {};
+void formast::Visitor::stats(Stats const & stats)
+{
+    // TODO: implement dispatch
+};
+
+void formast::Visitor::top_class(Class const & class_) {};
+
+void formast::Visitor::stats_attr(Attr const & attr) {};
+void formast::Visitor::stats_if_elifs_else(IfElifsElse const & ifelifselse) {};
 
 void formast::Visitor::expr_uint(boost::uint64_t const & n) {};
 void formast::Visitor::expr_id(std::string const & i) {};

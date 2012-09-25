@@ -95,11 +95,12 @@ public:
     FORMAST_API Visitor();
     FORMAST_API virtual ~Visitor();
 
-    FORMAST_API virtual void descr(Descr const & descr);
-    FORMAST_API virtual void descr_class_(Class const & class_);
+    FORMAST_API virtual void top(Top const & top);
+    FORMAST_API virtual void top_class(Class const & class_);
 
-    FORMAST_API virtual void stat_attr(Attr const & attr);
-    FORMAST_API virtual void stat_if_elifs_else(IfElifsElse const & ifelifselse);
+    FORMAST_API virtual void stats(Stats const & stats);
+    FORMAST_API virtual void stats_attr(Attr const & attr);
+    FORMAST_API virtual void stats_if_elifs_else(IfElifsElse const & ifelifselse);
 
     FORMAST_API virtual void expr(Expr const & e);
     FORMAST_API virtual void expr_uint(boost::uint64_t const & n);
