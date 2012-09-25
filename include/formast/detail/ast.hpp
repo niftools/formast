@@ -21,14 +21,15 @@ namespace detail
 {
 namespace ast
 {
+ 
+// declaration nodes
 
-// declaration node
+typedef boost::make_recursive_variant<formast::Class>::type TopDecl;
 
-typedef boost::make_recursive_variant<formast::Class, formast::Attr, formast::IfElifsElse>::type Declaration;
+typedef boost::make_recursive_variant<formast::Attr, formast::IfElifsElse>::type StatDecl;
 
-// scope node
-
-typedef std::vector<Declaration> Scope;
+typedef std::vector<TopDecl> Top;
+typedef std::vector<StatDecl> Stats;
 
 // expression nodes
 
