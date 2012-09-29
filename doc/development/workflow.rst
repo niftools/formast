@@ -18,6 +18,19 @@ On Windows, you also have to specify the nmake generator::
 
   cmake -G "NMake Makefiles" ../../workspace/formast
 
+You can control which wrappers to build from the command line,
+using the
+``BUILD_PYTHON``,
+``BUILD_JAVA``,
+``BUILD_CSHARP``, and
+``BUILD_PHP`` options.
+By default, Python and Java are ``ON``,
+and the others are ``OFF``.
+For example, if you would like to disable the Java wrapper build,
+and enable the PHP wrapper build, you would write::
+
+  cmake -G "NMake Makefiles" ../../workspace/formast -DBUILD_JAVA=OFF -DBUILD_PHP=ON
+
 Compile
 -------
 
