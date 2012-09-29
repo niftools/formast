@@ -1,18 +1,28 @@
 #ifndef FORMAST_HPP_INCLUDED
 #define FORMAST_HPP_INCLUDED
 
-#if defined _WIN32 || defined __CYGWIN__
-  #ifdef formastlib_EXPORTS
-    #define FORMAST_API __declspec(dllexport)
-  #else
-    #define FORMAST_API __declspec(dllimport)
-  #endif
+#ifdef FORMAST_STATIC
+  // formast static library
+  #define FORMAST_API
   #define FORMAST_HIDDEN
 #else
-  #if __GNUC__ >= 4
+  // formast shared library
+  #if defined _WIN32 || defined __CYGWIN__
+    // Windows
+    #ifdef formastlib_EXPORTS
+      // formast is being compiled: export API to dll
+      #define FORMAST_API __declspec(dllexport)
+    #else
+      // other code is being compiled, using formast.dll: import API from dll
+      #define FORMAST_API __declspec(dllimport)
+    #endif
+    #define FORMAST_HIDDEN
+  #elif __GNUC__ >= 4
+    // GNU Linux: set visibility of symbols
     #define FORMAST_API    __attribute__ ((visibility ("default")))
     #define FORMAST_HIDDEN __attribute__ ((visibility ("hidden")))
   #else
+    // unknown
     #define FORMAST_API
     #define FORMAST_HIDDEN
   #endif

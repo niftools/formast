@@ -30,12 +30,13 @@ import sys
 ext_formast = Extension(
     'formast._formast',
     sources=[
-        'formast/formastPYTHON_wrap.cxx',
+        'src/formastPYTHON_wrap.cxx',
+        'src/lib/parse.cpp',
+        'src/lib/visitor.cpp',
         ],
     include_dirs=['include', '@BOOST_INCLUDEDIR@'],
-    libraries=['formast'],
-    library_dirs=['formast'],
     extra_compile_args=['/EHsc'] if sys.platform == "win32" else [],
+    define_macros=[('FORMAST_STATIC', None)]
     )
 
 setup(
@@ -45,7 +46,6 @@ setup(
     author_email='amorilia@users.sourceforge.net',
     packages=['formast'],
     ext_modules=[ext_formast],
-    package_data= {'formast': ['formast.dll']} if sys.platform == "win32" else {},
     download_url=r'https://github.com/amorilia/formast/downloads',
     platforms=[],
     zip_safe=False,
