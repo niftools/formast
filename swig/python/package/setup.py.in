@@ -33,7 +33,7 @@ ext_formast = Extension(
         'src/lib/parse.cpp',
         'src/lib/visitor.cpp',
         ],
-    include_dirs=['.', 'include'],
+    include_dirs=['.', 'include', '@BOOST_INCLUDEDIR@'],
     depends=[
         'formastPYTHON_wrap.h',
         'include/formast/formast.hpp',
