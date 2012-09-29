@@ -8,7 +8,7 @@ set(CMAKE_SWIG_OUTDIR ${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PYTHON_INCLUDE_PATH})
 set_source_files_properties(formast.i PROPERTIES CPLUSPLUS ON)
 swig_add_module(formast python formast.i)
-swig_link_libraries(formast formast-lib ${PYTHON_LIBRARIES})
+swig_link_libraries(formast formastlib ${PYTHON_LIBRARIES})
 
 # build package
 

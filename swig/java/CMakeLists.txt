@@ -9,6 +9,7 @@ set(CMAKE_SWIG_OUTDIR ${JAVA_SOURCE_DIRECTORY}/org/niftools/formast/)
 set(CMAKE_SWIG_FLAGS -package "org.niftools.formast" ${CMAKE_SWIG_GLOBAL_FLAGS})
 set_source_files_properties(formast.i PROPERTIES CPLUSPLUS ON)
 swig_add_module(formastjava java formast.i)
+swig_link_libraries(formastjava formastlib)
 
 # target for jar
 set(JAR_FILE formast-${VERSION}.jar)

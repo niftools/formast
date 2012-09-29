@@ -10,20 +10,20 @@ include_directories(${Boost_INCLUDE_DIRS})
 include_directories(${FORMAST_SOURCE_DIR}/include)
 
 # build library
-add_library(formast-lib SHARED
+add_library(formastlib SHARED
     src/lib/visitor.cpp
     src/lib/parse.cpp
 )
-set_target_properties(formast-lib
+set_target_properties(formastlib
   PROPERTIES OUTPUT_NAME formast)
 
 # build command line tool
-add_executable(formast-app
+add_executable(formastapp
     src/app/main.cpp
 )
-set_target_properties(formast-app
+set_target_properties(formastapp
   PROPERTIES OUTPUT_NAME formast)
-target_link_libraries(formast-app formast-lib)
+target_link_libraries(formastapp formastlib)
 
 # build tests
 enable_testing()
