@@ -24,6 +24,7 @@ from distutils.sysconfig import get_python_lib
 from distutils.core import Extension
 from distutils.util import get_platform
 import re
+import sys
 
 ext_formast = Extension(
     '_formast',
@@ -38,6 +39,7 @@ ext_formast = Extension(
         'include/formast/formast.hpp',
         'include/formast/detail/ast.hpp',
     ],
+    extra_compile_args=['/EHsc'] if sys.platform == "win32" else [],
     )
 
 setup(
