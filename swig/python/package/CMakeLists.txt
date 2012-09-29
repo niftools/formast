@@ -6,10 +6,8 @@ file(COPY
     ${CMAKE_CURRENT_SOURCE_DIR}/MANIFEST.in
     ${CMAKE_CURRENT_SOURCE_DIR}/tox.ini
     ${CMAKE_CURRENT_SOURCE_DIR}/test
-    ${FORMAST_SOURCE_DIR}/src
     ${FORMAST_SOURCE_DIR}/include
     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
-    PATTERN "src/app" EXCLUDE
     )
 
 # target for source package
@@ -21,9 +19,12 @@ add_custom_target(formast-python-sdist ALL DEPENDS ${FORMAST_PYTHON_SDIST_FILE})
 add_custom_command(
   OUTPUT ${FORMAST_PYTHON_SDIST_FILE}
   COMMENT "Creating python sdist file..."
-  COMMAND ${CMAKE_COMMAND} -E copy ../formast.py .
-  COMMAND ${CMAKE_COMMAND} -E copy ../formastPYTHON_wrap.cxx .
-  COMMAND ${CMAKE_COMMAND} -E copy ../formastPYTHON_wrap.h .
+  COMMAND ${CMAKE_COMMAND} -E make_directory formast/
+  COMMAND ${CMAKE_COMMAND} -E copy ../formast.py formast/__init__.py
+  COMMAND ${CMAKE_COMMAND} -E copy ../formastPYTHON_wrap.cxx formast/
+  COMMAND ${CMAKE_COMMAND} -E copy ../formastPYTHON_wrap.h formast/
+  COMMAND ${CMAKE_COMMAND} -E copy ${FORMAST_BINARY_DIR}/formast.dll formast/ # TODO only on windows
+  COMMAND ${CMAKE_COMMAND} -E copy ${FORMAST_BINARY_DIR}/formast.lib formast/ # TODO only on windows
   COMMAND ${PYTHON_EXECUTABLE} setup.py sdist --format=zip --quiet
   DEPENDS ${SWIG_MODULE_formast_REAL_NAME}
 )

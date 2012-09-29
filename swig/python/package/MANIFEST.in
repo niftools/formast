@@ -1,4 +1,5 @@
-recursive-include src/lib *.cpp
 recursive-include include *.hpp
-include formastPYTHON_wrap.cxx
-include formastPYTHON_wrap.h
+include formast/formastPYTHON_wrap.cxx
+include formast/formastPYTHON_wrap.h
+include formast/formast.dll
+include formast/formast.lib
