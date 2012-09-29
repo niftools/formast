@@ -9,23 +9,19 @@ Start buildenv, and type::
   cd ../build
   mkdir formast
   cd formast
+
+Then, on Linux, simply type::
+
   cmake ../../workspace/formast
 
-.. warning::
+On Windows, you also have to specify the nmake generator::
 
-   On Windows, if you have multiple compilers installed, CMake may not
-   select the correct one by default.
-   Also Windows needs ``-G ...`` to ensure it generates nmake files.
-
-.. todo::
-
-   Figure out a way to do everything properly from the command line
-   on Windows.
+  cmake -G "NMake Makefiles" ../../workspace/formast
 
 Compile
 -------
 
-In buildenv, ``build/formast`` folder, run::
+In buildenv, ``build/formast`` folder, run on Linux::
 
   make
 
@@ -34,10 +30,11 @@ or, on Windows::
   nmake
 
 Wrapper packages for Java and Python will also be generated, you will
-find those in ``swig/java`` and ``swig/python/package``.
+find those in the build folders ``swig/java`` and ``swig/python/package``.
 
 By default, SWIG only creates a source package for Python.
-To create a binary package for Python, run ``python setup.py bdist``.
+To create a binary package for Python, run ``python setup.py bdist``
+from the ``swig/python/package`` build folder.
 
 Run Regression Tests
 --------------------
@@ -52,7 +49,7 @@ Generate Documentation
 Run the following in a buildenv (Windows) or terminal (Fedora),
 ``workspace/formast`` folder::
 
-  cd docs
+  cd doc
   make html
 
 To view the docs, open ``docs/_build/html/index.html``.
