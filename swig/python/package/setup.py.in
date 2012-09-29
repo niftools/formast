@@ -26,6 +26,10 @@ from distutils.util import get_platform
 import re
 import sys
 
+include_dirs = ['include']
+if '@BOOST_INCLUDEDIR@':
+    include_dirs += ['@BOOST_INCLUDEDIR@']
+
 ext_formast = Extension(
     'formast._formast',
     sources=[
@@ -33,7 +37,7 @@ ext_formast = Extension(
         'src/lib/parse.cpp',
         'src/lib/visitor.cpp',
         ],
-    include_dirs=['include', '@BOOST_INCLUDEDIR@'],
+    include_dirs=include_dirs,
     extra_compile_args=['/EHsc'] if sys.platform == "win32" else [],
     define_macros=[('FORMAST_STATIC', None)]
     )
