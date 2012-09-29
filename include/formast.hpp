@@ -71,7 +71,7 @@ public:
 private:
     // pimpl idiom
     FORMAST_HIDDEN class ExprVisitor;
-    FORMAST_HIDDEN boost::shared_ptr<ExprVisitor> _expr_visitor;
+    boost::shared_ptr<ExprVisitor> _expr_visitor;
 };
 
 } // namespace formast
