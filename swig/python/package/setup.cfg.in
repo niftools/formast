@@ -2,4 +2,4 @@
 # location of formast library
 library-dirs=@FORMAST_BINARY_DIR@
 # location of formast headers and boost headers
-include-dirs=@FORMAST_SOURCE_DIR@/include:@Boost_INCLUDE_DIR@
+include-dirs=@FORMAST_SOURCE_DIR@/include@OSPATHSEP@@Boost_INCLUDE_DIR@

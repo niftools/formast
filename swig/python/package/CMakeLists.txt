@@ -1,5 +1,11 @@
 # create python package that includes all sources
 
+if(WIN32)
+  set(OSPATHSEP ";")
+else()
+  set(OSPATHSEP ":")
+endif()
+
 # copy source files
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/setup.cfg.in" "${CMAKE_CURRENT_BINARY_DIR}/setup.cfg")
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/setup.py.in" "${CMAKE_CURRENT_BINARY_DIR}/setup.py")
