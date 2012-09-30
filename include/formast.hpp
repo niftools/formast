@@ -109,8 +109,10 @@ private:
     // pimpl idiom
     FORMAST_HIDDEN class ExprVisitor;
     boost::shared_ptr<ExprVisitor> _expr_visitor;
-    FORMAST_HIDDEN class ScopeVisitor;
-    boost::shared_ptr<ScopeVisitor> _scope_visitor;
+    FORMAST_HIDDEN class TopVisitor;
+    boost::shared_ptr<TopVisitor> _top_visitor;
+    FORMAST_HIDDEN class StatsVisitor;
+    boost::shared_ptr<StatsVisitor> _stats_visitor;
 };
 
 } // namespace formast

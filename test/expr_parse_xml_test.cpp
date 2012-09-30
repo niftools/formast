@@ -27,13 +27,13 @@ class ParseFixture
 public:
     ParseFixture() {};
     void parse_check(std::string const & in, std::string const & out) const {
-        formast::Expr expr;
+        formast::Top ast;
         formast::XmlParser parser;
-        BOOST_CHECK_NO_THROW(expr = parser.parse_string(in));
+        BOOST_CHECK_NO_THROW(parser.parse_string(in, ast));
 
         std::ostringstream os;
         TestPrinter print(os);
-        print.expr(expr);
+        print.top(ast);
         BOOST_CHECK_EQUAL(os.str(), out);
     };
 };

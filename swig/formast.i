@@ -9,11 +9,13 @@ namespace boost {
 }
 
 namespace formast {
-    // Expr is a typedef in formast.hpp
+    // Expr, Stats, and Top are typedefs in formast.hpp
     // swig will not wrap it unless it has an implementation
     // whence an empty implementation {}
     // so swig will expose the name, but nothing else
     class Expr {};
+    class Stats {};
+    class Top {};
 }
 
 %include "exception.i"
