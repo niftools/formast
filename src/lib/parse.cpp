@@ -262,13 +262,13 @@ void formast::XmlParser::parse_stream(std::istream & is, ast::Top & top)
                     if (!doc.empty()) {
                         attr.doc = doc;
                     }
-                    std::string cond = add.second.get<std::string>("<xmlattr>.cond");
-                    if  (cond.empty()) {
+                    boost::optional<std::string> cond = add.second.get_optional<std::string>("<xmlattr>.cond");
+                    if  (!cond) {
                         stats.push_back(attr);
                     } else {
                         formast::IfElifsElse ifelifselse;
                         formast::If if_;
-                        _expr_parse_string(cond, if_.expr);
+                        _expr_parse_string(cond.get(), if_.expr);
                         if_.stats.push_back(attr);
                         ifelifselse.ifs_.push_back(if_);
                         stats.push_back(ifelifselse);
