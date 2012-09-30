@@ -46,7 +46,6 @@ namespace ast = formast::detail::ast;
 // phoenix functions for constructing the abstract syntax tree with
 // semantic actions
 
-template <typename T> // T is a terminal type, i.e. uint64_t or std::string
 struct copy_func {
     template <typename T1, typename T2 = void>
     struct result {
@@ -56,6 +55,18 @@ struct copy_func {
     void operator()(ast::Expr & left, ast::Expr const & right) const {
         assert(right != 0);
         left = right;
+    }
+};
+
+struct trim_func {
+    template <typename T1, typename T2 = void>
+    struct result {
+        typedef void type;
+    };
+
+    void operator()(std::string & left, std::string const & right) const {
+        left = right;
+        boost::algorithm::trim(left);
     }
 };
 
@@ -104,8 +115,10 @@ boost::phoenix::function<binary_func<'*'> > const _mul;
 boost::phoenix::function<binary_func<'/'> > const _div;
 boost::phoenix::function<unary_func<'+'> > const _pos;
 boost::phoenix::function<unary_func<'-'> > const _neg;
+boost::phoenix::function<assign_func<std::string> > const _ident;
 boost::phoenix::function<assign_func<boost::uint64_t> > const _uint;
-boost::phoenix::function<copy_func<boost::uint64_t> > const _copy;
+boost::phoenix::function<copy_func> const _copy;
+boost::phoenix::function<trim_func> const _trim;
 
 // error handler
 
@@ -138,8 +151,9 @@ struct expr_grammar : qi::grammar<Iterator, ast::Expr(), ascii::space_type> {
 
     expr_grammar() : expr_grammar::base_type(expr) {
 
+    qi::lexeme_type lexeme;
     qi::char_type char_;
-    qi::uint_type uint_;
+    qi::uint_type ulong_long;
     qi::_val_type _val;
     qi::_1_type _1;
     qi::_2_type _2;
@@ -164,11 +178,16 @@ struct expr_grammar : qi::grammar<Iterator, ast::Expr(), ascii::space_type> {
         ;
 
     factor =
-        uint_                           [_uint(_val, _1)]
+        ulong_long                      [_uint(_val, _1)]
+        |   ident                       [_ident(_val, _1)]
         |   '(' > expr                  [_copy(_val, _1)] > ')'
         |   ('-' > factor               [_neg(_val, _1)])
         |   ('+' > factor               [_pos(_val, _1)])
         ;
+
+    // also match trailing whitespace; _trim removes it
+    ident_ws %= lexeme[(char_("a-zA-Z") >> *(char_(" ") | char_("0-9a-zA-Z")))];
+    ident = ident_ws [_trim(_val, _1)];
 
     // Debugging and error handling and reporting support.
     BOOST_SPIRIT_DEBUG_NODE(expr);
@@ -180,6 +199,7 @@ struct expr_grammar : qi::grammar<Iterator, ast::Expr(), ascii::space_type> {
 }
 
 qi::rule<Iterator, ast::Expr(), ascii::space_type> expr, term, factor;
+qi::rule<Iterator, std::string(), ascii::space_type> ident, ident_ws;
 };
 
 // helper function for parsing expression from stream
