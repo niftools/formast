@@ -254,7 +254,6 @@ void formast::XmlParser::parse_stream(std::istream & is, ast::Top & top)
             class_.name = decl.second.get<std::string>("<xmlattr>.name");
             std::string doc = decl.second.data();
             boost::algorithm::trim(doc);
-            class_.doc = doc;
             if (!doc.empty()) {
                 class_.doc = doc;
             }
