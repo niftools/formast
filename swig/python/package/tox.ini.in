@@ -1,7 +1,7 @@
 [tox]
 envlist=py27,py32
 [testenv]
-setenv=LD_LIBRARY_PATH=@FORMAST_BINARY_DIR@
+setenv=LD_LIBRARY_PATH=@FORMAST_PYTHON_LIBRARY_DIR@
 deps=
     nose
 commands=
