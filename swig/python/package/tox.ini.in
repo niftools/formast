@@ -1,0 +1,10 @@
+[tox]
+envlist=py27,py32
+[testenv]
+setenv=LD_LIBRARY_PATH=@FORMAST_PYTHON_LIBRARY_DIR@
+deps=
+    nose
+commands=
+    # running in current folder fails due to missing extension module
+    # so pass "-w test" to chdir to test folder before running tests
+    nosetests --exe -w test

@@ -1,5 +1,12 @@
 """Setup script for formast."""
 
+from setuptools import setup
+from distutils.core import Extension
+import re
+import sys
+
+### general options ###
+
 classifiers = """\
 Development Status :: 2 - Pre-Alpha
 License :: OSI Approved :: BSD License
@@ -19,28 +26,28 @@ Programming Language :: Python :: 3.3
 Operating System :: OS Independent"""
 #Topic :: Formats and Protocols :: Data Formats
 
-from setuptools import setup
-from distutils.sysconfig import get_python_lib
-from distutils.core import Extension
-from distutils.util import get_platform
-import re
-import sys
+sources = ['formastPYTHON_wrap.cxx']
+libraries = ['formast']
+extra_compile_args = []
+define_macros = []
 
-include_dirs = ['include']
-if '@BOOST_INCLUDEDIR@':
-    include_dirs += ['@BOOST_INCLUDEDIR@']
+### platform specific configuration ###
+
+if sys.platform == "win32":
+    extra_compile_args += ['/EHsc']
+    define_macros += [('FORMAST_STATIC', None)]
+
+### extension module ###
 
 ext_formast = Extension(
     'formast._formast',
-    sources=[
-        'src/formastPYTHON_wrap.cxx',
-        'src/lib/parse.cpp',
-        'src/lib/visitor.cpp',
-        ],
-    include_dirs=include_dirs,
-    extra_compile_args=['/EHsc'] if sys.platform == "win32" else [],
-    define_macros=[('FORMAST_STATIC', None)]
+    sources=sources,
+    libraries=libraries,
+    extra_compile_args=extra_compile_args,
+    define_macros=define_macros,
     )
+
+### setup configuration ###
 
 setup(
     name='formast',

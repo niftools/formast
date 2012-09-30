@@ -1,2 +1,2 @@
-recursive-include src *.cpp *.cxx
-recursive-include include *.hpp *.h
+include formastPYTHON_wrap.cxx
+include formastPYTHON_wrap.h

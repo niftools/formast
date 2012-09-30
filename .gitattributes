@@ -8,6 +8,8 @@
 *.py	text
 *.py.in	text
 *.txt	text
+*.cfg	text
+*.cfg.in	text
 Doxyfile.in	text
 .gitattributes	text
 CMakeLists.txt	text
