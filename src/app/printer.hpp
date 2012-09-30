@@ -19,6 +19,11 @@ public:
         open_tag("name", true);
         os << class_.name;
         close_tag("name", true);
+        if (class_.base_name) {
+            open_tag("base_name", true);
+            os << class_.base_name.get();
+            close_tag("base_name", true);
+        }
         if (class_.doc) {
             open_tag("doc", true);
             os << class_.doc.get();
