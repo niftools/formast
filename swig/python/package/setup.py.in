@@ -1,23 +1,9 @@
 """Setup script for formast."""
 
 from setuptools import setup
-from distutils.sysconfig import get_python_lib
 from distutils.core import Extension
-from distutils.util import get_platform
 import re
 import sys
-
-### user configuration ###
-
-# whether to recompile formast from source
-# or to use the shared library
-FORMAST_STATIC = (sys.platform == "win32")
-
-# location of formast shared library; used if FORMAST_STATIC is False
-formast_library_dir = '@FORMAST_BINARY_DIR@'
-
-# location of boost headers
-boost_include_dir = '@BOOST_INCLUDEDIR@'
 
 ### general options ###
 
@@ -40,40 +26,23 @@ Programming Language :: Python :: 3.3
 Operating System :: OS Independent"""
 #Topic :: Formats and Protocols :: Data Formats
 
-sources = ['src/formastPYTHON_wrap.cxx']
-include_dirs = ['include']
-if boost_include_dir:
-    include_dirs += [boost_include_dir]
-libraries = []
-library_dirs = []
+sources = ['formastPYTHON_wrap.cxx']
+libraries = ['formast']
 extra_compile_args = []
 define_macros = []
-
-### options depending on whether we build statically or not ###
-
-if FORMAST_STATIC:
-    sources += [
-        'src/lib/parse.cpp',
-        'src/lib/visitor.cpp',
-        ]
-    define_macros += [('FORMAST_STATIC', None)]
-else:
-    libraries += ['formast']
-    library_dirs += [formast_library_dir]
 
 ### platform specific configuration ###
 
 if sys.platform == "win32":
     extra_compile_args += ['/EHsc']
+    define_macros += [('FORMAST_STATIC', None)]
 
 ### extension module ###
 
 ext_formast = Extension(
     'formast._formast',
     sources=sources,
-    include_dirs=include_dirs,
     libraries=libraries,
-    library_dirs=library_dirs,
     extra_compile_args=extra_compile_args,
     define_macros=define_macros,
     )
