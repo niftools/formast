@@ -132,7 +132,7 @@ public:
         os << "</" << tag << ">" << std::endl;
     }
     virtual void indent() {
-        for (int i = 0; i < level; i++) {
+        for (unsigned int i = 0; i < level; i++) {
             os << " ";
         };
     }

@@ -8,6 +8,23 @@ namespace boost {
     typedef unsigned long long uint64_t;
 }
 
+// tell swig about boost::optional
+namespace boost {
+    template <typename T>
+    class optional
+    {
+    public:
+        T & get();
+        const T & get() const;
+        bool is_initialized() const;
+    };
+}
+
+%template(OptionalStats) boost::optional<formast::Stats>;
+
+%include "std_vector.i"
+%template(VectorIf) std::vector<formast::If>;
+
 namespace formast {
     // Expr, Stats, and Top are typedefs in formast.hpp
     // swig will not wrap it unless it has an implementation

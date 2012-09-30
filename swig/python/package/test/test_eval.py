@@ -8,6 +8,14 @@ class Evaluator(formast.Visitor):
         formast.Visitor.__init__(self)
         self.stack = []
 
+    def top_class(self, c):
+        if c.stats.is_initialized():
+            self.stats(c.stats.get())
+
+    def stats_if_elifs_else(self, i):
+        for if_ in i.ifs_:
+            self.expr(if_.expr)
+
     def expr_uint(self, v):
         self.stack.append(v)
 
@@ -44,8 +52,14 @@ class TestEvaluator:
         self.evaluator = Evaluator()
 
     def check(self, inp , out):
-        expr = self.parser.parse_string(inp)
-        self.evaluator.expr(expr)
+        top = formast.Top()
+        inp = (
+            "<niftoolsxml><compound name=\"Test\">"
+            "<add type=\"uint\" name=\"test\" cond=\"" + inp + "\" />"
+            "</compound></niftoolsxml>"
+            )
+        self.parser.parse_string(inp, top)
+        self.evaluator.top(top)
         nose.tools.assert_equal(len(self.evaluator.stack), 1)
         nose.tools.assert_equal(self.evaluator.stack[0], out)
 

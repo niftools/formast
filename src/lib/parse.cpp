@@ -271,7 +271,7 @@ void formast::XmlParser::parse_stream(std::istream & is, ast::Top & top)
                         attr.doc = doc;
                     }
                     // conditioning disabled for now, can't parse it completely yet
-                    boost::optional<std::string> cond; // = add.second.get_optional<std::string>("<xmlattr>.cond");
+                    boost::optional<std::string> cond = add.second.get_optional<std::string>("<xmlattr>.cond");
                     if  (!cond) {
                         stats.push_back(attr);
                     } else {
