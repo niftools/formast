@@ -9,24 +9,8 @@ include_directories(${Boost_INCLUDE_DIRS})
 # include headers
 include_directories(${FORMAST_SOURCE_DIR}/include)
 
-# build shared library
-add_library(formastlib SHARED
-    src/lib/visitor.cpp
-    src/lib/parse.cpp
-)
-set_target_properties(formastlib
-  PROPERTIES OUTPUT_NAME formast)
-
-# build static library
-add_library(formaststaticlib STATIC
-    src/lib/visitor.cpp
-    src/lib/parse.cpp
-)
-set_target_properties(formaststaticlib
-  PROPERTIES
-  OUTPUT_NAME formaststatic
-  COMPILE_FLAGS -DFORMAST_STATIC
-)
+# build libraries
+add_subdirectory(lib)
 
 # build command line tool
 add_executable(formastapp
