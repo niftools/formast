@@ -1,5 +1,26 @@
 """Setup script for formast."""
 
+from setuptools import setup
+from distutils.sysconfig import get_python_lib
+from distutils.core import Extension
+from distutils.util import get_platform
+import re
+import sys
+
+### user configuration ###
+
+# whether to recompile formast from source
+# or to use the shared library
+FORMAST_STATIC = (sys.platform == "win32")
+
+# location of formast shared library; used if FORMAST_STATIC is False
+formast_library_dir = '@FORMAST_BINARY_DIR@'
+
+# location of boost headers
+boost_include_dir = '@BOOST_INCLUDEDIR@'
+
+### general options ###
+
 classifiers = """\
 Development Status :: 2 - Pre-Alpha
 License :: OSI Approved :: BSD License
@@ -19,29 +40,16 @@ Programming Language :: Python :: 3.3
 Operating System :: OS Independent"""
 #Topic :: Formats and Protocols :: Data Formats
 
-from setuptools import setup
-from distutils.sysconfig import get_python_lib
-from distutils.core import Extension
-from distutils.util import get_platform
-import re
-import sys
-
 sources = ['src/formastPYTHON_wrap.cxx']
 include_dirs = ['include']
-if '@BOOST_INCLUDEDIR@':
-    include_dirs += ['@BOOST_INCLUDEDIR@']
+if boost_include_dir:
+    include_dirs += [boost_include_dir]
 libraries = []
 library_dirs = []
 extra_compile_args = []
 define_macros = []
 
-# platform specific configuration
-
-if sys.platform == "win32":
-    FORMAST_STATIC = True
-    extra_compile_args += ['/EHsc']
-else:
-    FORMAST_STATIC = False
+### options depending on whether we build statically or not ###
 
 if FORMAST_STATIC:
     sources += [
@@ -51,9 +59,14 @@ if FORMAST_STATIC:
     define_macros += [('FORMAST_STATIC', None)]
 else:
     libraries += ['formast']
-    library_dirs += ['@FORMAST_BINARY_DIR@']
+    library_dirs += [formast_library_dir]
 
-# extension module
+### platform specific configuration ###
+
+if sys.platform == "win32":
+    extra_compile_args += ['/EHsc']
+
+### extension module ###
 
 ext_formast = Extension(
     'formast._formast',
@@ -65,7 +78,7 @@ ext_formast = Extension(
     define_macros=define_macros,
     )
 
-# setup configuration
+### setup configuration ###
 
 setup(
     name='formast',
