@@ -15,12 +15,13 @@ namespace boost {
     {
     public:
         T & get();
-        const T & get() const;
         bool is_initialized() const;
     };
 }
 
+%template(OptionalDoc) boost::optional<formast::Doc>;
 %template(OptionalStats) boost::optional<formast::Stats>;
+%template(OptionalString) boost::optional<std::string>;
 
 %include "std_vector.i"
 %template(VectorIf) std::vector<formast::If>;
