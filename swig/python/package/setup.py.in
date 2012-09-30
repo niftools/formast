@@ -26,21 +26,46 @@ from distutils.util import get_platform
 import re
 import sys
 
+sources = ['src/formastPYTHON_wrap.cxx']
 include_dirs = ['include']
 if '@BOOST_INCLUDEDIR@':
     include_dirs += ['@BOOST_INCLUDEDIR@']
+libraries = []
+library_dirs = []
+extra_compile_args = []
+define_macros = []
+
+# platform specific configuration
+
+if sys.platform == "win32":
+    FORMAST_STATIC = True
+    extra_compile_args += ['/EHsc']
+else:
+    FORMAST_STATIC = False
+
+if FORMAST_STATIC:
+    sources += [
+        'src/lib/parse.cpp',
+        'src/lib/visitor.cpp',
+        ]
+    define_macros += [('FORMAST_STATIC', None)]
+else:
+    libraries += ['formast']
+    library_dirs += ['@FORMAST_BINARY_DIR@']
+
+# extension module
 
 ext_formast = Extension(
     'formast._formast',
-    sources=[
-        'src/formastPYTHON_wrap.cxx',
-        'src/lib/parse.cpp',
-        'src/lib/visitor.cpp',
-        ],
+    sources=sources,
     include_dirs=include_dirs,
-    extra_compile_args=['/EHsc'] if sys.platform == "win32" else [],
-    define_macros=[('FORMAST_STATIC', None)]
+    libraries=libraries,
+    library_dirs=library_dirs,
+    extra_compile_args=extra_compile_args,
+    define_macros=define_macros,
     )
+
+# setup configuration
 
 setup(
     name='formast',

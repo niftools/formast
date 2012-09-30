@@ -2,9 +2,9 @@
 
 # copy source files
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/setup.py.in" "${CMAKE_CURRENT_BINARY_DIR}/setup.py")
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/tox.ini.in" "${CMAKE_CURRENT_BINARY_DIR}/tox.ini")
 file(COPY 
     ${CMAKE_CURRENT_SOURCE_DIR}/MANIFEST.in
-    ${CMAKE_CURRENT_SOURCE_DIR}/tox.ini
     ${CMAKE_CURRENT_SOURCE_DIR}/test
     ${FORMAST_SOURCE_DIR}/src
     ${FORMAST_SOURCE_DIR}/include
