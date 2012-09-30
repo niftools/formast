@@ -29,12 +29,20 @@ public:
     void parse_check(std::string const & in, std::string const & out) const {
         formast::Top ast;
         formast::XmlParser parser;
-        BOOST_CHECK_NO_THROW(parser.parse_string(in, ast));
+        std::string xmlin =
+            "<niftoolsxml><compound name=\"Test\"><add type=\"uint\" name=\"test\" cond=\""
+            + in
+            + "\"></add></compound></niftoolsxml>";
+        std::string xmlout =
+            "<class><name>Test</name><stats><ifelifselse><if><expr>"
+            + out
+            + "</expr><stats><attr><class_name>uint</class_name><name>test</name></attr></stats></if></ifelifselse></stats></class>";
+        BOOST_CHECK_NO_THROW(parser.parse_string(xmlin, ast));
 
         std::ostringstream os;
         TestPrinter print(os);
         print.top(ast);
-        BOOST_CHECK_EQUAL(os.str(), out);
+        BOOST_CHECK_EQUAL(os.str(), xmlout);
     };
 };
 
