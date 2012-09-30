@@ -1,6 +1,7 @@
 #define BOOST_SPIRIT_NO_PREDEFINED_TERMINALS
 // #define BOOST_SPIRIT_QI_DEBUG
 
+#include <boost/algorithm/string.hpp>
 #include <boost/foreach.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
@@ -242,12 +243,18 @@ void formast::XmlParser::parse_stream(std::istream & is, ast::Top & top)
         if (decl.first == "basic") {
             Class class_;
             class_.name = decl.second.get<std::string>("<xmlattr>.name");
-            class_.doc = decl.second.data();
+            std::string doc = decl.second.data();
+            boost::algorithm::trim(doc);
+            if (!doc.empty()) {
+                class_.doc = doc;
+            }
             top.push_back(class_);
         } else if (decl.first == "compound" || decl.first == "niobject") {
             Class class_;
             class_.name = decl.second.get<std::string>("<xmlattr>.name");
-            Doc doc = decl.second.data();
+            std::string doc = decl.second.data();
+            boost::algorithm::trim(doc);
+            class_.doc = doc;
             if (!doc.empty()) {
                 class_.doc = doc;
             }
@@ -258,11 +265,13 @@ void formast::XmlParser::parse_stream(std::istream & is, ast::Top & top)
                     Attr attr;
                     attr.class_name = add.second.get<std::string>("<xmlattr>.type");
                     attr.name = add.second.get<std::string>("<xmlattr>.name");
-                    Doc doc = add.second.data();
+                    std::string doc = add.second.data();
+                    boost::algorithm::trim(doc);
                     if (!doc.empty()) {
                         attr.doc = doc;
                     }
-                    boost::optional<std::string> cond = add.second.get_optional<std::string>("<xmlattr>.cond");
+                    // conditioning disabled for now, can't parse it completely yet
+                    boost::optional<std::string> cond; // = add.second.get_optional<std::string>("<xmlattr>.cond");
                     if  (!cond) {
                         stats.push_back(attr);
                     } else {
