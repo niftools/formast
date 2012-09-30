@@ -21,7 +21,7 @@ namespace detail
 {
 namespace ast
 {
- 
+
 // declaration nodes
 
 typedef boost::make_recursive_variant<formast::Class>::type TopDecl;

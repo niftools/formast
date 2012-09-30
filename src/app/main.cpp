@@ -24,16 +24,16 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    formast::Expr ast;
+    formast::Top ast;
     formast::XmlParser parser;
     try {
-        ast = parser.parse_stream(in);
+        parser.parse_stream(in, ast);
     } catch (std::exception & e) {
         std::cerr << "Error: Parsing failed\n";
         std::cerr << e.what() << std::endl;
         return 1;
     }
     formast::Printer print(std::cout);
-    print.expr(ast);
+    print.top(ast);
     return 0;
 };
