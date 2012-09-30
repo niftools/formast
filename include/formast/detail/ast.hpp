@@ -1,6 +1,7 @@
 #ifndef FORMAST_DETAIL_AST_HPP_INCLUDED
 #define FORMAST_DETAIL_AST_HPP_INCLUDED
 
+#include <boost/fusion/include/adapt_struct.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/variant/recursive_variant.hpp>
 
@@ -8,10 +9,29 @@
 
 namespace formast
 {
+
+// forward declarations
+// these are defined in formast.hpp
+
+struct Attr;
+struct Class;
+struct IfElifsElse;
+
 namespace detail
 {
 namespace ast
 {
+
+// declaration nodes
+
+typedef boost::make_recursive_variant<formast::Class>::type TopDecl;
+
+typedef boost::make_recursive_variant<formast::Attr, formast::IfElifsElse>::type StatDecl;
+
+typedef std::vector<TopDecl> Top;
+typedef std::vector<StatDecl> Stats;
+
+// expression nodes
 
 struct binary_op;
 struct unary_op;

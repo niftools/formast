@@ -1,6 +1,10 @@
 #define BOOST_SPIRIT_NO_PREDEFINED_TERMINALS
 // #define BOOST_SPIRIT_QI_DEBUG
 
+#include <boost/algorithm/string.hpp>
+#include <boost/foreach.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/xml_parser.hpp>
 #include <boost/spirit/include/phoenix_function.hpp>
 #include <boost/spirit/include/qi.hpp>
 #include <boost/spirit/include/support_istream_iterator.hpp>
@@ -8,6 +12,35 @@
 #include <sstream>
 
 #include "formast.hpp"
+
+// upgrade structs to fusion sequences
+
+BOOST_FUSION_ADAPT_STRUCT(
+    formast::Attr,
+    (std::string, class_name)
+    (std::string, name)
+    (boost::optional<formast::Doc>, doc)
+)
+
+BOOST_FUSION_ADAPT_STRUCT(
+    formast::Class,
+    (std::string, name)
+    (boost::optional<std::string>, base_name)
+    (boost::optional<formast::Doc>, doc)
+    (boost::optional<formast::Stats>, stats)
+)
+
+BOOST_FUSION_ADAPT_STRUCT(
+    formast::If,
+    (formast::Expr, expr)
+    (formast::Stats, stats)
+)
+
+BOOST_FUSION_ADAPT_STRUCT(
+    formast::IfElifsElse,
+    (std::vector<formast::If>, ifs_)
+    (boost::optional<formast::Stats>, else_)
+)
 
 // a few shorthands
 
@@ -106,9 +139,9 @@ boost::phoenix::function<error_handler_> const error_handler = error_handler_();
 // the actual grammar
 
 template <typename Iterator>
-struct parser : qi::grammar<Iterator, ast::Expr(), ascii::space_type> {
+struct expr_grammar : qi::grammar<Iterator, ast::Expr(), ascii::space_type> {
 
-    parser() : parser::base_type(expr) {
+    expr_grammar() : expr_grammar::base_type(expr) {
 
     qi::char_type char_;
     qi::uint_type uint_;
@@ -154,14 +187,41 @@ struct parser : qi::grammar<Iterator, ast::Expr(), ascii::space_type> {
 qi::rule<Iterator, ast::Expr(), ascii::space_type> expr, term, factor;
 };
 
+// helper function for parsing expression from stream
+void _expr_parse_stream(std::istream & is, ast::Expr & e)
+{
+    // disable white space skipping
+    is.unsetf(std::ios::skipws);
+    typedef boost::spirit::istream_iterator iterator_type;
+    iterator_type iter(is);
+    iterator_type end;
+    expr_grammar<iterator_type> grammar;
+    ascii::space_type space;
+
+    bool success = qi::phrase_parse(iter, end, grammar, space, e);
+    if (!success) {
+        throw std::runtime_error("Syntax error.");
+    }
+    if (iter != end) {
+        throw std::runtime_error("End of stream not reached.");
+    }
+}
+
+// helper function for parsing expression from string
+void _expr_parse_string(std::string const & s, ast::Expr & e)
+{
+    std::istringstream is(s);
+    _expr_parse_stream(is, e);
+}
+
 formast::Parser::Parser()
 {
 }
 
-formast::Expr formast::Parser::parse_string(std::string const & s)
+void formast::Parser::parse_string(std::string const & s, ast::Top & top)
 {
     std::istringstream is(s);
-    return parse_stream(is);
+    parse_stream(is, top);
 }
 
 formast::XmlParser::XmlParser()
@@ -169,23 +229,64 @@ formast::XmlParser::XmlParser()
 {
 }
 
-formast::Expr formast::XmlParser::parse_stream(std::istream & is)
+void formast::XmlParser::parse_stream(std::istream & is, ast::Top & top)
 {
-    // disable white space skipping
+    // disable skipping of whitespace
     is.unsetf(std::ios::skipws);
 
-    typedef boost::spirit::istream_iterator iterator_type;
-    iterator_type iter(is);
-    iterator_type end;
-    parser<iterator_type> parser;
-    ascii::space_type space;
-    formast::Expr e;
-    bool success = qi::phrase_parse(iter, end, parser, space, e);
-    if (!success) {
-        throw std::runtime_error("Syntax error.");
-    }
-    if (iter != end) {
-        throw std::runtime_error("End of stream not reached.");
-    }
-    return e;
+    // read xml into property tree
+    boost::property_tree::ptree pt;
+    boost::property_tree::xml_parser::read_xml(is, pt);
+    //boost::property_tree::info_parser::write_info(std::cout, pt); // DEBUG
+
+    BOOST_FOREACH(boost::property_tree::ptree::value_type & decl, pt.get_child("niftoolsxml")) {
+        if (decl.first == "basic") {
+            Class class_;
+            class_.name = decl.second.get<std::string>("<xmlattr>.name");
+            std::string doc = decl.second.data();
+            boost::algorithm::trim(doc);
+            if (!doc.empty()) {
+                class_.doc = doc;
+            }
+            top.push_back(class_);
+        } else if (decl.first == "compound" || decl.first == "niobject") {
+            Class class_;
+            class_.name = decl.second.get<std::string>("<xmlattr>.name");
+            std::string doc = decl.second.data();
+            boost::algorithm::trim(doc);
+            if (!doc.empty()) {
+                class_.doc = doc;
+            }
+            class_.base_name = decl.second.get_optional<std::string>("<xmlattr>.inherit");
+            ast::Stats stats;
+            BOOST_FOREACH(boost::property_tree::ptree::value_type & add, decl.second) {
+                if (add.first == "add") {
+                    Attr attr;
+                    attr.class_name = add.second.get<std::string>("<xmlattr>.type");
+                    attr.name = add.second.get<std::string>("<xmlattr>.name");
+                    std::string doc = add.second.data();
+                    boost::algorithm::trim(doc);
+                    if (!doc.empty()) {
+                        attr.doc = doc;
+                    }
+                    // conditioning disabled for now, can't parse it completely yet
+                    boost::optional<std::string> cond = add.second.get_optional<std::string>("<xmlattr>.cond");
+                    if  (!cond) {
+                        stats.push_back(attr);
+                    } else {
+                        formast::IfElifsElse ifelifselse;
+                        formast::If if_;
+                        _expr_parse_string(cond.get(), if_.expr);
+                        if_.stats.push_back(attr);
+                        ifelifselse.ifs_.push_back(if_);
+                        stats.push_back(ifelifselse);
+                    }
+                };
+            };
+            if (!stats.empty()) {
+                class_.stats = stats;
+            };
+            top.push_back(class_);
+        };
+    };
 }

@@ -1,6 +1,7 @@
 #ifndef FORMAST_PRINTER_HPP_INCLUDED
 #define FORMAST_PRINTER_HPP_INCLUDED
 
+#include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
 #include <ostream>
 #include "formast.hpp"
@@ -12,6 +13,63 @@ class Printer : public Visitor
 {
 public:
     Printer(std::ostream & os) : Visitor(), os(os), level(0) {};
+
+    void top_class(Class const & class_) {
+        open_tag("class", false);
+        open_tag("name", true);
+        os << class_.name;
+        close_tag("name", true);
+        if (class_.base_name) {
+            open_tag("base_name", true);
+            os << class_.base_name.get();
+            close_tag("base_name", true);
+        }
+        if (class_.doc) {
+            open_tag("doc", true);
+            os << class_.doc.get();
+            close_tag("doc", true);
+        }
+        if (class_.stats) {
+            stats(class_.stats.get());
+        }
+        close_tag("class", false);
+    }
+
+    void stats(Stats const & s) {
+        open_tag("stats", false);
+        Visitor::stats(s);
+        close_tag("stats", false);
+    }
+
+    void stats_attr(Attr const & attr) {
+        open_tag("attr", false);
+        open_tag("class_name", true);
+        os << attr.class_name;
+        close_tag("class_name", true);
+        open_tag("name", true);
+        os << attr.name;
+        close_tag("name", true);
+        if (attr.doc) {
+            open_tag("doc", true);
+            os << attr.doc.get();
+            close_tag("doc", true);
+        }
+        close_tag("attr", false);
+    }
+
+    void stats_if_elifs_else(IfElifsElse const & ifelifselse) {
+        open_tag("ifelifselse", false);
+        BOOST_FOREACH(If const & if_, ifelifselse.ifs_) {
+            open_tag("if", false);
+            open_tag("expr", false);
+            expr(if_.expr);
+            close_tag("expr", false);
+            stats(if_.stats);
+            close_tag("if", false);
+        }
+        close_tag("ifelifselse", false);
+    }
+
     void expr_uint(boost::uint64_t const & n) {
         open_tag("uint", true);
         os << boost::lexical_cast<std::string>(n);
@@ -74,7 +132,7 @@ public:
         os << "</" << tag << ">" << std::endl;
     }
     virtual void indent() {
-        for (int i = 0; i < level; i++) {
+        for (unsigned int i = 0; i < level; i++) {
             os << " ";
         };
     }
