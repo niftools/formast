@@ -60,11 +60,7 @@ struct Class {
 
 struct If {
     Expr expr;
-    Stats stats;
-};
-
-struct IfElifsElse {
-    std::vector<If> ifs_;
+    Stats then;
     boost::optional<Stats> else_;
 };
 
@@ -94,7 +90,7 @@ public:
 
     FORMAST_API virtual void stats(Stats const & stats);
     FORMAST_API virtual void stats_attr(Attr const & attr);
-    FORMAST_API virtual void stats_if_elifs_else(IfElifsElse const & ifelifselse);
+    FORMAST_API virtual void stats_if(If const & if_);
 
     FORMAST_API virtual void expr(Expr const & e);
     FORMAST_API virtual void expr_uint(boost::uint64_t const & n);
