@@ -15,7 +15,7 @@ namespace formast
 
 struct Attr;
 struct Class;
-struct IfElifsElse;
+struct If;
 
 namespace detail
 {
@@ -26,7 +26,7 @@ namespace ast
 
 typedef boost::make_recursive_variant<formast::Class>::type TopDecl;
 
-typedef boost::make_recursive_variant<formast::Attr, formast::IfElifsElse>::type StatDecl;
+typedef boost::make_recursive_variant<formast::Attr, formast::If>::type StatDecl;
 
 typedef std::vector<TopDecl> Top;
 typedef std::vector<StatDecl> Stats;

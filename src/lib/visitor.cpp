@@ -108,8 +108,8 @@ public:
         visitor.stats_attr(attr);
     }
 
-    void operator()(formast::IfElifsElse const & ifelifselse) {
-        visitor.stats_if_elifs_else(ifelifselse);
+    void operator()(formast::If const & if_) {
+        visitor.stats_if(if_);
     }
 
     Visitor & visitor;
@@ -145,7 +145,7 @@ void formast::Visitor::stats(Stats const & stats)
 void formast::Visitor::top_class(Class const & class_) {};
 
 void formast::Visitor::stats_attr(Attr const & attr) {};
-void formast::Visitor::stats_if_elifs_else(IfElifsElse const & ifelifselse) {};
+void formast::Visitor::stats_if(If const & if_) {};
 
 void formast::Visitor::expr_uint(boost::uint64_t const & n) {};
 void formast::Visitor::expr_id(std::string const & i) {};
