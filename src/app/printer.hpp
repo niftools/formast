@@ -57,7 +57,7 @@ public:
         close_tag("attr", false);
     }
 
-    void stats_if_elifs_else(If const & if_) {
+    void stats_if(If const & if_) {
         open_tag("if", false);
         open_tag("expr", false);
         expr(if_.expr);
