@@ -37,18 +37,21 @@ class Printer(formast.Visitor):
         self.print_("class_name: %s" % a.class_name)
         self.print_("name: %s" % a.name)
 
-    def stats_if_elifs_else(self, i):
+    def stats_if(self, if_):
         first = True
-        for if_ in i.ifs_:
-            if first:
-                self.print_("if:")
-                first = False
-            else:
-                self.print_("elif:")
+        self.print_("if:")
+        self.level += 1
+        self.expr(if_.expr)
+        self.print_("then:")
+        self.level += 1
+        self.stats(if_.then)
+        self.level -= 1
+        if if_.else_.is_initialized():
+            self.print_("else:")
             self.level += 1
-            self.expr(if_.expr)
-            self.stats(if_.stats)
+            self.stats(if_.else_.get())
             self.level -= 1
+        self.level -= 1
 
     def expr_uint(self, v):
         self.print_("uint: %s" % v)
@@ -121,11 +124,12 @@ class:
  stats:
   if:
    uint: 99
-   stats:
-    attr:
-     class_name: uint
-     name: test""")
-    
+   then:
+    stats:
+     attr:
+      class_name: uint
+      name: test""")
+
     def test_add(self):
         self.check("1+2", """\
 class:
@@ -135,10 +139,11 @@ class:
    add:
     uint: 1
     uint: 2
-   stats:
-    attr:
-     class_name: uint
-     name: test""")
+   then:
+    stats:
+     attr:
+      class_name: uint
+      name: test""")
 
     def test_complicated(self):
         self.check("1+(2*3+4)*6/(3-4)", """\
@@ -159,7 +164,8 @@ class:
      sub:
       uint: 3
       uint: 4
-   stats:
-    attr:
-     class_name: uint
-     name: test""")
+   then:
+    stats:
+     attr:
+      class_name: uint
+      name: test""")
