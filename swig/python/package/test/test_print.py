@@ -38,7 +38,6 @@ class Printer(formast.Visitor):
         self.print_("name: %s" % a.name)
 
     def stats_if(self, if_):
-        first = True
         self.print_("if:")
         self.level += 1
         self.expr(if_.expr)
