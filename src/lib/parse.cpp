@@ -33,12 +33,7 @@ BOOST_FUSION_ADAPT_STRUCT(
 BOOST_FUSION_ADAPT_STRUCT(
     formast::If,
     (formast::Expr, expr)
-    (formast::Stats, stats)
-)
-
-BOOST_FUSION_ADAPT_STRUCT(
-    formast::IfElifsElse,
-    (std::vector<formast::If>, ifs_)
+    (formast::Stats, then)
     (boost::optional<formast::Stats>, else_)
 )
 
@@ -274,12 +269,10 @@ void formast::XmlParser::parse_stream(std::istream & is, ast::Top & top)
                     if  (!cond) {
                         stats.push_back(attr);
                     } else {
-                        formast::IfElifsElse ifelifselse;
                         formast::If if_;
                         _expr_parse_string(cond.get(), if_.expr);
-                        if_.stats.push_back(attr);
-                        ifelifselse.ifs_.push_back(if_);
-                        stats.push_back(ifelifselse);
+                        if_.then.push_back(attr);
+                        stats.push_back(if_);
                     }
                 };
             };

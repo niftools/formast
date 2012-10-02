@@ -57,17 +57,20 @@ public:
         close_tag("attr", false);
     }
 
-    void stats_if_elifs_else(IfElifsElse const & ifelifselse) {
-        open_tag("ifelifselse", false);
-        BOOST_FOREACH(If const & if_, ifelifselse.ifs_) {
-            open_tag("if", false);
-            open_tag("expr", false);
-            expr(if_.expr);
-            close_tag("expr", false);
-            stats(if_.stats);
-            close_tag("if", false);
+    void stats_if(If const & if_) {
+        open_tag("if", false);
+        open_tag("expr", false);
+        expr(if_.expr);
+        close_tag("expr", false);
+        open_tag("then", false);
+        stats(if_.then);
+        close_tag("then", false);
+        if (if_.else_) {
+            open_tag("else", false);
+            stats(if_.else_.get());
+            close_tag("else", false);
         }
-        close_tag("ifelifselse", false);
+        close_tag("if", false);
     }
 
     void expr_uint(boost::uint64_t const & n) {

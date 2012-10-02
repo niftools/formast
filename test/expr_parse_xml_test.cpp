@@ -34,9 +34,9 @@ public:
             + in
             + "\"></add></compound></niftoolsxml>";
         std::string xmlout =
-            "<class><name>Test</name><stats><ifelifselse><if><expr>"
+            "<class><name>Test</name><stats><if><expr>"
             + out
-            + "</expr><stats><attr><class_name>uint</class_name><name>test</name></attr></stats></if></ifelifselse></stats></class>";
+            + "</expr><then><stats><attr><class_name>uint</class_name><name>test</name></attr></stats></then></if></stats></class>";
         BOOST_CHECK_NO_THROW(parser.parse_string(xmlin, ast));
 
         std::ostringstream os;

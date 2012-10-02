@@ -12,9 +12,11 @@ class Evaluator(formast.Visitor):
         if c.stats.is_initialized():
             self.stats(c.stats.get())
 
-    def stats_if_elifs_else(self, i):
-        for if_ in i.ifs_:
-            self.expr(if_.expr)
+    def stats_if(self, if_):
+        self.expr(if_.expr)
+        self.stats(if_.then)
+        if if_.else_.is_initialized():
+            self.stats(if_.else_.get())
 
     def expr_uint(self, v):
         self.stack.append(v)
