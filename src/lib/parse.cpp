@@ -6,6 +6,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/spirit/include/phoenix_function.hpp>
+#include <boost/spirit/include/phoenix_operator.hpp>
 #include <boost/spirit/include/qi.hpp>
 #include <boost/spirit/include/support_istream_iterator.hpp>
 #include <cassert>
@@ -257,6 +258,7 @@ struct expr_grammar : qi::grammar<Iterator, ast::Expr(), ascii::space_type> {
 
     atom =
         ulong_long                      [_uint(_val, _1)]
+        |   version                     [_uint(_val, _1)]
         |   ident                       [_ident(_val, _1)]
         |   '(' > expr                  [_copy(_val, _1)] > ')'
         ;
@@ -264,6 +266,13 @@ struct expr_grammar : qi::grammar<Iterator, ast::Expr(), ascii::space_type> {
     // also match trailing whitespace; _trim removes it
     ident_ws %= lexeme[(char_("a-zA-Z") >> *(char_(" ") | char_("0-9a-zA-Z")))];
     ident = ident_ws [_trim(_val, _1)];
+
+    version %=
+        (ulong_long           [_val = _1])
+        >> '.' >> (ulong_long [_val = _val * 256 + _1])
+        >> '.' > (ulong_long  [_val = _val * 256 + _1])
+        > '.' > (ulong_long   [_val = _val * 256 + _1])
+        ;
 
     // Debugging and error handling and reporting support.
     BOOST_SPIRIT_DEBUG_NODE(expr);
@@ -276,6 +285,7 @@ struct expr_grammar : qi::grammar<Iterator, ast::Expr(), ascii::space_type> {
 
 qi::rule<Iterator, ast::Expr(), ascii::space_type> expr, or_test, and_test, not_test, comparison, bit_or_expr, bit_xor_expr, bit_and_expr, bit_shift_expr, arith_expr, term, factor, power, atom;
 qi::rule<Iterator, std::string(), ascii::space_type> ident, ident_ws;
+qi::rule<Iterator, boost::uint64_t(), ascii::space_type> version;
 };
 
 // helper function for parsing expression from stream
