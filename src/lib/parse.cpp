@@ -163,7 +163,45 @@ struct expr_grammar : qi::grammar<Iterator, ast::Expr(), ascii::space_type> {
     using qi::on_error;
     using qi::fail;
 
-    expr =
+    expr = or_test.alias();
+
+    or_test =
+        and_test
+        >> *("||" > and_test);
+
+    and_test =
+        not_test
+        >> *("&&" > not_test);
+
+    not_test =
+        ('!' > not_test)
+        |   comparison;
+
+    comparison =
+        bit_or_expr
+        >> *(   ('<' > bit_or_expr)
+                |   ('>' > bit_or_expr)
+                |   ("==" > bit_or_expr)
+                |   ("!=" > bit_or_expr)
+                |   (">=" > bit_or_expr)
+                |   ("<=" > bit_or_expr)
+            )
+        ;
+
+    bit_or_expr = bit_xor_expr >> *('|' > bit_xor_expr);
+
+    bit_xor_expr = bit_and_expr >> *('^' > bit_and_expr);
+
+    bit_and_expr = bit_shift_expr >> *('&' > bit_shift_expr);
+
+    bit_shift_expr =
+        arith_expr
+        >> *(   (">>" > arith_expr)
+                |   ("<<" > arith_expr)
+            )
+        ;
+
+    arith_expr =
         term                            [_copy(_val, _1)]
         >> *(   ('+' > term             [_add(_val, _1)])
                 |   ('-' > term         [_sub(_val, _1)])
@@ -178,11 +216,17 @@ struct expr_grammar : qi::grammar<Iterator, ast::Expr(), ascii::space_type> {
         ;
 
     factor =
+        power
+        |   ('-' > factor               [_neg(_val, _1)])
+        |   ('+' > factor               [_pos(_val, _1)])
+        ;
+
+    power = atom >> -("**" > factor);
+
+    atom =
         ulong_long                      [_uint(_val, _1)]
         |   ident                       [_ident(_val, _1)]
         |   '(' > expr                  [_copy(_val, _1)] > ')'
-        |   ('-' > factor               [_neg(_val, _1)])
-        |   ('+' > factor               [_pos(_val, _1)])
         ;
 
     // also match trailing whitespace; _trim removes it
@@ -198,7 +242,7 @@ struct expr_grammar : qi::grammar<Iterator, ast::Expr(), ascii::space_type> {
     on_error<fail>(expr, error_handler(_4, _3, _2));
 }
 
-qi::rule<Iterator, ast::Expr(), ascii::space_type> expr, term, factor;
+qi::rule<Iterator, ast::Expr(), ascii::space_type> expr, or_test, and_test, not_test, comparison, bit_or_expr, bit_xor_expr, bit_and_expr, bit_shift_expr, arith_expr, term, factor, power, atom;
 qi::rule<Iterator, std::string(), ascii::space_type> ident, ident_ws;
 };
 
