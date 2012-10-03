@@ -31,10 +31,10 @@ public:
     }
 
     void operator()(const formast::detail::ast::unary_op & x) {
-        switch (x.op) {
-        case '-':
+        switch (x.op_type) {
+        case formast::detail::ast::op::neg:
             return visitor.expr_neg(x.right);
-        case '+':
+        case formast::detail::ast::op::pos:
             return visitor.expr_pos(x.right);
         default:
             throw std::runtime_error("unknown unary operator");
@@ -42,14 +42,14 @@ public:
     }
 
     void operator()(const formast::detail::ast::binary_op & x) {
-        switch (x.op) {
-        case '+':
+        switch (x.op_type) {
+        case formast::detail::ast::op::plus:
             return visitor.expr_add(x.left, x.right);
-        case '-':
+        case formast::detail::ast::op::minus:
             return visitor.expr_sub(x.left, x.right);
-        case '*':
+        case formast::detail::ast::op::times:
             return visitor.expr_mul(x.left, x.right);
-        case '/':
+        case formast::detail::ast::op::divide:
             return visitor.expr_div(x.left, x.right);
         default:
             throw std::runtime_error("unknown binary operator");

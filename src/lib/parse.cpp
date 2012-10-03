@@ -82,7 +82,7 @@ struct assign_func {
     }
 };
 
-template <char Op>
+template <ast::op::type op_type>
 struct binary_func {
     template <typename T1, typename T2 = void>
     struct result {
@@ -92,11 +92,11 @@ struct binary_func {
     void operator()(ast::Expr & left, ast::Expr const & right) const {
         assert(left != 0);
         assert(right != 0);
-        left = ast::Expr(new ast::ExprNode(ast::binary_op(Op, left, right)));
+        left = ast::Expr(new ast::ExprNode(ast::binary_op(op_type, left, right)));
     }
 };
 
-template <char Op>
+template <ast::op::type op_type>
 struct unary_func {
     template <typename T1, typename T2 = void>
     struct result {
@@ -105,16 +105,16 @@ struct unary_func {
 
     void operator()(ast::Expr & left, ast::Expr & right) const {
         assert(right != 0);
-        left = ast::Expr(new ast::ExprNode(ast::unary_op(Op, right)));
+        left = ast::Expr(new ast::ExprNode(ast::unary_op(op_type, right)));
     }
 };
 
-boost::phoenix::function<binary_func<'+'> > const _add;
-boost::phoenix::function<binary_func<'-'> > const _sub;
-boost::phoenix::function<binary_func<'*'> > const _mul;
-boost::phoenix::function<binary_func<'/'> > const _div;
-boost::phoenix::function<unary_func<'+'> > const _pos;
-boost::phoenix::function<unary_func<'-'> > const _neg;
+boost::phoenix::function<binary_func<ast::op::plus> > const _add;
+boost::phoenix::function<binary_func<ast::op::minus> > const _sub;
+boost::phoenix::function<binary_func<ast::op::times> > const _mul;
+boost::phoenix::function<binary_func<ast::op::divide> > const _div;
+boost::phoenix::function<unary_func<ast::op::pos> > const _pos;
+boost::phoenix::function<unary_func<ast::op::neg> > const _neg;
 boost::phoenix::function<assign_func<std::string> > const _ident;
 boost::phoenix::function<assign_func<boost::uint64_t> > const _uint;
 boost::phoenix::function<copy_func> const _copy;
