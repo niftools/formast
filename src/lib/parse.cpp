@@ -193,14 +193,14 @@ struct expr_grammar : qi::grammar<Iterator, ast::Expr(), ascii::space_type> {
         ;
 
     not_test =
-        ('!' > not_test                 [_logical_not(_val, _1)])
+        ('!' >> not_test                [_logical_not(_val, _1)])
         |   comparison                  [_copy(_val, _1)]
         ;
 
     comparison =
         bit_or_expr                     [_copy(_val, _1)]
-        >> *(   ('<' > bit_or_expr      [_less(_val, _1)])
-                |   ('>' > bit_or_expr  [_greater(_val, _1)])
+        >> *(   ('<' >> bit_or_expr     [_less(_val, _1)])
+                |   ('>' >> bit_or_expr [_greater(_val, _1)])
                 |   ("==" > bit_or_expr [_equal(_val, _1)])
                 |   ("!=" > bit_or_expr [_not_equal(_val, _1)])
                 |   (">=" > bit_or_expr [_greater_equal(_val, _1)])
@@ -210,7 +210,7 @@ struct expr_grammar : qi::grammar<Iterator, ast::Expr(), ascii::space_type> {
 
     bit_or_expr =
         bit_xor_expr                    [_copy(_val, _1)]
-        >> *('|' > bit_xor_expr         [_bit_or(_val, _1)])
+        >> *('|' >> bit_xor_expr        [_bit_or(_val, _1)])
         ;
 
     bit_xor_expr =
@@ -220,7 +220,7 @@ struct expr_grammar : qi::grammar<Iterator, ast::Expr(), ascii::space_type> {
 
     bit_and_expr =
         bit_shift_expr                  [_copy(_val, _1)]
-        >> *('&' > bit_shift_expr       [_bit_and(_val, _1)])
+        >> *('&' >> bit_shift_expr      [_bit_and(_val, _1)])
         ;
 
     bit_shift_expr =
@@ -257,8 +257,7 @@ struct expr_grammar : qi::grammar<Iterator, ast::Expr(), ascii::space_type> {
         ;
 
     atom =
-        ulong_long                      [_uint(_val, _1)]
-        |   version                     [_uint(_val, _1)]
+        uint_or_version                 [_uint(_val, _1)]
         |   ident                       [_ident(_val, _1)]
         |   '(' > expr                  [_copy(_val, _1)] > ')'
         ;
@@ -267,11 +266,11 @@ struct expr_grammar : qi::grammar<Iterator, ast::Expr(), ascii::space_type> {
     ident_ws %= lexeme[(char_("a-zA-Z") >> *(char_(" ") | char_("0-9a-zA-Z")))];
     ident = ident_ws [_trim(_val, _1)];
 
-    version %=
-        (ulong_long           [_val = _1])
-        >> '.' >> (ulong_long [_val = _val * 256 + _1])
-        >> '.' > (ulong_long  [_val = _val * 256 + _1])
-        > '.' > (ulong_long   [_val = _val * 256 + _1])
+    uint_or_version %=
+        (ulong_long                [_val = _1])
+        >> -('.' >> (ulong_long    [_val = _val * 256 + _1])
+             >> '.' > (ulong_long  [_val = _val * 256 + _1])
+             > '.' > (ulong_long   [_val = _val * 256 + _1]))
         ;
 
     // Debugging and error handling and reporting support.
@@ -285,7 +284,7 @@ struct expr_grammar : qi::grammar<Iterator, ast::Expr(), ascii::space_type> {
 
 qi::rule<Iterator, ast::Expr(), ascii::space_type> expr, or_test, and_test, not_test, comparison, bit_or_expr, bit_xor_expr, bit_and_expr, bit_shift_expr, arith_expr, term, factor, power, atom;
 qi::rule<Iterator, std::string(), ascii::space_type> ident, ident_ws;
-qi::rule<Iterator, boost::uint64_t(), ascii::space_type> version;
+qi::rule<Iterator, boost::uint64_t(), ascii::space_type> uint_or_version;
 };
 
 // helper function for parsing expression from stream

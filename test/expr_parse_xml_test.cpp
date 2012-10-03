@@ -79,7 +79,7 @@ BOOST_FIXTURE_TEST_CASE(complex_test, ParseFixture)
 
 BOOST_FIXTURE_TEST_CASE(complex2_test, ParseFixture)
 {
-    parse_check("(User Version &gt;= 10) || ((User Version == 1) &amp;&amp; (Version != 10.2.0.0))", "");
+    parse_check("(User Version &gt;= 10) || ((User Version == 1) &amp;&amp; (Version != 10.2.0.0))", "<logical_or><compare_ge><id>User Version</id><uint>10</uint></compare_ge><logical_and><compare_eq><id>User Version</id><uint>1</uint></compare_eq><compare_ne><id>Version</id><uint>167903232</uint></compare_ne></logical_and></logical_or>");
 }
 
 BOOST_AUTO_TEST_SUITE_END()
