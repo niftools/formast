@@ -54,11 +54,12 @@ struct op {
         times,
         divide,
         mod,
+        pow,
 
         // unary
         neg,
         pos,
-        not_,
+        logical_not,
     };
 };
 
