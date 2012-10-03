@@ -31,26 +31,58 @@ public:
     }
 
     void operator()(const formast::detail::ast::unary_op & x) {
-        switch (x.op) {
-        case '-':
+        switch (x.op_type) {
+        case formast::detail::ast::op::neg:
             return visitor.expr_neg(x.right);
-        case '+':
+        case formast::detail::ast::op::pos:
             return visitor.expr_pos(x.right);
+        case formast::detail::ast::op::logical_not:
+            return visitor.expr_logical_not(x.right);
         default:
             throw std::runtime_error("unknown unary operator");
         }
     }
 
     void operator()(const formast::detail::ast::binary_op & x) {
-        switch (x.op) {
-        case '+':
+        switch (x.op_type) {
+        case formast::detail::ast::op::plus:
             return visitor.expr_add(x.left, x.right);
-        case '-':
+        case formast::detail::ast::op::minus:
             return visitor.expr_sub(x.left, x.right);
-        case '*':
+        case formast::detail::ast::op::times:
             return visitor.expr_mul(x.left, x.right);
-        case '/':
+        case formast::detail::ast::op::divide:
             return visitor.expr_div(x.left, x.right);
+        case formast::detail::ast::op::mod:
+            return visitor.expr_mod(x.left, x.right);
+        case formast::detail::ast::op::pow:
+            return visitor.expr_pow(x.left, x.right);
+        case formast::detail::ast::op::logical_and:
+            return visitor.expr_logical_and(x.left, x.right);
+        case formast::detail::ast::op::logical_or:
+            return visitor.expr_logical_or(x.left, x.right);
+        case formast::detail::ast::op::bit_and:
+            return visitor.expr_bitwise_and(x.left, x.right);
+        case formast::detail::ast::op::bit_or:
+            return visitor.expr_bitwise_or(x.left, x.right);
+        case formast::detail::ast::op::bit_xor:
+            return visitor.expr_bitwise_xor(x.left, x.right);
+        case formast::detail::ast::op::equal:
+            return visitor.expr_compare_eq(x.left, x.right);
+        case formast::detail::ast::op::not_equal:
+            return visitor.expr_compare_ne(x.left, x.right);
+        case formast::detail::ast::op::greater:
+            return visitor.expr_compare_gt(x.left, x.right);
+        case formast::detail::ast::op::less:
+            return visitor.expr_compare_lt(x.left, x.right);
+        case formast::detail::ast::op::greater_equal:
+            return visitor.expr_compare_ge(x.left, x.right);
+        case formast::detail::ast::op::less_equal:
+            return visitor.expr_compare_le(x.left, x.right);
+        case formast::detail::ast::op::shift_left:
+            return visitor.expr_shift_left(x.left, x.right);
+        case formast::detail::ast::op::shift_right:
+            return visitor.expr_shift_right(x.left, x.right);
         default:
             throw std::runtime_error("unknown binary operator");
         }
@@ -155,3 +187,19 @@ void formast::Visitor::expr_add(Expr const & left, Expr const & right) {};
 void formast::Visitor::expr_sub(Expr const & left, Expr const & right) {};
 void formast::Visitor::expr_mul(Expr const & left, Expr const & right) {};
 void formast::Visitor::expr_div(Expr const & left, Expr const & right) {};
+void formast::Visitor::expr_mod(Expr const & left, Expr const & right) {};
+void formast::Visitor::expr_pow(Expr const & left, Expr const & right) {};
+void formast::Visitor::expr_logical_and(Expr const & left, Expr const & right) {};
+void formast::Visitor::expr_logical_or(Expr const & left, Expr const & right) {};
+void formast::Visitor::expr_logical_not(Expr const & right) {};
+void formast::Visitor::expr_bitwise_and(Expr const & left, Expr const & right) {};
+void formast::Visitor::expr_bitwise_or(Expr const & left, Expr const & right) {};
+void formast::Visitor::expr_bitwise_xor(Expr const & left, Expr const & right) {};
+void formast::Visitor::expr_compare_eq(Expr const & left, Expr const & right) {};
+void formast::Visitor::expr_compare_ne(Expr const & left, Expr const & right) {};
+void formast::Visitor::expr_compare_gt(Expr const & left, Expr const & right) {};
+void formast::Visitor::expr_compare_lt(Expr const & left, Expr const & right) {};
+void formast::Visitor::expr_compare_ge(Expr const & left, Expr const & right) {};
+void formast::Visitor::expr_compare_le(Expr const & left, Expr const & right) {};
+void formast::Visitor::expr_shift_left(Expr const & left, Expr const & right) {};
+void formast::Visitor::expr_shift_right(Expr const & left, Expr const & right) {};

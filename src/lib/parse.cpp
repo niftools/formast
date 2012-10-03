@@ -6,6 +6,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/spirit/include/phoenix_function.hpp>
+#include <boost/spirit/include/phoenix_operator.hpp>
 #include <boost/spirit/include/qi.hpp>
 #include <boost/spirit/include/support_istream_iterator.hpp>
 #include <cassert>
@@ -82,7 +83,7 @@ struct assign_func {
     }
 };
 
-template <char Op>
+template <ast::op::type op_type>
 struct binary_func {
     template <typename T1, typename T2 = void>
     struct result {
@@ -92,11 +93,11 @@ struct binary_func {
     void operator()(ast::Expr & left, ast::Expr const & right) const {
         assert(left != 0);
         assert(right != 0);
-        left = ast::Expr(new ast::ExprNode(ast::binary_op(Op, left, right)));
+        left = ast::Expr(new ast::ExprNode(ast::binary_op(op_type, left, right)));
     }
 };
 
-template <char Op>
+template <ast::op::type op_type>
 struct unary_func {
     template <typename T1, typename T2 = void>
     struct result {
@@ -105,16 +106,32 @@ struct unary_func {
 
     void operator()(ast::Expr & left, ast::Expr & right) const {
         assert(right != 0);
-        left = ast::Expr(new ast::ExprNode(ast::unary_op(Op, right)));
+        left = ast::Expr(new ast::ExprNode(ast::unary_op(op_type, right)));
     }
 };
 
-boost::phoenix::function<binary_func<'+'> > const _add;
-boost::phoenix::function<binary_func<'-'> > const _sub;
-boost::phoenix::function<binary_func<'*'> > const _mul;
-boost::phoenix::function<binary_func<'/'> > const _div;
-boost::phoenix::function<unary_func<'+'> > const _pos;
-boost::phoenix::function<unary_func<'-'> > const _neg;
+boost::phoenix::function<binary_func<ast::op::logical_or> > const _logical_or;
+boost::phoenix::function<binary_func<ast::op::logical_and> > const _logical_and;
+boost::phoenix::function<binary_func<ast::op::bit_or> > const _bit_or;
+boost::phoenix::function<binary_func<ast::op::bit_xor> > const _bit_xor;
+boost::phoenix::function<binary_func<ast::op::bit_and> > const _bit_and;
+boost::phoenix::function<binary_func<ast::op::equal> > const _equal;
+boost::phoenix::function<binary_func<ast::op::not_equal> > const _not_equal;
+boost::phoenix::function<binary_func<ast::op::less> > const _less;
+boost::phoenix::function<binary_func<ast::op::less_equal> > const _less_equal;
+boost::phoenix::function<binary_func<ast::op::greater> > const _greater;
+boost::phoenix::function<binary_func<ast::op::greater_equal> > const _greater_equal;
+boost::phoenix::function<binary_func<ast::op::shift_left> > const _shift_left;
+boost::phoenix::function<binary_func<ast::op::shift_right> > const _shift_right;
+boost::phoenix::function<binary_func<ast::op::plus> > const _add;
+boost::phoenix::function<binary_func<ast::op::minus> > const _sub;
+boost::phoenix::function<binary_func<ast::op::times> > const _mul;
+boost::phoenix::function<binary_func<ast::op::divide> > const _div;
+boost::phoenix::function<binary_func<ast::op::mod> > const _mod;
+boost::phoenix::function<binary_func<ast::op::pow> > const _pow;
+boost::phoenix::function<unary_func<ast::op::pos> > const _pos;
+boost::phoenix::function<unary_func<ast::op::neg> > const _neg;
+boost::phoenix::function<unary_func<ast::op::logical_not> > const _logical_not;
 boost::phoenix::function<assign_func<std::string> > const _ident;
 boost::phoenix::function<assign_func<boost::uint64_t> > const _uint;
 boost::phoenix::function<copy_func> const _copy;
@@ -163,7 +180,57 @@ struct expr_grammar : qi::grammar<Iterator, ast::Expr(), ascii::space_type> {
     using qi::on_error;
     using qi::fail;
 
-    expr =
+    expr = or_test.alias();
+
+    or_test =
+        and_test                        [_copy(_val, _1)]
+        >> *("||" > and_test            [_logical_or(_val, _1)])
+        ;
+
+    and_test =
+        not_test                        [_copy(_val, _1)]
+        >> *("&&" > not_test            [_logical_and(_val, _1)])
+        ;
+
+    not_test =
+        ('!' >> not_test                [_logical_not(_val, _1)])
+        |   comparison                  [_copy(_val, _1)]
+        ;
+
+    comparison =
+        bit_or_expr                     [_copy(_val, _1)]
+        >> *(   ('<' >> bit_or_expr     [_less(_val, _1)])
+                |   ('>' >> bit_or_expr [_greater(_val, _1)])
+                |   ("==" > bit_or_expr [_equal(_val, _1)])
+                |   ("!=" > bit_or_expr [_not_equal(_val, _1)])
+                |   (">=" > bit_or_expr [_greater_equal(_val, _1)])
+                |   ("<=" > bit_or_expr [_less_equal(_val, _1)])
+            )
+        ;
+
+    bit_or_expr =
+        bit_xor_expr                    [_copy(_val, _1)]
+        >> *('|' >> bit_xor_expr        [_bit_or(_val, _1)])
+        ;
+
+    bit_xor_expr =
+        bit_and_expr                    [_copy(_val, _1)]
+        >> *('^' > bit_and_expr         [_bit_xor(_val, _1)])
+        ;
+
+    bit_and_expr =
+        bit_shift_expr                  [_copy(_val, _1)]
+        >> *('&' >> bit_shift_expr      [_bit_and(_val, _1)])
+        ;
+
+    bit_shift_expr =
+        arith_expr                      [_copy(_val, _1)]
+        >> *(   (">>" > arith_expr      [_shift_right(_val, _1)])
+                |   ("<<" > arith_expr  [_shift_left(_val, _1)])
+            )
+        ;
+
+    arith_expr =
         term                            [_copy(_val, _1)]
         >> *(   ('+' > term             [_add(_val, _1)])
                 |   ('-' > term         [_sub(_val, _1)])
@@ -174,20 +241,37 @@ struct expr_grammar : qi::grammar<Iterator, ast::Expr(), ascii::space_type> {
         factor                          [_copy(_val, _1)]
         >> *(   ('*' > factor           [_mul(_val, _1)])
                 |   ('/' > factor       [_div(_val, _1)])
+                |   ('%' > factor       [_mod(_val, _1)])
             )
         ;
 
     factor =
-        ulong_long                      [_uint(_val, _1)]
-        |   ident                       [_ident(_val, _1)]
-        |   '(' > expr                  [_copy(_val, _1)] > ')'
+        power                           [_copy(_val, _1)]
         |   ('-' > factor               [_neg(_val, _1)])
         |   ('+' > factor               [_pos(_val, _1)])
+        ;
+
+    power =
+        atom                            [_copy(_val, _1)]
+        >> -("**" > factor              [_pow(_val, _1)])
+        ;
+
+    atom =
+        uint_or_version                 [_uint(_val, _1)]
+        |   ident                       [_ident(_val, _1)]
+        |   '(' > expr                  [_copy(_val, _1)] > ')'
         ;
 
     // also match trailing whitespace; _trim removes it
     ident_ws %= lexeme[(char_("a-zA-Z") >> *(char_(" ") | char_("0-9a-zA-Z")))];
     ident = ident_ws [_trim(_val, _1)];
+
+    uint_or_version %=
+        (ulong_long                [_val = _1])
+        >> -('.' >> (ulong_long    [_val = _val * 256 + _1])
+             >> '.' > (ulong_long  [_val = _val * 256 + _1])
+             > '.' > (ulong_long   [_val = _val * 256 + _1]))
+        ;
 
     // Debugging and error handling and reporting support.
     BOOST_SPIRIT_DEBUG_NODE(expr);
@@ -198,8 +282,9 @@ struct expr_grammar : qi::grammar<Iterator, ast::Expr(), ascii::space_type> {
     on_error<fail>(expr, error_handler(_4, _3, _2));
 }
 
-qi::rule<Iterator, ast::Expr(), ascii::space_type> expr, term, factor;
+qi::rule<Iterator, ast::Expr(), ascii::space_type> expr, or_test, and_test, not_test, comparison, bit_or_expr, bit_xor_expr, bit_and_expr, bit_shift_expr, arith_expr, term, factor, power, atom;
 qi::rule<Iterator, std::string(), ascii::space_type> ident, ident_ws;
+qi::rule<Iterator, boost::uint64_t(), ascii::space_type> uint_or_version;
 };
 
 // helper function for parsing expression from stream

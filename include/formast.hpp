@@ -101,6 +101,22 @@ public:
     FORMAST_API virtual void expr_sub(Expr const & left, Expr const & right);
     FORMAST_API virtual void expr_mul(Expr const & left, Expr const & right);
     FORMAST_API virtual void expr_div(Expr const & left, Expr const & right);
+    FORMAST_API virtual void expr_mod(Expr const & left, Expr const & right);
+    FORMAST_API virtual void expr_pow(Expr const & left, Expr const & right);
+    FORMAST_API virtual void expr_logical_and(Expr const & left, Expr const & right);
+    FORMAST_API virtual void expr_logical_or(Expr const & left, Expr const & right);
+    FORMAST_API virtual void expr_logical_not(Expr const & right);
+    FORMAST_API virtual void expr_bitwise_and(Expr const & left, Expr const & right);
+    FORMAST_API virtual void expr_bitwise_or(Expr const & left, Expr const & right);
+    FORMAST_API virtual void expr_bitwise_xor(Expr const & left, Expr const & right);
+    FORMAST_API virtual void expr_compare_eq(Expr const & left, Expr const & right);
+    FORMAST_API virtual void expr_compare_ne(Expr const & left, Expr const & right);
+    FORMAST_API virtual void expr_compare_gt(Expr const & left, Expr const & right);
+    FORMAST_API virtual void expr_compare_lt(Expr const & left, Expr const & right);
+    FORMAST_API virtual void expr_compare_ge(Expr const & left, Expr const & right);
+    FORMAST_API virtual void expr_compare_le(Expr const & left, Expr const & right);
+    FORMAST_API virtual void expr_shift_left(Expr const & left, Expr const & right);
+    FORMAST_API virtual void expr_shift_right(Expr const & left, Expr const & right);
 private:
     // pimpl idiom
     FORMAST_HIDDEN class ExprVisitor;
