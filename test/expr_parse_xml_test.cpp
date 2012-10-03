@@ -77,4 +77,9 @@ BOOST_FIXTURE_TEST_CASE(complex_test, ParseFixture)
     parse_check("1*2+6/3*7-9*(1+2-3-4)", "<sub><add><mul><uint>1</uint><uint>2</uint></mul><mul><div><uint>6</uint><uint>3</uint></div><uint>7</uint></mul></add><mul><uint>9</uint><sub><sub><add><uint>1</uint><uint>2</uint></add><uint>3</uint></sub><uint>4</uint></sub></mul></sub>");
 }
 
+BOOST_FIXTURE_TEST_CASE(complex2_test, ParseFixture)
+{
+    parse_check("(User Version &gt;= 10) || ((User Version == 1) &amp;&amp; (Version != 10.2.0.0))", "");
+}
+
 BOOST_AUTO_TEST_SUITE_END()
