@@ -68,6 +68,7 @@ class Parser
 {
 public:
     FORMAST_API Parser();
+    FORMAST_API virtual ~Parser();
     FORMAST_API virtual void parse_stream(std::istream & is, Top & top) = 0;
     FORMAST_API void parse_string(std::string const & s, Top & top);
 };

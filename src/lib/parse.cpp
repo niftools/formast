@@ -318,6 +318,10 @@ formast::Parser::Parser()
 {
 }
 
+formast::Parser::~Parser()
+{
+}
+
 void formast::Parser::parse_string(std::string const & s, ast::Top & top)
 {
     std::istringstream is(s);
