@@ -32,59 +32,55 @@ public:
 
     void operator()(const formast::detail::ast::unary_op & x) {
         switch (x.op_type) {
-        case formast::detail::ast::op::neg:
+        case formast::detail::ast::unary_op::neg:
             return visitor.expr_neg(x.right);
-        case formast::detail::ast::op::pos:
+        case formast::detail::ast::unary_op::pos:
             return visitor.expr_pos(x.right);
-        case formast::detail::ast::op::logical_not:
+        case formast::detail::ast::unary_op::logical_not:
             return visitor.expr_logical_not(x.right);
-        default:
-            throw std::runtime_error("unknown unary operator");
         }
     }
 
     void operator()(const formast::detail::ast::binary_op & x) {
         switch (x.op_type) {
-        case formast::detail::ast::op::plus:
+        case formast::detail::ast::binary_op::plus:
             return visitor.expr_add(x.left, x.right);
-        case formast::detail::ast::op::minus:
+        case formast::detail::ast::binary_op::minus:
             return visitor.expr_sub(x.left, x.right);
-        case formast::detail::ast::op::times:
+        case formast::detail::ast::binary_op::times:
             return visitor.expr_mul(x.left, x.right);
-        case formast::detail::ast::op::divide:
+        case formast::detail::ast::binary_op::divide:
             return visitor.expr_div(x.left, x.right);
-        case formast::detail::ast::op::mod:
+        case formast::detail::ast::binary_op::mod:
             return visitor.expr_mod(x.left, x.right);
-        case formast::detail::ast::op::pow:
+        case formast::detail::ast::binary_op::pow:
             return visitor.expr_pow(x.left, x.right);
-        case formast::detail::ast::op::logical_and:
+        case formast::detail::ast::binary_op::logical_and:
             return visitor.expr_logical_and(x.left, x.right);
-        case formast::detail::ast::op::logical_or:
+        case formast::detail::ast::binary_op::logical_or:
             return visitor.expr_logical_or(x.left, x.right);
-        case formast::detail::ast::op::bit_and:
+        case formast::detail::ast::binary_op::bit_and:
             return visitor.expr_bitwise_and(x.left, x.right);
-        case formast::detail::ast::op::bit_or:
+        case formast::detail::ast::binary_op::bit_or:
             return visitor.expr_bitwise_or(x.left, x.right);
-        case formast::detail::ast::op::bit_xor:
+        case formast::detail::ast::binary_op::bit_xor:
             return visitor.expr_bitwise_xor(x.left, x.right);
-        case formast::detail::ast::op::equal:
+        case formast::detail::ast::binary_op::equal:
             return visitor.expr_compare_eq(x.left, x.right);
-        case formast::detail::ast::op::not_equal:
+        case formast::detail::ast::binary_op::not_equal:
             return visitor.expr_compare_ne(x.left, x.right);
-        case formast::detail::ast::op::greater:
+        case formast::detail::ast::binary_op::greater:
             return visitor.expr_compare_gt(x.left, x.right);
-        case formast::detail::ast::op::less:
+        case formast::detail::ast::binary_op::less:
             return visitor.expr_compare_lt(x.left, x.right);
-        case formast::detail::ast::op::greater_equal:
+        case formast::detail::ast::binary_op::greater_equal:
             return visitor.expr_compare_ge(x.left, x.right);
-        case formast::detail::ast::op::less_equal:
+        case formast::detail::ast::binary_op::less_equal:
             return visitor.expr_compare_le(x.left, x.right);
-        case formast::detail::ast::op::shift_left:
+        case formast::detail::ast::binary_op::shift_left:
             return visitor.expr_shift_left(x.left, x.right);
-        case formast::detail::ast::op::shift_right:
+        case formast::detail::ast::binary_op::shift_right:
             return visitor.expr_shift_right(x.left, x.right);
-        default:
-            throw std::runtime_error("unknown binary operator");
         }
     }
 

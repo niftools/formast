@@ -31,11 +31,22 @@ typedef boost::make_recursive_variant<formast::Attr, formast::If>::type StatDecl
 typedef std::vector<TopDecl> Top;
 typedef std::vector<StatDecl> Stats;
 
-// internal representation of expression operators
+// expression nodes
 
-struct op {
+struct binary_op;
+struct unary_op;
+
+typedef boost::variant<boost::uint64_t, std::string,
+        boost::recursive_wrapper<binary_op>,
+        boost::recursive_wrapper<unary_op>
+        >
+        ExprNode;
+
+typedef boost::shared_ptr<const ExprNode> Expr;
+
+struct binary_op {
+
     enum type {
-        // binary
         logical_or,
         logical_and,
         bit_or,
@@ -55,41 +66,28 @@ struct op {
         divide,
         mod,
         pow,
-
-        // unary
-        neg,
-        pos,
-        logical_not,
     };
-};
 
-// expression nodes
-
-struct binary_op;
-struct unary_op;
-
-typedef boost::variant<boost::uint64_t, std::string,
-        boost::recursive_wrapper<binary_op>,
-        boost::recursive_wrapper<unary_op>
-        >
-        ExprNode;
-
-typedef boost::shared_ptr<const ExprNode> Expr;
-
-struct binary_op {
-    binary_op(op::type op_type, Expr const & left, Expr const & right)
+    binary_op(type op_type, Expr const & left, Expr const & right)
         : op_type(op_type), left(left), right(right) {}
 
-    op::type op_type;
+    type op_type;
     Expr left;
     Expr right;
 };
 
 struct unary_op {
-    unary_op(op::type op_type, Expr const & right)
+
+    enum type {
+        neg,
+        pos,
+        logical_not,
+    };
+
+    unary_op(type op_type, Expr const & right)
         : op_type(op_type), right(right) {}
 
-    op::type op_type;
+    type op_type;
     Expr right;
 };
 
