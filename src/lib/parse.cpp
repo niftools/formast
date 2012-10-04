@@ -259,7 +259,7 @@ struct expr_grammar : qi::grammar<Iterator, ast::Expr(), ascii::space_type> {
     atom =
         uint_or_version                 [_uint(_val, _1)]
         |   ident                       [_ident(_val, _1)]
-        |   '(' > expr                  [_copy(_val, _1)] > ')'
+        |   ('(' > expr                 [_copy(_val, _1)] > ')')
         ;
 
     // also match trailing whitespace; _trim removes it
