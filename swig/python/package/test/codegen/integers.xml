@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE niftoolsxml>
+<niftoolsxml version="0.7.0.0">
+  <niobject name="IntegerData">
+      Integers data.
+      <add name="Version" type="int">Number of integers.</add>
+      <add name="Has Integers" type="int">Number of integers.</add>
+      <add name="Has Integers 2" type="int" ver1="2">Number of integers.</add>
+      <add name="Num Integers" type="int" cond="Has Integers">Number of integers.</add>
+      <add name="Integers" type="int" arr1="Num Integers" cond="Has Integers">Integers.</add>
+      <add name="Num Integers 2" type="int" ver1="2" cond="Has Integers 2">Number of integers.</add>
+      <add name="Integers 2" type="int" arr1="Num Integers 2" ver1="2" cond="Has Integers 2">Integers.</add>
+  </niobject>
+</niftoolsxml>
