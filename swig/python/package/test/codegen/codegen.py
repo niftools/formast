@@ -120,7 +120,7 @@ class CodeGenModule(CodeGenIndent, formast.Visitor):
             codegeninit.stats(c.stats.get())
             self.indent -= 1
             self.print_()
-            self.print_("def write(self, stream):")
+            self.print_("def read(self, stream):")
             self.indent += 1
             codegenread = CodeGenClassRead(parent=self)
             codegenread.stats(c.stats.get())
