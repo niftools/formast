@@ -49,6 +49,8 @@ struct Attr {
     std::string class_name;
     std::string name;
     boost::optional<Doc> doc;
+    boost::optional<Expr> arr1;
+    boost::optional<Expr> arr2;
 };
 
 struct Class {
