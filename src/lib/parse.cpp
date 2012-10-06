@@ -408,10 +408,6 @@ void formast::XmlParser::parse_stream(std::istream & is, ast::Top & top)
                         _expr_xml_parse_string(arr2.get(), e);
                         attr.arr2 = e;
                     }
-                    boost::optional<std::string> cond =
-                        add.second.get_optional<std::string>("<xmlattr>.cond");
-                    boost::optional<std::string> vercond =
-                        add.second.get_optional<std::string>("<xmlattr>.vercond");
                     boost::optional<std::string> ver1 =
                         add.second.get_optional<std::string>("<xmlattr>.ver1");
                     boost::optional<std::string> ver2 =
@@ -420,6 +416,10 @@ void formast::XmlParser::parse_stream(std::istream & is, ast::Top & top)
                         add.second.get_optional<std::string>("<xmlattr>.userver");
                     boost::optional<std::string> userver2 =
                         add.second.get_optional<std::string>("<xmlattr>.userver2");
+                    boost::optional<std::string> vercond =
+                        add.second.get_optional<std::string>("<xmlattr>.vercond");
+                    boost::optional<std::string> cond =
+                        add.second.get_optional<std::string>("<xmlattr>.cond");
                     Expr e;
                     if (cond) _expr_xml_parse_helper(cond.get(), e);
                     if (vercond) _expr_xml_parse_helper(vercond.get(), e);
