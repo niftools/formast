@@ -83,7 +83,7 @@ struct assign_func {
     }
 };
 
-template <ast::op::type op_type>
+template <ast::binary_op::type op_type>
 struct binary_func {
     template <typename T1, typename T2 = void>
     struct result {
@@ -97,7 +97,7 @@ struct binary_func {
     }
 };
 
-template <ast::op::type op_type>
+template <ast::unary_op::type op_type>
 struct unary_func {
     template <typename T1, typename T2 = void>
     struct result {
@@ -110,28 +110,28 @@ struct unary_func {
     }
 };
 
-boost::phoenix::function<binary_func<ast::op::logical_or> > const _logical_or;
-boost::phoenix::function<binary_func<ast::op::logical_and> > const _logical_and;
-boost::phoenix::function<binary_func<ast::op::bit_or> > const _bit_or;
-boost::phoenix::function<binary_func<ast::op::bit_xor> > const _bit_xor;
-boost::phoenix::function<binary_func<ast::op::bit_and> > const _bit_and;
-boost::phoenix::function<binary_func<ast::op::equal> > const _equal;
-boost::phoenix::function<binary_func<ast::op::not_equal> > const _not_equal;
-boost::phoenix::function<binary_func<ast::op::less> > const _less;
-boost::phoenix::function<binary_func<ast::op::less_equal> > const _less_equal;
-boost::phoenix::function<binary_func<ast::op::greater> > const _greater;
-boost::phoenix::function<binary_func<ast::op::greater_equal> > const _greater_equal;
-boost::phoenix::function<binary_func<ast::op::shift_left> > const _shift_left;
-boost::phoenix::function<binary_func<ast::op::shift_right> > const _shift_right;
-boost::phoenix::function<binary_func<ast::op::plus> > const _add;
-boost::phoenix::function<binary_func<ast::op::minus> > const _sub;
-boost::phoenix::function<binary_func<ast::op::times> > const _mul;
-boost::phoenix::function<binary_func<ast::op::divide> > const _div;
-boost::phoenix::function<binary_func<ast::op::mod> > const _mod;
-boost::phoenix::function<binary_func<ast::op::pow> > const _pow;
-boost::phoenix::function<unary_func<ast::op::pos> > const _pos;
-boost::phoenix::function<unary_func<ast::op::neg> > const _neg;
-boost::phoenix::function<unary_func<ast::op::logical_not> > const _logical_not;
+boost::phoenix::function<binary_func<ast::binary_op::logical_or> > const _logical_or;
+boost::phoenix::function<binary_func<ast::binary_op::logical_and> > const _logical_and;
+boost::phoenix::function<binary_func<ast::binary_op::bit_or> > const _bit_or;
+boost::phoenix::function<binary_func<ast::binary_op::bit_xor> > const _bit_xor;
+boost::phoenix::function<binary_func<ast::binary_op::bit_and> > const _bit_and;
+boost::phoenix::function<binary_func<ast::binary_op::equal> > const _equal;
+boost::phoenix::function<binary_func<ast::binary_op::not_equal> > const _not_equal;
+boost::phoenix::function<binary_func<ast::binary_op::less> > const _less;
+boost::phoenix::function<binary_func<ast::binary_op::less_equal> > const _less_equal;
+boost::phoenix::function<binary_func<ast::binary_op::greater> > const _greater;
+boost::phoenix::function<binary_func<ast::binary_op::greater_equal> > const _greater_equal;
+boost::phoenix::function<binary_func<ast::binary_op::shift_left> > const _shift_left;
+boost::phoenix::function<binary_func<ast::binary_op::shift_right> > const _shift_right;
+boost::phoenix::function<binary_func<ast::binary_op::plus> > const _add;
+boost::phoenix::function<binary_func<ast::binary_op::minus> > const _sub;
+boost::phoenix::function<binary_func<ast::binary_op::times> > const _mul;
+boost::phoenix::function<binary_func<ast::binary_op::divide> > const _div;
+boost::phoenix::function<binary_func<ast::binary_op::mod> > const _mod;
+boost::phoenix::function<binary_func<ast::binary_op::pow> > const _pow;
+boost::phoenix::function<unary_func<ast::unary_op::pos> > const _pos;
+boost::phoenix::function<unary_func<ast::unary_op::neg> > const _neg;
+boost::phoenix::function<unary_func<ast::unary_op::logical_not> > const _logical_not;
 boost::phoenix::function<assign_func<std::string> > const _ident;
 boost::phoenix::function<assign_func<boost::uint64_t> > const _uint;
 boost::phoenix::function<copy_func> const _copy;
