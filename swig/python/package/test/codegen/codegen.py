@@ -62,7 +62,10 @@ class CodeGenClassInit(formast.Visitor, CodeGenIndent):
         CodeGenIndent.__init__(self, parent=parent)
 
     def stats_attr(self, a):
-        self.print_("self.%s = %s()" % (api_name(a.name), a.class_name))
+        if not a.arr1.is_initialized():
+            self.print_("self.%s = %s()" % (api_name(a.name), a.class_name))
+        else:
+            self.print_("self.%s = []"  % api_name(a.name))
 
     def stats_if(self, if_):
         self.stats(if_.then)
