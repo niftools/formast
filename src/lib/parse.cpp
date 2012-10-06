@@ -346,7 +346,9 @@ void _expr_xml_parse_helper(std::string const & s, ast::Expr & e)
     ast::Expr e2;
     _expr_xml_parse_string(s, e2);
     if (e) {
-        _logical_and(e, e2);
+        // TODO find a way to use the phoenix function _logical_and
+        binary_func<ast::binary_op::logical_and> const _logical_and_impl;
+        _logical_and_impl(e, e2);
     } else {
         e = e2;
     }
