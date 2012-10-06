@@ -169,6 +169,7 @@ struct expr_grammar : qi::grammar<Iterator, ast::Expr(), ascii::space_type> {
     expr_grammar() : expr_grammar::base_type(expr) {
 
     qi::lexeme_type lexeme;
+    qi::lit_type lit;
     qi::char_type char_;
     qi::uint_type ulong_long;
     qi::_val_type _val;
@@ -263,14 +264,18 @@ struct expr_grammar : qi::grammar<Iterator, ast::Expr(), ascii::space_type> {
         ;
 
     // also match trailing whitespace; _trim removes it
-    ident_ws %= lexeme[(char_("a-zA-Z") >> *(char_(" ") | char_("0-9a-zA-Z")))];
+    ident_ws %= lexeme[(char_("a-zA-Z") >> *(char_(" ?") | char_("0-9a-zA-Z")))];
     ident = ident_ws [_trim(_val, _1)];
 
     uint_or_version %=
-        (ulong_long                [_val = _1])
-        >> -('.' >> (ulong_long    [_val = _val * 256 + _1])
-             >> '.' > (ulong_long  [_val = _val * 256 + _1])
-             > '.' > (ulong_long   [_val = _val * 256 + _1]))
+        (lit("2.3")       [_val = 0x02030000])
+        |   (lit("3.03")  [_val = 0x03000300]) // special case
+        |   (lit("3.0")   [_val = 0x03000000])
+        |   (lit("3.1")   [_val = 0x03010000])
+        |   ((ulong_long                [_val = _1])
+             >> -('.' >> (ulong_long    [_val = _val * 256 + _1])
+                  >> '.' > (ulong_long  [_val = _val * 256 + _1])
+                  > '.' > (ulong_long   [_val = _val * 256 + _1])))
         ;
 
     // Debugging and error handling and reporting support.
@@ -308,7 +313,7 @@ void _expr_parse_stream(std::istream & is, ast::Expr & e)
 }
 
 // helper function for parsing expression from string
-void _expr_parse_string(std::string const & s, ast::Expr & e)
+void _expr_xml_parse_string(std::string const & s, ast::Expr & e)
 {
     std::istringstream is(s);
     _expr_parse_stream(is, e);
@@ -331,6 +336,20 @@ void formast::Parser::parse_string(std::string const & s, ast::Top & top)
 formast::XmlParser::XmlParser()
     : Parser()
 {
+}
+
+// parse s
+// if expr contains nothing, assign parsed expression
+// otherwise, && with parsed expression
+void _expr_xml_parse_helper(std::string const & s, ast::Expr & e)
+{
+    ast::Expr e2;
+    _expr_xml_parse_string(s, e2);
+    if (e) {
+        _logical_and(e, e2);
+    } else {
+        e = e2;
+    }
 }
 
 void formast::XmlParser::parse_stream(std::istream & is, ast::Top & top)
@@ -373,15 +392,54 @@ void formast::XmlParser::parse_stream(std::istream & is, ast::Top & top)
                     if (!doc.empty()) {
                         attr.doc = doc;
                     }
-                    // conditioning disabled for now, can't parse it completely yet
-                    boost::optional<std::string> cond = add.second.get_optional<std::string>("<xmlattr>.cond");
-                    if  (!cond) {
-                        stats.push_back(attr);
-                    } else {
+                    boost::optional<std::string> arr1 =
+                        add.second.get_optional<std::string>("<xmlattr>.arr1");
+                    if (arr1) {
+                        Expr e;
+                        _expr_xml_parse_string(arr1.get(), e);
+                        attr.arr1 = e;
+                    }
+                    boost::optional<std::string> arr2 =
+                        add.second.get_optional<std::string>("<xmlattr>.arr2");
+                    if (arr2) {
+                        Expr e;
+                        _expr_xml_parse_string(arr2.get(), e);
+                        attr.arr2 = e;
+                    }
+                    boost::optional<std::string> cond =
+                        add.second.get_optional<std::string>("<xmlattr>.cond");
+                    boost::optional<std::string> vercond =
+                        add.second.get_optional<std::string>("<xmlattr>.vercond");
+                    boost::optional<std::string> ver1 =
+                        add.second.get_optional<std::string>("<xmlattr>.ver1");
+                    boost::optional<std::string> ver2 =
+                        add.second.get_optional<std::string>("<xmlattr>.ver2");
+                    boost::optional<std::string> userver =
+                        add.second.get_optional<std::string>("<xmlattr>.userver");
+                    boost::optional<std::string> userver2 =
+                        add.second.get_optional<std::string>("<xmlattr>.userver2");
+                    Expr e;
+                    if (cond) _expr_xml_parse_helper(cond.get(), e);
+                    if (vercond) _expr_xml_parse_helper(vercond.get(), e);
+                    if (ver1)
+                        _expr_xml_parse_helper(
+                            "Version >= " + ver1.get(), e);
+                    if (ver2)
+                        _expr_xml_parse_helper(
+                            "Version <= " + ver2.get(), e);
+                    if (userver)
+                        _expr_xml_parse_helper(
+                            "User Version == " + userver.get(), e);
+                    if (userver2)
+                        _expr_xml_parse_helper(
+                            "User Version 2 == " + userver2.get(), e);
+                    if (e) {
                         formast::If if_;
-                        _expr_parse_string(cond.get(), if_.expr);
+                        if_.expr = e;
                         if_.then.push_back(attr);
                         stats.push_back(if_);
+                    } else {
+                        stats.push_back(attr);
                     }
                 };
             };
