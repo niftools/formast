@@ -36,6 +36,7 @@ class Printer(formast.Visitor):
         self.level += 1
         self.print_("class_name: %s" % a.class_name)
         self.print_("name: %s" % a.name)
+        self.level -= 1
 
     def stats_if(self, if_):
         self.print_("if:")
@@ -54,6 +55,21 @@ class Printer(formast.Visitor):
 
     def expr_uint(self, v):
         self.print_("uint: %s" % v)
+
+    def expr_id(self, i):
+        self.print_("id: %s" % i)
+
+    def expr_pos(self, right):
+        self.print_("pos:")
+        self.level += 1
+        self.expr(right)
+        self.level -= 1
+
+    def expr_neg(self, right):
+        self.print_("neg:")
+        self.level += 1
+        self.expr(right)
+        self.level -= 1
 
     def expr_add(self, left, right):
         self.print_("add:")
@@ -83,15 +99,114 @@ class Printer(formast.Visitor):
         self.expr(right)
         self.level -= 1
 
-    def expr_neg(self, right):
-        self.print_("neg:")
+    def expr_mod(self, left, right):
+        self.print_("mod:")
+        self.level += 1
+        self.expr(left)
+        self.expr(right)
+        self.level -= 1
+
+    def expr_pow(self, left, right):
+        self.print_("pow:")
+        self.level += 1
+        self.expr(left)
+        self.expr(right)
+        self.level -= 1
+
+    def expr_logical_and(self, left, right):
+        self.print_("logical_and:")
+        self.level += 1
+        self.expr(left)
+        self.expr(right)
+        self.level -= 1
+
+    def expr_logical_or(self, left, right):
+        self.print_("logical_or:")
+        self.level += 1
+        self.expr(left)
+        self.expr(right)
+        self.level -= 1
+
+    def expr_logical_not(self, right):
+        self.print_("not:")
         self.level += 1
         self.expr(right)
         self.level -= 1
 
-    def expr_pos(self, right):
-        self.print_("pos:")
+    def expr_bitwise_and(self, left, right):
+        self.print_("bitwise_and:")
         self.level += 1
+        self.expr(left)
+        self.expr(right)
+        self.level -= 1
+
+    def expr_bitwise_or(self, left, right):
+        self.print_("bitwise_or:")
+        self.level += 1
+        self.expr(left)
+        self.expr(right)
+        self.level -= 1
+
+    def expr_bitwise_xor(self, left, right):
+        self.print_("bitwise_xor:")
+        self.level += 1
+        self.expr(left)
+        self.expr(right)
+        self.level -= 1
+
+    def expr_compare_eq(self, left, right):
+        self.print_("compare_eq:")
+        self.level += 1
+        self.expr(left)
+        self.expr(right)
+        self.level -= 1
+
+    def expr_compare_ne(self, left, right):
+        self.print_("compare_ne:")
+        self.level += 1
+        self.expr(left)
+        self.expr(right)
+        self.level -= 1
+
+    def expr_compare_gt(self, left, right):
+        self.print_("compare_gt:")
+        self.level += 1
+        self.expr(left)
+        self.expr(right)
+        self.level -= 1
+
+    def expr_compare_lt(self, left, right):
+        self.print_("compare_lt:")
+        self.level += 1
+        self.expr(left)
+        self.expr(right)
+        self.level -= 1
+
+    def expr_compare_ge(self, left, right):
+        self.print_("compare_ge:")
+        self.level += 1
+        self.expr(left)
+        self.expr(right)
+        self.level -= 1
+
+    def expr_compare_le(self, left, right):
+        self.print_("compare_le:")
+        self.level += 1
+        self.expr(left)
+        self.expr(right)
+        self.level -= 1
+
+    def expr_shift_left(self, left, right):
+        self.print_("shift_left:")
+        self.level += 1
+        self.expr(left)
+        self.expr(right)
+        self.level -= 1
+
+    def expr_shift_right(self, left, right):
+        self.print_("shift_right:")
+        self.level += 1
+        self.expr(left)
         self.expr(right)
         self.level -= 1
 
@@ -168,3 +283,38 @@ class:
      attr:
       class_name: uint
       name: test""")
+
+    def test_conditioning(self):
+        top = formast.Top()
+        self.parser.parse_string("""
+<niftoolsxml>
+  <compound name="Test">
+    <add name="Has Image" type="bool" />
+    <add name="PS2 L" type="short" cond="Has Image" ver1="3.03" ver2="10.2.0.0" />
+  </compound>
+</niftoolsxml>
+""", top)
+        self.printer.top(top)
+        # note: 50332416 = 0x03000300 and 167903232 = 0x0A020000
+        nose.tools.assert_equal(str(self.printer), """\
+class:
+ name: Test
+ stats:
+  attr:
+   class_name: bool
+   name: Has Image
+  if:
+   logical_and:
+    logical_and:
+     id: Has Image
+     compare_ge:
+      id: Version
+      uint: 50332416
+    compare_le:
+     id: Version
+     uint: 167903232
+   then:
+    stats:
+     attr:
+      class_name: short
+      name: PS2 L""")
