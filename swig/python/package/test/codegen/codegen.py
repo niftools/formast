@@ -73,7 +73,7 @@ class CodeGenClassInit(formast.Visitor, CodeGenIndent):
             self.stats(if_.else_.get())
 
 class CodeGenClassRead(formast.Visitor, CodeGenIndent):
-    """Generate __init__ body."""
+    """Generate read body."""
 
     def __init__(self, parent=None):
         formast.Visitor.__init__(self)
