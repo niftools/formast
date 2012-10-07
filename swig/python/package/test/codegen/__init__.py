@@ -70,8 +70,7 @@ class CodeGenClassInit(formast.Visitor, CodeGenIndent):
 
     def stats_if(self, if_):
         self.stats(if_.then)
-        if if_.else_.is_initialized():
-            self.stats(if_.else_.get())
+        # if_.else_ not used
 
 class CodeGenClassRead(formast.Visitor, CodeGenIndent):
     """Generate read body."""
@@ -101,7 +100,7 @@ class CodeGenClassRead(formast.Visitor, CodeGenIndent):
         self.indent += 1
         self.stats(if_.then)
         self.indent -= 1
-        # else not used
+        # if_.else_ not used
 
 class CodeGenModule(CodeGenIndent, formast.Visitor):
     """Generate module."""

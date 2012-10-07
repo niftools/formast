@@ -72,8 +72,7 @@ class RuntimeClassInit(formast.Visitor):
 
     def stats_if(self, if_):
         self.stats(if_.then)
-        if if_.else_.is_initialized():
-            self.stats(if_.else_.get())
+        # if_.else_ not used
 
 class RuntimeClassRead(formast.Visitor):
     """Read an instance by visitation of the class AST."""
@@ -99,7 +98,7 @@ class RuntimeClassRead(formast.Visitor):
         expr_eval.expr(if_.expr)
         if expr_eval.stack.pop():
             self.stats(if_.then)
-        # else not used
+        # if_.else_ not used
 
 class RuntimeModule(formast.Visitor):
     """Generate module-like object."""
