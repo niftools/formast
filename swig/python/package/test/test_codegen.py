@@ -22,7 +22,7 @@ def test_ver0_1():
     with open("test_ver0_1.integers", "rb") as stream:
         data.read(stream)
         eof_check = stream.read(1)
-    nose.tools.assert_equal(eof_check, '')
+    nose.tools.assert_equal(eof_check, b'')
     nose.tools.assert_equal(data.version, 0)
     nose.tools.assert_equal(data.has_integers, 1)
     nose.tools.assert_equal(data.has_integers_2, 0)
@@ -36,7 +36,7 @@ def test_ver2_1():
     with open("test_ver2_1.integers", "rb") as stream:
         data.read(stream)
         eof_check = stream.read(1)
-    nose.tools.assert_equal(eof_check, '')
+    nose.tools.assert_equal(eof_check, b'')
     nose.tools.assert_equal(data.version, 2)
     nose.tools.assert_equal(data.has_integers, 1)
     nose.tools.assert_equal(data.has_integers_2, 1)
