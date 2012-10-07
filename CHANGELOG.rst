@@ -1,4 +1,4 @@
-Version 0.1.0 (in development)
-==============================
+Version 0.1.0a0
+===============
 
 * First release.
