@@ -3,18 +3,26 @@ import codegen
 import codegen.integers
 import formast
 import nose.tools
+import sys
 import os.path
 import unittest
 
 unittest.TestCase.maxDiff = None
 
+def open_text(filename):
+    # swig expects a str
+    if sys.version_info.major < 3:
+        return open(filename, "rb")
+    else:
+        return codecs.open(filename, "rb", "ascii")
+
 def test_codegen():
     top = formast.Top()
-    with codecs.open("codegen/integers.xml", "rb", "utf8") as stream:
+    with open_text("codegen/integers.xml") as stream:
         formast.XmlParser().parse_string(stream.read(), top)
     codegen_module = codegen.CodeGenModule()
     codegen_module.top(top)
-    with codecs.open("codegen/integers.py", "rb", "utf8") as stream:
+    with open_text("codegen/integers.py") as stream:
         nose.tools.assert_multi_line_equal(stream.read(), str(codegen_module))
 
 def test_ver0_1():
