@@ -5,3 +5,10 @@ add_library(formastlib SHARED
 set_target_properties(formastlib
   PROPERTIES OUTPUT_NAME formast
 )
+
+INSTALL(
+    TARGETS formastlib
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+)

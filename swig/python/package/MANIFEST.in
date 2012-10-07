@@ -1,2 +1,3 @@
+include README.rst
 include formastPYTHON_wrap.cxx
 include formastPYTHON_wrap.h

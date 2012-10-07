@@ -17,6 +17,7 @@ Contents:
    additional/authors
    additional/license
    additional/changes
+   additional/todo
 
 Indices and tables
 ==================

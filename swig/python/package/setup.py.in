@@ -2,17 +2,20 @@
 
 from setuptools import setup
 from distutils.core import Extension
+import codecs
 import re
 import sys
 
 ### general options ###
 
 classifiers = """\
-Development Status :: 2 - Pre-Alpha
+Development Status :: 3 - Alpha
 License :: OSI Approved :: BSD License
 Intended Audience :: Developers
-Intended Audience :: End Users/Desktop
-Topic :: Multimedia :: Graphics :: 3D Modeling
+Topic :: Software Development :: Code Generators
+Topic :: Software Development :: Compilers
+Topic :: Software Development :: Interpreters
+Topic :: Text Processing :: Markup :: XML
 Programming Language :: C++
 Programming Language :: Python
 Programming Language :: Python :: 2
@@ -25,6 +28,8 @@ Programming Language :: Python :: 3.2
 Programming Language :: Python :: 3.3
 Operating System :: OS Independent"""
 #Topic :: Formats and Protocols :: Data Formats
+
+long_description = codecs.open("README.rst", "rb", "utf8").read()
 
 sources = ['formastPYTHON_wrap.cxx']
 libraries = ['formast']
@@ -57,18 +62,12 @@ setup(
     packages=['formast'],
     ext_modules=[ext_formast],
     download_url=r'https://github.com/amorilia/formast/downloads',
-    platforms=[],
+    platforms=['any'],
     zip_safe=False,
-    description='',
-    long_description='',
-    classifiers=[
-        "License :: OSI Approved :: Apache Software License",
-        "Programming Language :: Python",
-        "Development Status :: 4 - Beta",
-        "Intended Audience :: Developers",
-        "Topic :: Scientific/Engineering"
-        ],
-    license='Apache',
+    description=long_description.split('\n')[0],
+    long_description=long_description,
+    classifiers=[_f for _f in classifiers.split('\n') if _f],
+    license='BSD',
     keywords='file format, abstract syntax tree',
     url=r'https://github.com/amorilia/formast',
     )
