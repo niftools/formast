@@ -16,16 +16,23 @@ def open_text(filename):
         return codecs.open(filename, "rb", "ascii")
 
 # returns the actual module, so we can use it in further tests
-def test_runtime():
+def get_runtime():
     top = formast.Top()
     with open_text("codegen/integers.xml") as stream:
         formast.XmlParser().parse_string(stream.read(), top)
-    mod = runtime.RuntimeModule(top)
+    return runtime.RuntimeModule(top)
+
+def test_runtime_top():
+    mod = get_runtime()
     nose.tools.assert_in("IntegerData", dir(mod))
-    return mod
+
+def test_runtime_class():
+    mod = get_runtime()
+    data = mod.IntegerData()
+    nose.tools.assert_in("version", dir(data))
 
 def test_ver0_1():
-    mod = test_runtime()
+    mod = get_runtime()
     data = mod.IntegerData()
     with open("test_ver0_1.integers", "rb") as stream:
         data.read(stream)
@@ -40,7 +47,7 @@ def test_ver0_1():
     nose.tools.assert_list_equal(data.integers_2, [])
 
 def test_ver2_1():
-    mod = test_runtime()
+    mod = get_runtime()
     data = mod.IntegerData()
     with open("test_ver2_1.integers", "rb") as stream:
         data.read(stream)

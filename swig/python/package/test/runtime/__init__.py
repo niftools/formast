@@ -25,7 +25,7 @@ class RuntimeExprEval(formast.Visitor):
         self.stack.append(v)
 
     def expr_id(self, i):
-        self.stack.append(getattr(self, api_name(i)))
+        self.stack.append(getattr(self.obj, api_name(i)))
 
     def expr_logical_and(self, e1, e2):
         self.expr(e1)
@@ -93,14 +93,14 @@ class RuntimeClassRead(formast.Visitor):
         if not a.arr1.is_initialized():
             setattr(self.obj, api_name(a.name), read_int(self.stream))
         else:
-            expr_eval = RuntimeExprEval(self)
+            expr_eval = RuntimeExprEval(self.obj)
             expr_eval.expr(a.arr1.get())
             setattr(self.obj, api_name(a.name),
                     [read_int(self.stream)
                      for i in range(expr_eval.stack.pop())])
 
     def stats_if(self, if_):
-        expr_eval = RuntimeExprEval(self)
+        expr_eval = RuntimeExprEval(self.obj)
         expr_eval.expr(if_.expr)
         if expr_eval.stack.pop():
             self.stats(if_.then)
