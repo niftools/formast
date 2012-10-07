@@ -61,7 +61,7 @@ setup(
     author_email='amorilia@users.sourceforge.net',
     packages=['formast'],
     ext_modules=[ext_formast],
-    download_url=r'https://github.com/amorilia/formast/downloads',
+    download_url=r'http://pypi.python.org/pypi/formast/',
     platforms=['any'],
     zip_safe=False,
     description=long_description.split('\n')[0],
