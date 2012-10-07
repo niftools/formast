@@ -1,9 +1,8 @@
 cmake_minimum_required(VERSION 2.6)
-project(FORMAST)
+project(formast)
 file(STRINGS "VERSION" VERSION)
 
 # enable CPack
-set(CPACK_PACKAGE_NAME formast)
 set(CPACK_PACKAGE_VERSION ${VERSION})
 include(CPack)
 
