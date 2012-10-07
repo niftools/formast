@@ -1,21 +1,24 @@
-import nose.tools
-nose.tools.assert_multi_line_equal.im_class.maxDiff = None
-
+import codecs
 import codegen
+import codegen.integers
 import formast
-import integers
+import nose.tools
+import os.path
+import unittest
+
+unittest.TestCase.maxDiff = None
 
 def test_codegen():
     top = formast.Top()
-    with open("integers.xml", "rb") as stream:
+    with codecs.open("codegen/integers.xml", "rb", "utf8") as stream:
         formast.XmlParser().parse_string(stream.read(), top)
     codegen_module = codegen.CodeGenModule()
     codegen_module.top(top)
-    with open("integers.py", "rb") as stream:
+    with codecs.open("codegen/integers.py", "rb", "utf8") as stream:
         nose.tools.assert_multi_line_equal(stream.read(), str(codegen_module))
 
 def test_ver0_1():
-    data = integers.IntegerData()
+    data = codegen.integers.IntegerData()
     with open("test_ver0_1.integers", "rb") as stream:
         data.read(stream)
         eof_check = stream.read(1)
@@ -29,7 +32,7 @@ def test_ver0_1():
     nose.tools.assert_list_equal(data.integers_2, [])
 
 def test_ver2_1():
-    data = integers.IntegerData()
+    data = codegen.integers.IntegerData()
     with open("test_ver2_1.integers", "rb") as stream:
         data.read(stream)
         eof_check = stream.read(1)
