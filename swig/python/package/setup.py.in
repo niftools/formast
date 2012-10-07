@@ -8,11 +8,13 @@ import sys
 ### general options ###
 
 classifiers = """\
-Development Status :: 2 - Pre-Alpha
+Development Status :: 3 - Alpha
 License :: OSI Approved :: BSD License
 Intended Audience :: Developers
-Intended Audience :: End Users/Desktop
-Topic :: Multimedia :: Graphics :: 3D Modeling
+Topic :: Software Development :: Code Generators
+Topic :: Software Development :: Compilers
+Topic :: Software Development :: Interpreters
+Topic :: Text Processing :: Markup :: XML
 Programming Language :: C++
 Programming Language :: Python
 Programming Language :: Python :: 2
@@ -61,13 +63,7 @@ setup(
     zip_safe=False,
     description='',
     long_description='',
-    classifiers=[
-        "License :: OSI Approved :: Apache Software License",
-        "Programming Language :: Python",
-        "Development Status :: 4 - Beta",
-        "Intended Audience :: Developers",
-        "Topic :: Scientific/Engineering"
-        ],
+    classifiers=classifiers,
     license='Apache',
     keywords='file format, abstract syntax tree',
     url=r'https://github.com/amorilia/formast',
