@@ -1,9 +1,9 @@
 API Documentation
 =================
 
-.. todo::
+.. warning::
 
-   Finish documenting the remaining classes.
+   Documentation is very incomplete.
 
 Contents:
 
