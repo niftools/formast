@@ -14,7 +14,7 @@ def read_int(stream):
     return struct.unpack('<i', stream.read(4))[0]
 
 class RuntimeExprEval(formast.Visitor):
-    """Generate code for expression."""
+    """Evaluate expression at runtime."""
     stack = []
 
     def __init__(self, obj):
@@ -49,7 +49,7 @@ class RuntimeExprEval(formast.Visitor):
         self.stack.append(v1 >= v2)
 
 class RuntimeClass(object):
-    """Base class for runtime class system."""
+    """Base class for classes that are created at runtime."""
     _ast_class = None #: AST class node
 
     def __init__(self):
@@ -59,7 +59,7 @@ class RuntimeClass(object):
         RuntimeClassRead(self, stream)
 
 class RuntimeClassInit(formast.Visitor):
-    """Construct an instance by visitation of the class AST."""
+    """Initialize an instance of a class."""
 
     def __init__(self, obj):
         formast.Visitor.__init__(self)
@@ -79,7 +79,7 @@ class RuntimeClassInit(formast.Visitor):
         # if_.else_ not used
 
 class RuntimeClassRead(formast.Visitor):
-    """Read an instance by visitation of the class AST."""
+    """Read an instance of a class."""
 
     def __init__(self, obj, stream):
         formast.Visitor.__init__(self)
@@ -107,7 +107,7 @@ class RuntimeClassRead(formast.Visitor):
         # if_.else_ not used
 
 class RuntimeModule(object):
-    """Module-like object."""
+    """Module-like object that is populated with classes at runtime."""
 
     def __init__(self, top):
         self._ast_top = top
@@ -122,6 +122,8 @@ class RuntimeModuleInit(formast.Visitor):
         self.top(mod._ast_top)
 
     def top_class(self, c):
+        # create class at runtime
+        # see http://docs.python.org/library/functions.html#type
         setattr(self.mod, c.name,
                 type(c.name, (RuntimeClass,), dict(_ast_class=c)))
 
