@@ -3,12 +3,12 @@
 <niftoolsxml version="0.7.0.0">
   <niobject name="IntegerData">
       Integers data.
-      <add name="Version" type="int">Number of integers.</add>
-      <add name="Has Integers" type="int">Number of integers.</add>
-      <add name="Has Integers 2" type="int" ver1="2">Number of integers.</add>
-      <add name="Num Integers" type="int" cond="Has Integers">Number of integers.</add>
-      <add name="Integers" type="int" arr1="Num Integers" cond="Has Integers">Integers.</add>
-      <add name="Num Integers 2" type="int" ver1="2" cond="Has Integers 2">Number of integers.</add>
-      <add name="Integers 2" type="int" arr1="Num Integers 2" ver1="2" cond="Has Integers 2">Integers.</add>
+      <add name="Version" type="int">File version.</add>
+      <add name="Has Integers" type="int">Do we have the first list integers?</add>
+      <add name="Has Integers 2" type="int" ver1="2">Do we have the second list of integers?</add>
+      <add name="Num Integers" type="int" cond="Has Integers">Number of integers in first list.</add>
+      <add name="Integers" type="int" arr1="Num Integers" cond="Has Integers">First list of integers.</add>
+      <add name="Num Integers 2" type="int" ver1="2" cond="Has Integers 2">Number of integers in second list.</add>
+      <add name="Integers 2" type="int" arr1="Num Integers 2" ver1="2" cond="Has Integers 2">Second list of integers.</add>
   </niobject>
 </niftoolsxml>
