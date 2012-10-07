@@ -20,6 +20,7 @@ namespace boost {
 }
 
 %template(OptionalDoc) boost::optional<formast::Doc>;
+%template(OptionalExpr) boost::optional<formast::Expr>;
 %template(OptionalStats) boost::optional<formast::Stats>;
 %template(OptionalString) boost::optional<std::string>;
 
