@@ -62,8 +62,9 @@ class CodeGenClassInit(formast.Visitor, CodeGenIndent):
         CodeGenIndent.__init__(self, parent=parent)
 
     def stats_attr(self, a):
+        # note: in the example, type is always int, so this is rather simple
         if not a.arr1.is_initialized():
-            self.print_("self.%s = %s()" % (api_name(a.name), a.class_name))
+            self.print_("self.%s = 0" % api_name(a.name))
         else:
             self.print_("self.%s = []"  % api_name(a.name))
 
@@ -82,13 +83,13 @@ class CodeGenClassRead(formast.Visitor, CodeGenIndent):
     def stats_attr(self, a):
         # everything is an integer, so this is rather simple
         if not a.arr1.is_initialized():
-            self.print_("self.%s = struct.unpack('<i', stream.read(4))" % api_name(a.name))
+            self.print_("self.%s = read_int(stream)" % api_name(a.name))
         else:
             expr_eval = CodeGenExprEval()
             expr_eval.expr(a.arr1.get())
             self.print_("self.%s = [" % api_name(a.name))
             self.indent += 1
-            self.print_("struct.unpack('<i', stream.read(4))")
+            self.print_("read_int(stream)")
             self.print_("for i in range(%s)]" % expr_eval.stack.pop())
             self.indent -= 1
         # arr2 not used
@@ -108,6 +109,17 @@ class CodeGenModule(CodeGenIndent, formast.Visitor):
     def __init__(self, parent=None):
         formast.Visitor.__init__(self)
         CodeGenIndent.__init__(self, parent=parent)
+
+    def top(self, t):
+        self.print_("""# generated from integers.xml
+
+import struct
+
+def read_int(stream):
+    return struct.unpack('<i', stream.read(4))[0]
+""")
+        formast.Visitor.top(self, t)
+        self.print_()
 
     def top_class(self, c):
         self.print_("class %s:" % c.name)
