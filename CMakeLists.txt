@@ -33,15 +33,15 @@ add_subdirectory(swig)
 
 # install headers and application
 # (library install is done in lib/shared/CMakeLists.txt)
-INSTALL(
+install(
     FILES include/formast.hpp
     DESTINATION include
 )
-INSTALL(
+install(
     FILES include/formast/detail/ast.hpp
     DESTINATION include/formast/detail
 )
-INSTALL(
+install(
     TARGETS formastapp
     RUNTIME DESTINATION bin
 )

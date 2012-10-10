@@ -6,7 +6,7 @@ set_target_properties(formastlib
   PROPERTIES OUTPUT_NAME formast
 )
 
-INSTALL(
+install(
     TARGETS formastlib
     RUNTIME DESTINATION bin
     LIBRARY DESTINATION lib
