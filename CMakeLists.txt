@@ -35,6 +35,17 @@ install(
     COMPONENT headers
 )
 install(
+    DIRECTORY @Boost_INCLUDE_DIR@/boost/spirit
+    DESTINATION include/boost
+    COMPONENT headers-boost
+)
+install(
+    FILES
+    @Boost_INCLUDE_DIR@/boost/shared_ptr.hpp
+    DESTINATION include/boost
+    COMPONENT headers-boost
+)
+install(
     DIRECTORY src swig
     DESTINATION src/formast
     COMPONENT sources
