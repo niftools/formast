@@ -1,5 +1,5 @@
 # extra include for printer.hpp
-include_directories(${FORMAST_SOURCE_DIR}/src/app)
+include_directories(${formast_SOURCE_DIR}/src/app)
 
 foreach(TEST
         header_test

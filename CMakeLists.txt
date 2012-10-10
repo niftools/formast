@@ -2,16 +2,12 @@ cmake_minimum_required(VERSION 2.6)
 project(formast)
 file(STRINGS "VERSION" VERSION)
 
-# enable CPack
-set(CPACK_PACKAGE_VERSION ${VERSION})
-include(CPack)
-
 # find boost
 find_package(Boost 1.48.0 REQUIRED COMPONENTS unit_test_framework)
 include_directories(${Boost_INCLUDE_DIRS})
 
 # include headers
-include_directories(${FORMAST_SOURCE_DIR}/include)
+include_directories(${formast_SOURCE_DIR}/include)
 
 # build libraries
 add_subdirectory(lib)
@@ -31,17 +27,25 @@ add_subdirectory(test)
 # build wrappers
 add_subdirectory(swig)
 
-# install headers and application
+# install headers, sources, and application
 # (library install is done in lib/shared/CMakeLists.txt)
 install(
-    FILES include/formast.hpp
+    DIRECTORY include/
     DESTINATION include
+    COMPONENT headers
 )
 install(
-    FILES include/formast/detail/ast.hpp
-    DESTINATION include/formast/detail
+    DIRECTORY src swig
+    DESTINATION src/formast
+    COMPONENT sources
 )
 install(
     TARGETS formastapp
     RUNTIME DESTINATION bin
+    COMPONENT applications
 )
+
+# enable CPack
+set(CPACK_PACKAGE_VERSION ${VERSION})
+set(CPACK_GENERATOR ZIP)
+include(CPack)
