@@ -25,25 +25,25 @@ add_subdirectory(src/formast/swig)
 # install headers, sources, and application
 # (library install is done in lib/shared/CMakeLists.txt)
 install(
-    DIRECTORY include/
-    DESTINATION include
-    COMPONENT headers
+  DIRECTORY include/
+  DESTINATION include
+  COMPONENT headers
 )
 install(
-    DIRECTORY @Boost_INCLUDE_DIR@/boost/spirit
-    DESTINATION include/boost
-    COMPONENT headers-boost
+  DIRECTORY @Boost_INCLUDE_DIR@/boost/spirit
+  DESTINATION include/boost
+  COMPONENT headers-boost
 )
 install(
-    FILES
-    @Boost_INCLUDE_DIR@/boost/shared_ptr.hpp
-    DESTINATION include/boost
-    COMPONENT headers-boost
+  FILES
+  @Boost_INCLUDE_DIR@/boost/shared_ptr.hpp
+  DESTINATION include/boost
+  COMPONENT headers-boost
 )
 install(
-    DIRECTORY src/
-    DESTINATION src
-    COMPONENT sources
+  DIRECTORY src/
+  DESTINATION src
+  COMPONENT sources
 )
 
 # enable CPack
