@@ -10,7 +10,7 @@ include_directories(${Boost_INCLUDE_DIRS})
 include_directories(${formast_SOURCE_DIR}/include)
 
 # build libraries
-add_subdirectory(lib)
+add_subdirectory(src/formast/lib)
 
 # build command line tool
 add_subdirectory(bin)

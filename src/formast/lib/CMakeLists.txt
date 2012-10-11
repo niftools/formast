@@ -2,8 +2,8 @@ option(BUILD_SHARED_LIBRARY "Build shared library." ON)
 option(BUILD_STATIC_LIBRARY "Build static library." ON)
 
 set(FORMAST_LIBRARY_SOURCES
-  ${formast_SOURCE_DIR}/src/formast/lib/visitor.cpp
-  ${formast_SOURCE_DIR}/src/formast/lib/parse.cpp
+  visitor.cpp
+  parse.cpp
 )
 
 if(BUILD_SHARED_LIBRARY)
