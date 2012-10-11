@@ -13,19 +13,14 @@ include_directories(${formast_SOURCE_DIR}/include)
 add_subdirectory(lib)
 
 # build command line tool
-add_executable(formastapp
-    src/app/main.cpp
-)
-set_target_properties(formastapp
-  PROPERTIES OUTPUT_NAME formast)
-target_link_libraries(formastapp formastlib)
+add_subdirectory(bin)
 
 # build tests
 enable_testing()
-add_subdirectory(test)
+add_subdirectory(src/formast/test)
 
 # build wrappers
-add_subdirectory(swig)
+add_subdirectory(src/formast/swig)
 
 # install headers, sources, and application
 # (library install is done in lib/shared/CMakeLists.txt)
@@ -46,14 +41,9 @@ install(
     COMPONENT headers-boost
 )
 install(
-    DIRECTORY src swig
-    DESTINATION src/formast
+    DIRECTORY src/
+    DESTINATION src
     COMPONENT sources
-)
-install(
-    TARGETS formastapp
-    RUNTIME DESTINATION bin
-    COMPONENT applications
 )
 
 # enable CPack

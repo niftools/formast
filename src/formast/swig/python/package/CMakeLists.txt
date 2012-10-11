@@ -2,10 +2,8 @@
 
 if(WIN32)
   set(OSPATHSEP ";")
-  set(FORMAST_PYTHON_LIBRARY_DIR ${FORMAST_BINARY_DIR}/lib/static)
 else()
   set(OSPATHSEP ":")
-  set(FORMAST_PYTHON_LIBRARY_DIR ${FORMAST_BINARY_DIR}/lib/shared)
 endif()
 
 # copy source files

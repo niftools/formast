@@ -32,7 +32,6 @@ Operating System :: OS Independent"""
 long_description = codecs.open("README.rst", "rb", "utf8").read()
 
 sources = ['formastPYTHON_wrap.cxx']
-libraries = ['formast']
 extra_compile_args = []
 define_macros = []
 
@@ -41,6 +40,9 @@ define_macros = []
 if sys.platform == "win32":
     extra_compile_args += ['/EHsc']
     define_macros += [('FORMAST_STATIC', None)]
+    libraries = ['formast_static']
+else:
+    libraries = ['formast']
 
 ### extension module ###
 
