@@ -13,7 +13,7 @@ include_directories(${formast_SOURCE_DIR}/include)
 add_subdirectory(src/formast/lib)
 
 # build command line tool
-add_subdirectory(bin)
+add_subdirectory(src/formast/bin)
 
 # build tests
 enable_testing()

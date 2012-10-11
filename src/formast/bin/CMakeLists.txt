@@ -1,5 +1,5 @@
 add_executable(formastapp
-  ${formast_SOURCE_DIR}/src/formast/bin/main.cpp
+  main.cpp
 )
 set_target_properties(formastapp
   PROPERTIES OUTPUT_NAME formast)
