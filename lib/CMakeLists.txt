@@ -7,9 +7,39 @@ set(FORMAST_LIBRARY_SOURCES
 )
 
 if(BUILD_SHARED_LIBRARY)
-  add_subdirectory(shared)
+  add_library(formastlib SHARED
+    ${FORMAST_LIBRARY_SOURCES}
+  )
+
+  set_target_properties(formastlib
+    PROPERTIES OUTPUT_NAME formast
+  )
+
+  install(
+    TARGETS formastlib
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+    COMPONENT libraries
+  )
 endif()
 
 if(BUILD_STATIC_LIBRARY)
-  add_subdirectory(static)
+  add_library(formaststaticlib STATIC
+    ${FORMAST_LIBRARY_SOURCES}
+  )
+
+  set_target_properties(formaststaticlib
+    PROPERTIES
+    OUTPUT_NAME formast_static
+    COMPILE_FLAGS -DFORMAST_STATIC
+  )
+
+  install(
+    TARGETS formaststaticlib
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+    COMPONENT libraries
+  )
 endif()
