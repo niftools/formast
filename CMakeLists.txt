@@ -43,10 +43,24 @@ install(
 install(
   DIRECTORY src/
   DESTINATION src
-  COMPONENT sources
+  COMPONENT source
+)
+install(
+  FILES
+  CMakeLists.txt VERSION
+  DESTINATION .
+  COMPONENT source
+)
+FILE(GLOB docfiles "${CMAKE_CURRENT_SOURCE_DIR}/*.rst")
+install(
+  FILES
+  ${docfiles}
+  DESTINATION .
+  COMPONENT documentation
 )
 
 # enable CPack
 set(CPACK_PACKAGE_VERSION ${VERSION})
 set(CPACK_GENERATOR ZIP)
+set(CPACK_ARCHIVE_COMPONENT_INSTALL ON)
 include(CPack)
