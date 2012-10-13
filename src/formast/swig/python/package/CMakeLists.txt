@@ -2,10 +2,8 @@
 
 if(WIN32)
   set(OSPATHSEP ";")
-  set(FORMAST_PYTHON_LIBRARY_DIR ${FORMAST_BINARY_DIR}/lib/static)
 else()
   set(OSPATHSEP ":")
-  set(FORMAST_PYTHON_LIBRARY_DIR ${FORMAST_BINARY_DIR}/lib/shared)
 endif()
 
 # copy source files
@@ -13,7 +11,7 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/setup.cfg.in" "${CMAKE_CURRENT_BINAR
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/setup.py.in" "${CMAKE_CURRENT_BINARY_DIR}/setup.py")
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/tox.ini.in" "${CMAKE_CURRENT_BINARY_DIR}/tox.ini")
 file(COPY 
-    ${FORMAST_SOURCE_DIR}/README.rst
+    ${formast_SOURCE_DIR}/README.rst
     ${CMAKE_CURRENT_SOURCE_DIR}/MANIFEST.in
     ${CMAKE_CURRENT_SOURCE_DIR}/test
     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}

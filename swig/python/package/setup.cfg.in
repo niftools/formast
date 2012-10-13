@@ -1,5 +1,0 @@
-[build_ext]
-# location of formast library
-library-dirs=@FORMAST_PYTHON_LIBRARY_DIR@
-# location of formast headers and boost headers
-include-dirs=@FORMAST_SOURCE_DIR@/include@OSPATHSEP@@Boost_INCLUDE_DIR@
