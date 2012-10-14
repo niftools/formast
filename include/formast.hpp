@@ -39,7 +39,18 @@
 namespace formast
 {
 
-typedef formast::detail::ast::Top Top;
+class Top
+{
+public:
+    FORMAST_API Top();
+private:
+    // pimpl idiom
+    FORMAST_HIDDEN class Impl;
+    boost::shared_ptr<Impl> _impl;
+    friend class Visitor;
+    friend class XmlParser;
+};
+
 typedef formast::detail::ast::Stats Stats;
 typedef formast::detail::ast::Expr Expr;
 
@@ -53,7 +64,9 @@ struct Attr {
     boost::optional<Expr> arr2;
 };
 
-struct Class {
+class Class
+{
+public:
     std::string name;
     boost::optional<std::string> base_name;
     boost::optional<Doc> doc;

@@ -13,6 +13,7 @@
 #include <sstream>
 
 #include "formast.hpp"
+#include "top_impl.hpp"
 
 // upgrade structs to fusion sequences
 
@@ -327,7 +328,7 @@ formast::Parser::~Parser()
 {
 }
 
-void formast::Parser::parse_string(std::string const & s, ast::Top & top)
+void formast::Parser::parse_string(std::string const & s, formast::Top & top)
 {
     std::istringstream is(s);
     parse_stream(is, top);
@@ -354,7 +355,7 @@ void _expr_xml_parse_helper(std::string const & s, ast::Expr & e)
     }
 }
 
-void formast::XmlParser::parse_stream(std::istream & is, ast::Top & top)
+void formast::XmlParser::parse_stream(std::istream & is, formast::Top & top)
 {
     // disable skipping of whitespace
     is.unsetf(std::ios::skipws);
@@ -373,7 +374,7 @@ void formast::XmlParser::parse_stream(std::istream & is, ast::Top & top)
             if (!doc.empty()) {
                 class_.doc = doc;
             }
-            top.push_back(class_);
+            top._impl->push_back(class_);
         } else if (decl.first == "compound" || decl.first == "niobject") {
             Class class_;
             class_.name = decl.second.get<std::string>("<xmlattr>.name");
@@ -448,7 +449,7 @@ void formast::XmlParser::parse_stream(std::istream & is, ast::Top & top)
             if (!stats.empty()) {
                 class_.stats = stats;
             };
-            top.push_back(class_);
+            top._impl->push_back(class_);
         };
     };
 }
