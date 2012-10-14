@@ -34,7 +34,6 @@ namespace formast {
     // so swig will expose the name, but nothing else
     class Expr {};
     class Stats {};
-    class Top {};
 }
 
 %include "exception.i"

@@ -4,6 +4,7 @@
 #include <stdexcept>
 
 #include "formast.hpp"
+#include "top_impl.hpp"
 
 class formast::Visitor::ExprVisitor
 {
@@ -100,8 +101,8 @@ public:
 
     TopVisitor(Visitor & visitor) : visitor(visitor) {};
 
-    void top(formast::detail::ast::Top const & t) {
-        BOOST_FOREACH(formast::detail::ast::TopDecl const & decl, t) {
+    void top(formast::Top const & t) {
+        BOOST_FOREACH(formast::detail::TopDecl const & decl, *t._impl) {
             boost::apply_visitor(*this, decl);
         }
     }

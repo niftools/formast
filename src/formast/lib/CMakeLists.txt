@@ -4,6 +4,7 @@ option(BUILD_STATIC_LIBRARY "Build static library." ON)
 set(FORMAST_LIBRARY_SOURCES
   visitor.cpp
   parse.cpp
+  top.cpp
 )
 
 if(BUILD_SHARED_LIBRARY)
