@@ -4,6 +4,7 @@
 #include <stdexcept>
 
 #include "formast.hpp"
+#include "expr_impl.hpp"
 #include "stats_impl.hpp"
 #include "top_impl.hpp"
 
@@ -19,9 +20,9 @@ public:
 
     ExprVisitor(Visitor & visitor) : visitor(visitor) {};
 
-    void expr(formast::detail::ast::Expr const & e) {
-        assert(e != 0);
-        return boost::apply_visitor(*this, *e);
+    void expr(formast::Expr const & e) {
+        assert(e._impl->tree != 0);
+        return boost::apply_visitor(*this, *e._impl->tree);
     }
 
     void operator()(boost::uint64_t const& n) {
@@ -32,56 +33,56 @@ public:
         return visitor.expr_id(i);
     }
 
-    void operator()(const formast::detail::ast::unary_op & x) {
+    void operator()(const formast::detail::unary_op & x) {
         switch (x.op_type) {
-        case formast::detail::ast::unary_op::neg:
+        case formast::detail::unary_op::neg:
             return visitor.expr_neg(x.right);
-        case formast::detail::ast::unary_op::pos:
+        case formast::detail::unary_op::pos:
             return visitor.expr_pos(x.right);
-        case formast::detail::ast::unary_op::logical_not:
+        case formast::detail::unary_op::logical_not:
             return visitor.expr_logical_not(x.right);
         }
     }
 
-    void operator()(const formast::detail::ast::binary_op & x) {
+    void operator()(const formast::detail::binary_op & x) {
         switch (x.op_type) {
-        case formast::detail::ast::binary_op::plus:
+        case formast::detail::binary_op::plus:
             return visitor.expr_add(x.left, x.right);
-        case formast::detail::ast::binary_op::minus:
+        case formast::detail::binary_op::minus:
             return visitor.expr_sub(x.left, x.right);
-        case formast::detail::ast::binary_op::times:
+        case formast::detail::binary_op::times:
             return visitor.expr_mul(x.left, x.right);
-        case formast::detail::ast::binary_op::divide:
+        case formast::detail::binary_op::divide:
             return visitor.expr_div(x.left, x.right);
-        case formast::detail::ast::binary_op::mod:
+        case formast::detail::binary_op::mod:
             return visitor.expr_mod(x.left, x.right);
-        case formast::detail::ast::binary_op::pow:
+        case formast::detail::binary_op::pow:
             return visitor.expr_pow(x.left, x.right);
-        case formast::detail::ast::binary_op::logical_and:
+        case formast::detail::binary_op::logical_and:
             return visitor.expr_logical_and(x.left, x.right);
-        case formast::detail::ast::binary_op::logical_or:
+        case formast::detail::binary_op::logical_or:
             return visitor.expr_logical_or(x.left, x.right);
-        case formast::detail::ast::binary_op::bit_and:
+        case formast::detail::binary_op::bit_and:
             return visitor.expr_bitwise_and(x.left, x.right);
-        case formast::detail::ast::binary_op::bit_or:
+        case formast::detail::binary_op::bit_or:
             return visitor.expr_bitwise_or(x.left, x.right);
-        case formast::detail::ast::binary_op::bit_xor:
+        case formast::detail::binary_op::bit_xor:
             return visitor.expr_bitwise_xor(x.left, x.right);
-        case formast::detail::ast::binary_op::equal:
+        case formast::detail::binary_op::equal:
             return visitor.expr_compare_eq(x.left, x.right);
-        case formast::detail::ast::binary_op::not_equal:
+        case formast::detail::binary_op::not_equal:
             return visitor.expr_compare_ne(x.left, x.right);
-        case formast::detail::ast::binary_op::greater:
+        case formast::detail::binary_op::greater:
             return visitor.expr_compare_gt(x.left, x.right);
-        case formast::detail::ast::binary_op::less:
+        case formast::detail::binary_op::less:
             return visitor.expr_compare_lt(x.left, x.right);
-        case formast::detail::ast::binary_op::greater_equal:
+        case formast::detail::binary_op::greater_equal:
             return visitor.expr_compare_ge(x.left, x.right);
-        case formast::detail::ast::binary_op::less_equal:
+        case formast::detail::binary_op::less_equal:
             return visitor.expr_compare_le(x.left, x.right);
-        case formast::detail::ast::binary_op::shift_left:
+        case formast::detail::binary_op::shift_left:
             return visitor.expr_shift_left(x.left, x.right);
-        case formast::detail::ast::binary_op::shift_right:
+        case formast::detail::binary_op::shift_right:
             return visitor.expr_shift_right(x.left, x.right);
         }
     }
