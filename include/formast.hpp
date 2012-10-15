@@ -67,7 +67,9 @@ typedef formast::detail::ast::Expr Expr;
 
 typedef std::string Doc;
 
-struct Attr {
+class Attr
+{
+public:
     std::string class_name;
     std::string name;
     boost::optional<Doc> doc;
@@ -84,7 +86,9 @@ public:
     boost::optional<Stats> stats;
 };
 
-struct If {
+class If
+{
+public:
     Expr expr;
     Stats then;
     boost::optional<Stats> else_;
