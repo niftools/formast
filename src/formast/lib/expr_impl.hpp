@@ -87,7 +87,7 @@ public:
         Expr e;
         e._impl->tree =
             boost::shared_ptr<const formast::detail::ExprTree>(
-               new formast::detail::ExprTree(value));
+                new formast::detail::ExprTree(value));
     };
 
     boost::shared_ptr<const formast::detail::ExprTree> tree;
