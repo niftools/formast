@@ -27,14 +27,6 @@ namespace boost {
 %include "std_vector.i"
 %template(VectorIf) std::vector<formast::If>;
 
-namespace formast {
-    // Expr is a typedef in formast.hpp
-    // swig will not wrap it unless it has an implementation
-    // whence an empty implementation {}
-    // so swig will expose the name, but nothing else
-    class Expr {};
-}
-
 %include "exception.i"
 %include "std_string.i"
 %ignore formast::Parser::parse_stream;
