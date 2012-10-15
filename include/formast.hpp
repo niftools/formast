@@ -46,6 +46,7 @@ private:
     FORMAST_HIDDEN class Impl;
     boost::shared_ptr<Impl> _impl;
     friend class Visitor;
+    friend class Parser;
     friend class XmlParser;
 };
 
@@ -58,6 +59,7 @@ private:
     FORMAST_HIDDEN class Impl;
     boost::shared_ptr<Impl> _impl;
     friend class Visitor;
+    friend class Parser;
     friend class XmlParser;
 };
 
@@ -70,6 +72,7 @@ private:
     FORMAST_HIDDEN class Impl;
     boost::shared_ptr<Impl> _impl;
     friend class Visitor;
+    friend class Parser;
     friend class XmlParser;
 };
 
@@ -109,6 +112,11 @@ public:
     FORMAST_API virtual ~Parser();
     FORMAST_API virtual void parse_stream(std::istream & is, Top & top) = 0;
     FORMAST_API void parse_string(std::string const & s, Top & top);
+private:
+    // pimpl idiom
+    FORMAST_HIDDEN class Impl;
+    boost::shared_ptr<Impl> _impl;
+    friend class XmlParser;
 };
 
 class XmlParser : public Parser

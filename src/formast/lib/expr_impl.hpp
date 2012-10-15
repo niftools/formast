@@ -81,7 +81,16 @@ private:
     Impl & operator=(Impl const &);
 public:
     Impl();
-    boost::shared_ptr<const ExprTree> tree;
+
+    template <typename T>
+    static Expr create(T const & value) {
+        Expr e;
+        e._impl->tree =
+            boost::shared_ptr<const formast::detail::ExprTree>(
+               new formast::detail::ExprTree(value));
+    };
+
+    boost::shared_ptr<const formast::detail::ExprTree> tree;
 };
 
 #endif
