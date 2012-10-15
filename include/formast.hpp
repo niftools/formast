@@ -63,7 +63,17 @@ private:
     friend class XmlParser;
 };
 
-typedef formast::detail::ast::Expr Expr;
+class Expr
+{
+public:
+    FORMAST_API Expr();
+private:
+    // pimpl idiom
+    FORMAST_HIDDEN class Impl;
+    boost::shared_ptr<Impl> _impl;
+    friend class Visitor;
+    friend class XmlParser;
+};
 
 typedef std::string Doc;
 
