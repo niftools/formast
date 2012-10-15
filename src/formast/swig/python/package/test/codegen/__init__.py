@@ -141,7 +141,7 @@ def read_int(stream):
         self.indent -= 1
 
 if __name__ == "__main__":
-    top = formast.Top()
+    top = formast.Module()
     with open("integers.xml", "rb") as stream:
         formast.XmlParser().parse_string(stream.read(), top)
     codegen = CodeGenModule()

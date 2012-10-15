@@ -27,7 +27,7 @@ class ParseFixture
 public:
     ParseFixture() {};
     void parse_check(std::string const & in, std::string const & out) const {
-        formast::Top ast;
+        formast::Module ast;
         formast::XmlParser parser;
         std::string xmlin =
             "<niftoolsxml><compound name=\"Test\"><add type=\"uint\" name=\"test\" cond=\""

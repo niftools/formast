@@ -17,7 +17,7 @@ def open_text(filename):
         return codecs.open(filename, "rb", "ascii")
 
 def test_codegen():
-    top = formast.Top()
+    top = formast.Module()
     with open_text("codegen/integers.xml") as stream:
         formast.XmlParser().parse_string(stream.read(), top)
     codegen_module = codegen.CodeGenModule()

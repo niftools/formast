@@ -17,7 +17,7 @@ def open_text(filename):
 
 # returns the actual module, so we can use it in further tests
 def get_runtime():
-    top = formast.Top()
+    top = formast.Module()
     with open_text("codegen/integers.xml") as stream:
         formast.XmlParser().parse_string(stream.read(), top)
     return runtime.RuntimeModule(top)

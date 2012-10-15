@@ -91,20 +91,20 @@ public:
 
 };
 
-class formast::Visitor::TopVisitor
+class formast::Visitor::ModuleVisitor
 {
 private:
     // see http://www.boost.org/doc/libs/1_51_0/libs/smart_ptr/sp_techniques.html#pimpl
-    TopVisitor(TopVisitor const &);
-    TopVisitor & operator=(TopVisitor const &);
+    ModuleVisitor(ModuleVisitor const &);
+    ModuleVisitor & operator=(ModuleVisitor const &);
 
 public:
     typedef void result_type;
 
-    TopVisitor(Visitor & visitor) : visitor(visitor) {};
+    ModuleVisitor(Visitor & visitor) : visitor(visitor) {};
 
-    void top(formast::Top const & t) {
-        BOOST_FOREACH(formast::detail::TopDecl const & decl, *t._impl) {
+    void top(formast::Module const & t) {
+        BOOST_FOREACH(formast::detail::ModuleDecl const & decl, *t._impl) {
             boost::apply_visitor(*this, decl);
         }
     }
@@ -150,7 +150,7 @@ public:
 formast::Visitor::Visitor()
 {
     _expr_visitor = boost::shared_ptr<ExprVisitor>(new ExprVisitor(*this));
-    _top_visitor = boost::shared_ptr<TopVisitor>(new TopVisitor(*this));
+    _top_visitor = boost::shared_ptr<ModuleVisitor>(new ModuleVisitor(*this));
     _stats_visitor = boost::shared_ptr<StatsVisitor>(new StatsVisitor(*this));
 }
 
@@ -163,7 +163,7 @@ void formast::Visitor::expr(Expr const & e)
     _expr_visitor->expr(e);
 }
 
-void formast::Visitor::top(Top const & top)
+void formast::Visitor::top(Module const & top)
 {
     _top_visitor->top(top);
 };

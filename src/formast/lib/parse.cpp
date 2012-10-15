@@ -358,7 +358,7 @@ formast::Parser::~Parser()
 {
 }
 
-void formast::Parser::parse_string(std::string const & s, formast::Top & top)
+void formast::Parser::parse_string(std::string const & s, formast::Module & top)
 {
     std::istringstream is(s);
     parse_stream(is, top);
@@ -369,7 +369,7 @@ formast::XmlParser::XmlParser()
 {
 }
 
-void formast::XmlParser::parse_stream(std::istream & is, formast::Top & top)
+void formast::XmlParser::parse_stream(std::istream & is, formast::Module & top)
 {
     // disable skipping of whitespace
     is.unsetf(std::ios::skipws);

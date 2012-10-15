@@ -14,12 +14,12 @@ namespace formast
 namespace detail
 {
 
-typedef boost::make_recursive_variant<formast::Class>::type TopDecl;
+typedef boost::make_recursive_variant<formast::Class>::type ModuleDecl;
 
 }
 }
 
-class formast::Top::Impl : public std::vector<formast::detail::TopDecl>
+class formast::Module::Impl : public std::vector<formast::detail::ModuleDecl>
 {
 private:
     // see http://www.boost.org/doc/libs/1_51_0/libs/smart_ptr/sp_techniques.html#pimpl

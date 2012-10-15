@@ -54,7 +54,7 @@ class TestEvaluator:
         self.evaluator = Evaluator()
 
     def check(self, inp , out):
-        top = formast.Top()
+        top = formast.Module()
         inp = (
             "<niftoolsxml><compound name=\"Test\">"
             "<add type=\"uint\" name=\"test\" cond=\"" + inp + "\" />"

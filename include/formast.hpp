@@ -37,10 +37,10 @@
 namespace formast
 {
 
-class Top
+class Module
 {
 public:
-    FORMAST_API Top();
+    FORMAST_API Module();
 private:
     // pimpl idiom
     FORMAST_HIDDEN class Impl;
@@ -112,8 +112,8 @@ class Parser
 public:
     FORMAST_API Parser();
     FORMAST_API virtual ~Parser();
-    FORMAST_API virtual void parse_stream(std::istream & is, Top & top) = 0;
-    FORMAST_API void parse_string(std::string const & s, Top & top);
+    FORMAST_API virtual void parse_stream(std::istream & is, Module & top) = 0;
+    FORMAST_API void parse_string(std::string const & s, Module & top);
 private:
     // pimpl idiom
     FORMAST_HIDDEN class Impl;
@@ -125,7 +125,7 @@ class XmlParser : public Parser
 {
 public:
     FORMAST_API XmlParser();
-    FORMAST_API virtual void parse_stream(std::istream & is, Top & top);
+    FORMAST_API virtual void parse_stream(std::istream & is, Module & top);
 };
 
 class Visitor
@@ -134,7 +134,7 @@ public:
     FORMAST_API Visitor();
     FORMAST_API virtual ~Visitor();
 
-    FORMAST_API virtual void top(Top const & top);
+    FORMAST_API virtual void top(Module const & top);
     FORMAST_API virtual void top_class(Class const & class_);
 
     FORMAST_API virtual void stats(Stats const & stats);
@@ -170,8 +170,8 @@ private:
     // pimpl idiom
     FORMAST_HIDDEN class ExprVisitor;
     boost::shared_ptr<ExprVisitor> _expr_visitor;
-    FORMAST_HIDDEN class TopVisitor;
-    boost::shared_ptr<TopVisitor> _top_visitor;
+    FORMAST_HIDDEN class ModuleVisitor;
+    boost::shared_ptr<ModuleVisitor> _top_visitor;
     FORMAST_HIDDEN class StatsVisitor;
     boost::shared_ptr<StatsVisitor> _stats_visitor;
 };

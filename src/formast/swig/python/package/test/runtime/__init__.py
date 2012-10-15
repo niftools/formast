@@ -128,7 +128,7 @@ class RuntimeModuleInit(formast.Visitor):
                 type(c.name, (RuntimeClass,), dict(_ast_class=c)))
 
 if __name__ == "__main__":
-    top = formast.Top()
+    top = formast.Module()
     with open("../codegen/integers.xml", "rb") as stream:
         formast.XmlParser().parse_string(stream.read(), top)
     mod = RuntimeModule(top)

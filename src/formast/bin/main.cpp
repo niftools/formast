@@ -24,7 +24,7 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    formast::Top ast;
+    formast::Module ast;
     formast::XmlParser parser;
     try {
         parser.parse_stream(in, ast);

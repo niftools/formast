@@ -216,7 +216,7 @@ class TestPrint:
         self.printer = Printer()
 
     def check(self, inp , out):
-        top = formast.Top()
+        top = formast.Module()
         self.parser.parse_string(self.make_input_from_cond(inp), top)
         self.printer.top(top)
         nose.tools.assert_equal(str(self.printer), out)
@@ -285,7 +285,7 @@ class:
       name: test""")
 
     def test_conditioning(self):
-        top = formast.Top()
+        top = formast.Module()
         self.parser.parse_string("""
 <niftoolsxml>
   <compound name="Test">

@@ -1,11 +1,11 @@
 #include "top_impl.hpp"
 
-formast::Top::Impl::Impl()
-    : std::vector<formast::detail::TopDecl>()
+formast::Module::Impl::Impl()
+    : std::vector<formast::detail::ModuleDecl>()
 {
 }
 
-formast::Top::Top()
+formast::Module::Module()
     : _impl(new Impl)
 {
 }
