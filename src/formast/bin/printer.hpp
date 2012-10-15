@@ -43,9 +43,9 @@ public:
 
     virtual void stats_attr(Attr const & attr) {
         open_tag("attr", false);
-        open_tag("class_name", true);
-        os << attr.class_name;
-        close_tag("class_name", true);
+        open_tag("type", true);
+        os << attr.type_;
+        close_tag("type", true);
         open_tag("name", true);
         os << attr.name;
         close_tag("name", true);

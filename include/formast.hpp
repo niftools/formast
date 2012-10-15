@@ -83,7 +83,7 @@ typedef std::string Doc;
 class Attr
 {
 public:
-    std::string class_name;
+    std::string type_;
     std::string name;
     boost::optional<Doc> doc;
     boost::optional<Expr> arr1;

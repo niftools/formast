@@ -34,7 +34,7 @@ class Printer(formast.Visitor):
     def stats_attr(self, a):
         self.print_("attr:")
         self.level += 1
-        self.print_("class_name: %s" % a.class_name)
+        self.print_("type: %s" % a.type_)
         self.print_("name: %s" % a.name)
         self.level -= 1
 
@@ -241,7 +241,7 @@ class:
    then:
     stats:
      attr:
-      class_name: uint
+      type: uint
       name: test""")
 
     def test_add(self):
@@ -256,7 +256,7 @@ class:
    then:
     stats:
      attr:
-      class_name: uint
+      type: uint
       name: test""")
 
     def test_complicated(self):
@@ -281,7 +281,7 @@ class:
    then:
     stats:
      attr:
-      class_name: uint
+      type: uint
       name: test""")
 
     def test_conditioning(self):
@@ -301,7 +301,7 @@ class:
  name: Test
  stats:
   attr:
-   class_name: bool
+   type: bool
    name: Has Image
   if:
    logical_and:
@@ -316,5 +316,5 @@ class:
    then:
     stats:
      attr:
-      class_name: short
+      type: short
       name: PS2 L""")

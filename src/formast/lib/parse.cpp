@@ -22,7 +22,7 @@
 
 BOOST_FUSION_ADAPT_STRUCT(
     formast::Attr,
-    (std::string, class_name)
+    (std::string, type_)
     (std::string, name)
     (boost::optional<formast::Doc>, doc)
 )
@@ -402,7 +402,7 @@ void formast::XmlParser::parse_stream(std::istream & is, formast::Top & top)
             BOOST_FOREACH(boost::property_tree::ptree::value_type & add, decl.second) {
                 if (add.first == "add") {
                     Attr attr;
-                    attr.class_name = add.second.get<std::string>("<xmlattr>.type");
+                    attr.type_ = add.second.get<std::string>("<xmlattr>.type");
                     attr.name = add.second.get<std::string>("<xmlattr>.name");
                     std::string doc = add.second.data();
                     boost::algorithm::trim(doc);
