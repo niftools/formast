@@ -34,8 +34,6 @@
 #include <string>
 #include <vector>
 
-#include "formast/detail/ast.hpp"
-
 namespace formast
 {
 
