@@ -13,6 +13,7 @@
 #include <sstream>
 
 #include "formast.hpp"
+#include "stats_impl.hpp"
 #include "top_impl.hpp"
 
 // upgrade structs to fusion sequences
@@ -384,7 +385,7 @@ void formast::XmlParser::parse_stream(std::istream & is, formast::Top & top)
                 class_.doc = doc;
             }
             class_.base_name = decl.second.get_optional<std::string>("<xmlattr>.inherit");
-            ast::Stats stats;
+            formast::Stats stats;
             BOOST_FOREACH(boost::property_tree::ptree::value_type & add, decl.second) {
                 if (add.first == "add") {
                     Attr attr;
@@ -439,14 +440,14 @@ void formast::XmlParser::parse_stream(std::istream & is, formast::Top & top)
                     if (e) {
                         formast::If if_;
                         if_.expr = e;
-                        if_.then.push_back(attr);
-                        stats.push_back(if_);
+                        if_.then._impl->push_back(attr);
+                        stats._impl->push_back(if_);
                     } else {
-                        stats.push_back(attr);
+                        stats._impl->push_back(attr);
                     }
                 };
             };
-            if (!stats.empty()) {
+            if (!stats._impl->empty()) {
                 class_.stats = stats;
             };
             top._impl->push_back(class_);

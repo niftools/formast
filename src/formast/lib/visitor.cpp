@@ -4,6 +4,7 @@
 #include <stdexcept>
 
 #include "formast.hpp"
+#include "stats_impl.hpp"
 #include "top_impl.hpp"
 
 class formast::Visitor::ExprVisitor
@@ -127,8 +128,8 @@ public:
 
     StatsVisitor(Visitor & visitor) : visitor(visitor) {};
 
-    void stats(formast::detail::ast::Stats const & s) {
-        BOOST_FOREACH(formast::detail::ast::StatDecl const & decl, s) {
+    void stats(formast::Stats const & s) {
+        BOOST_FOREACH(formast::detail::StatDecl const & decl, *s._impl) {
             boost::apply_visitor(*this, decl);
         }
     }
