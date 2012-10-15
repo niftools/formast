@@ -51,12 +51,25 @@ private:
     friend class XmlParser;
 };
 
-typedef formast::detail::ast::Stats Stats;
+class Stats
+{
+public:
+    FORMAST_API Stats();
+private:
+    // pimpl idiom
+    FORMAST_HIDDEN class Impl;
+    boost::shared_ptr<Impl> _impl;
+    friend class Visitor;
+    friend class XmlParser;
+};
+
 typedef formast::detail::ast::Expr Expr;
 
 typedef std::string Doc;
 
-struct Attr {
+class Attr
+{
+public:
     std::string class_name;
     std::string name;
     boost::optional<Doc> doc;
@@ -73,7 +86,9 @@ public:
     boost::optional<Stats> stats;
 };
 
-struct If {
+class If
+{
+public:
     Expr expr;
     Stats then;
     boost::optional<Stats> else_;

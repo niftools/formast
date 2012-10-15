@@ -2,7 +2,9 @@
 include_directories(${formast_SOURCE_DIR}/src/formast/bin)
 
 foreach(TEST
-        header_test
+        header_formast_test
+        header_top_impl_test
+        header_stats_impl_test
         expr_parse_xml_test
         )
     add_executable(${TEST} ${TEST}.cpp)

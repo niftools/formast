@@ -22,12 +22,6 @@ namespace detail
 namespace ast
 {
 
-// declaration nodes
-
-typedef boost::make_recursive_variant<formast::Attr, formast::If>::type StatDecl;
-
-typedef std::vector<StatDecl> Stats;
-
 // expression nodes
 
 struct binary_op;
