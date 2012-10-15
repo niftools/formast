@@ -3,6 +3,7 @@
 
 #include <boost/algorithm/string.hpp>
 #include <boost/foreach.hpp>
+#include <boost/fusion/include/adapt_struct.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/spirit/include/phoenix_function.hpp>
@@ -13,6 +14,7 @@
 #include <sstream>
 
 #include "formast.hpp"
+#include "expr_impl.hpp"
 #include "stats_impl.hpp"
 #include "top_impl.hpp"
 

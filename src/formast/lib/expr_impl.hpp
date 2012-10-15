@@ -1,28 +1,18 @@
-#ifndef FORMAST_DETAIL_AST_HPP_INCLUDED
-#define FORMAST_DETAIL_AST_HPP_INCLUDED
+// for friend classes: their cpp files can use this header to access
+// implementation
 
-#include <boost/fusion/include/adapt_struct.hpp>
+#ifndef FORMAST_EXPR_IMPL_HPP_INCLUDED
+#define FORMAST_EXPR_IMPL_HPP_INCLUDED
+
 #include <boost/shared_ptr.hpp>
 #include <boost/variant/recursive_variant.hpp>
 
-// this header file provides an implementation of the abstract syntax tree
+#include "formast.hpp"
 
 namespace formast
 {
-
-// forward declarations
-// these are defined in formast.hpp
-
-struct Attr;
-struct Class;
-struct If;
-
 namespace detail
 {
-namespace ast
-{
-
-// expression nodes
 
 struct binary_op;
 struct unary_op;
@@ -31,9 +21,7 @@ typedef boost::variant<boost::uint64_t, std::string,
         boost::recursive_wrapper<binary_op>,
         boost::recursive_wrapper<unary_op>
         >
-        ExprNode;
-
-typedef boost::shared_ptr<const ExprNode> Expr;
+        ExprTree;
 
 struct binary_op {
 
@@ -84,6 +72,16 @@ struct unary_op {
 
 }
 }
-}
+
+class formast::Expr::Impl
+{
+private:
+    // see http://www.boost.org/doc/libs/1_51_0/libs/smart_ptr/sp_techniques.html#pimpl
+    Impl(Impl const &);
+    Impl & operator=(Impl const &);
+public:
+    Impl();
+    boost::shared_ptr<const ExprTree> tree;
+};
 
 #endif
