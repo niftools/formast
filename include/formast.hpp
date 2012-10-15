@@ -80,7 +80,7 @@ private:
 
 typedef std::string Doc;
 
-class Attr
+class Field
 {
 public:
     std::string type_;
@@ -138,7 +138,7 @@ public:
     FORMAST_API virtual void module_class(Class const & class_);
 
     FORMAST_API virtual void stats(Stats const & stats);
-    FORMAST_API virtual void stats_attr(Attr const & attr);
+    FORMAST_API virtual void stats_attr(Field const & attr);
     FORMAST_API virtual void stats_if(If const & if_);
 
     FORMAST_API virtual void expr(Expr const & e);

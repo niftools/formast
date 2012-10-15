@@ -41,7 +41,7 @@ public:
         close_tag("stats", false);
     }
 
-    virtual void stats_attr(Attr const & attr) {
+    virtual void stats_attr(Field const & attr) {
         open_tag("attr", false);
         open_tag("type", true);
         os << attr.type_;

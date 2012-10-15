@@ -21,7 +21,7 @@
 // upgrade structs to fusion sequences
 
 BOOST_FUSION_ADAPT_STRUCT(
-    formast::Attr,
+    formast::Field,
     (std::string, type_)
     (std::string, name)
     (boost::optional<formast::Doc>, doc)
@@ -401,7 +401,7 @@ void formast::XmlParser::parse_stream(std::istream & is, formast::Module & modul
             formast::Stats stats;
             BOOST_FOREACH(boost::property_tree::ptree::value_type & add, decl.second) {
                 if (add.first == "add") {
-                    Attr attr;
+                    Field attr;
                     attr.type_ = add.second.get<std::string>("<xmlattr>.type");
                     attr.name = add.second.get<std::string>("<xmlattr>.name");
                     std::string doc = add.second.data();
