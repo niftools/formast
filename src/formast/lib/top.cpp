@@ -1,4 +1,4 @@
-#include "top_impl.hpp"
+#include "module_impl.hpp"
 
 formast::Module::Impl::Impl()
     : std::vector<formast::detail::ModuleDecl>()

@@ -109,7 +109,7 @@ class CodeGenModule(CodeGenIndent, formast.Visitor):
         formast.Visitor.__init__(self)
         CodeGenIndent.__init__(self, parent=parent)
 
-    def top(self, t):
+    def module(self, t):
         self.print_("""# generated from integers.xml
 
 import struct
@@ -117,10 +117,10 @@ import struct
 def read_int(stream):
     return struct.unpack('<i', stream.read(4))[0]
 """)
-        formast.Visitor.top(self, t)
+        formast.Visitor.module(self, t)
         self.print_()
 
-    def top_class(self, c):
+    def module_class(self, c):
         self.print_("class %s:" % c.name)
         self.indent += 1
         if c.stats.is_initialized():
@@ -141,9 +141,9 @@ def read_int(stream):
         self.indent -= 1
 
 if __name__ == "__main__":
-    top = formast.Module()
+    module = formast.Module()
     with open("integers.xml", "rb") as stream:
-        formast.XmlParser().parse_string(stream.read(), top)
+        formast.XmlParser().parse_string(stream.read(), module)
     codegen = CodeGenModule()
-    codegen.top(top)
+    codegen.module(module)
     print(codegen)

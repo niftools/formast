@@ -17,11 +17,11 @@ def open_text(filename):
         return codecs.open(filename, "rb", "ascii")
 
 def test_codegen():
-    top = formast.Module()
+    module = formast.Module()
     with open_text("codegen/integers.xml") as stream:
-        formast.XmlParser().parse_string(stream.read(), top)
+        formast.XmlParser().parse_string(stream.read(), module)
     codegen_module = codegen.CodeGenModule()
-    codegen_module.top(top)
+    codegen_module.module(module)
     with open_text("codegen/integers.py") as stream:
         nose.tools.assert_multi_line_equal(stream.read(), str(codegen_module))
 

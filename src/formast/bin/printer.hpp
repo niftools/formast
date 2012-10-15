@@ -14,7 +14,7 @@ class Printer : public Visitor
 public:
     Printer(std::ostream & os) : Visitor(), os(os), level(0) {};
 
-    virtual void top_class(Class const & class_) {
+    virtual void module_class(Class const & class_) {
         open_tag("class", false);
         open_tag("name", true);
         os << class_.name;

@@ -6,7 +6,7 @@
 #include "formast.hpp"
 #include "expr_impl.hpp"
 #include "stats_impl.hpp"
-#include "top_impl.hpp"
+#include "module_impl.hpp"
 
 class formast::Visitor::ExprVisitor
 {
@@ -103,14 +103,14 @@ public:
 
     ModuleVisitor(Visitor & visitor) : visitor(visitor) {};
 
-    void top(formast::Module const & t) {
+    void module(formast::Module const & t) {
         BOOST_FOREACH(formast::detail::ModuleDecl const & decl, *t._impl) {
             boost::apply_visitor(*this, decl);
         }
     }
 
     void operator()(formast::Class const & class_) {
-        return visitor.top_class(class_);
+        return visitor.module_class(class_);
     }
 
     Visitor & visitor;
@@ -150,7 +150,7 @@ public:
 formast::Visitor::Visitor()
 {
     _expr_visitor = boost::shared_ptr<ExprVisitor>(new ExprVisitor(*this));
-    _top_visitor = boost::shared_ptr<ModuleVisitor>(new ModuleVisitor(*this));
+    _module_visitor = boost::shared_ptr<ModuleVisitor>(new ModuleVisitor(*this));
     _stats_visitor = boost::shared_ptr<StatsVisitor>(new StatsVisitor(*this));
 }
 
@@ -163,9 +163,9 @@ void formast::Visitor::expr(Expr const & e)
     _expr_visitor->expr(e);
 }
 
-void formast::Visitor::top(Module const & top)
+void formast::Visitor::module(Module const & module)
 {
-    _top_visitor->top(top);
+    _module_visitor->module(module);
 };
 
 void formast::Visitor::stats(Stats const & stats)
@@ -173,7 +173,7 @@ void formast::Visitor::stats(Stats const & stats)
     _stats_visitor->stats(stats);
 };
 
-void formast::Visitor::top_class(Class const & class_) {};
+void formast::Visitor::module_class(Class const & class_) {};
 
 void formast::Visitor::stats_attr(Attr const & attr) {};
 void formast::Visitor::stats_if(If const & if_) {};

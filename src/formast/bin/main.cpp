@@ -34,6 +34,6 @@ int main(int argc, char **argv)
         return 1;
     }
     formast::Printer print(std::cout);
-    print.top(ast);
+    print.module(ast);
     return 0;
 };

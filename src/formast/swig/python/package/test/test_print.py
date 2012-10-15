@@ -15,7 +15,7 @@ class Printer(formast.Visitor):
     def print_(self, txt):
         self.lines.append(" " * self.level + txt)
 
-    def top_class(self, c):
+    def module_class(self, c):
         self.print_("class:")
         self.level += 1
         self.print_("name: %s" % c.name)
@@ -216,9 +216,9 @@ class TestPrint:
         self.printer = Printer()
 
     def check(self, inp , out):
-        top = formast.Module()
-        self.parser.parse_string(self.make_input_from_cond(inp), top)
-        self.printer.top(top)
+        module = formast.Module()
+        self.parser.parse_string(self.make_input_from_cond(inp), module)
+        self.printer.module(module)
         nose.tools.assert_equal(str(self.printer), out)
 
     def make_input_from_cond(self, cond):
@@ -285,7 +285,7 @@ class:
       name: test""")
 
     def test_conditioning(self):
-        top = formast.Module()
+        module = formast.Module()
         self.parser.parse_string("""
 <niftoolsxml>
   <compound name="Test">
@@ -293,8 +293,8 @@ class:
     <add name="PS2 L" type="short" cond="Has Image" ver1="3.03" ver2="10.2.0.0" />
   </compound>
 </niftoolsxml>
-""", top)
-        self.printer.top(top)
+""", module)
+        self.printer.module(module)
         # note: 50332416 = 0x03000300 and 167903232 = 0x0A020000
         nose.tools.assert_equal(str(self.printer), """\
 class:

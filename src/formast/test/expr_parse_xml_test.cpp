@@ -41,7 +41,7 @@ public:
 
         std::ostringstream os;
         TestPrinter print(os);
-        print.top(ast);
+        print.module(ast);
         BOOST_CHECK_EQUAL(os.str(), xmlout);
     };
 };

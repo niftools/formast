@@ -5,7 +5,7 @@ set(FORMAST_LIBRARY_SOURCES
   expr.cpp
   parse.cpp
   stats.cpp
-  top.cpp
+  module.cpp
   visitor.cpp
 )
 

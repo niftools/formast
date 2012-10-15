@@ -109,26 +109,26 @@ class RuntimeClassRead(formast.Visitor):
 class RuntimeModule(object):
     """Module-like object that is populated with classes at runtime."""
 
-    def __init__(self, top):
-        self._ast_top = top
+    def __init__(self, module):
+        self._ast_module = module
         RuntimeModuleInit(self)
 
 class RuntimeModuleInit(formast.Visitor):
     """Populate module with classes."""
 
-    def __init__(self, mod):
+    def __init__(self, pymod):
         formast.Visitor.__init__(self)
-        self.mod = mod
-        self.top(mod._ast_top)
+        self.pymod = pymod
+        self.module(mod._ast_module)
 
-    def top_class(self, c):
+    def module_class(self, c):
         # create class at runtime
         # see http://docs.python.org/library/functions.html#type
         setattr(self.mod, c.name,
                 type(c.name, (RuntimeClass,), dict(_ast_class=c)))
 
 if __name__ == "__main__":
-    top = formast.Module()
+    module = formast.Module()
     with open("../codegen/integers.xml", "rb") as stream:
-        formast.XmlParser().parse_string(stream.read(), top)
-    mod = RuntimeModule(top)
+        formast.XmlParser().parse_string(stream.read(), module)
+    pymod = RuntimeModule(module)
