@@ -67,6 +67,8 @@ class Expr
 {
 public:
     FORMAST_API Expr();
+    FORMAST_API Expr(Expr const & e);
+    FORMAST_API Expr & operator=(Expr const & e);
 private:
     // pimpl idiom
     FORMAST_HIDDEN class Impl;

@@ -83,9 +83,8 @@ public:
     Impl();
 
     template <typename T>
-    static Expr create(T const & value) {
-        Expr e;
-        e._impl->tree =
+    static boost::shared_ptr<const formast::detail::ExprTree> create(T const & value) {
+        return
             boost::shared_ptr<const formast::detail::ExprTree>(
                 new formast::detail::ExprTree(value));
     };

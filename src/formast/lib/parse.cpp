@@ -84,8 +84,8 @@ private:
 public:
     Impl() {};
 
-// phoenix functions for constructing the abstract syntax tree with
-// semantic actions
+    // phoenix functions for constructing the abstract syntax tree with
+    // semantic actions
 
     struct copy_func {
         template <typename T1, typename T2 = void>
@@ -106,8 +106,7 @@ public:
         };
 
         void operator()(std::string & left, std::string const & right) const {
-            left = right;
-            boost::algorithm::trim(left);
+            left = boost::algorithm::trim_copy(right);
         }
     };
 
@@ -119,7 +118,7 @@ public:
         };
 
         void operator()(formast::Expr & left, const T & right) const {
-            left = formast::Expr::Impl::create(right);
+            left._impl->tree = formast::Expr::Impl::create(right);
         }
     };
 
@@ -133,7 +132,7 @@ public:
         void operator()(formast::Expr & left, formast::Expr const & right) const {
             assert(left._impl->tree != 0);
             assert(right._impl->tree != 0);
-            left = formast::Expr::Impl::create(detail::binary_op(op_type, left, right));
+            left._impl->tree = formast::Expr::Impl::create(detail::binary_op(op_type, left, right));
         }
     };
 
@@ -146,43 +145,43 @@ public:
 
         void operator()(formast::Expr & left, formast::Expr & right) const {
             assert(right._impl->tree != 0);
-            left = formast::Expr::Impl::create(detail::unary_op(op_type, right));
+            left._impl->tree = formast::Expr::Impl::create(detail::unary_op(op_type, right));
         }
     };
 
-    static boost::phoenix::function<binary_func<detail::binary_op::logical_or> > const _logical_or;
-    static boost::phoenix::function<binary_func<detail::binary_op::logical_and> > const _logical_and;
-    static boost::phoenix::function<binary_func<detail::binary_op::bit_or> > const _bit_or;
-    static boost::phoenix::function<binary_func<detail::binary_op::bit_xor> > const _bit_xor;
-    static boost::phoenix::function<binary_func<detail::binary_op::bit_and> > const _bit_and;
-    static boost::phoenix::function<binary_func<detail::binary_op::equal> > const _equal;
-    static boost::phoenix::function<binary_func<detail::binary_op::not_equal> > const _not_equal;
-    static boost::phoenix::function<binary_func<detail::binary_op::less> > const _less;
-    static boost::phoenix::function<binary_func<detail::binary_op::less_equal> > const _less_equal;
-    static boost::phoenix::function<binary_func<detail::binary_op::greater> > const _greater;
-    static boost::phoenix::function<binary_func<detail::binary_op::greater_equal> > const _greater_equal;
-    static boost::phoenix::function<binary_func<detail::binary_op::shift_left> > const _shift_left;
-    static boost::phoenix::function<binary_func<detail::binary_op::shift_right> > const _shift_right;
-    static boost::phoenix::function<binary_func<detail::binary_op::plus> > const _add;
-    static boost::phoenix::function<binary_func<detail::binary_op::minus> > const _sub;
-    static boost::phoenix::function<binary_func<detail::binary_op::times> > const _mul;
-    static boost::phoenix::function<binary_func<detail::binary_op::divide> > const _div;
-    static boost::phoenix::function<binary_func<detail::binary_op::mod> > const _mod;
-    static boost::phoenix::function<binary_func<detail::binary_op::pow> > const _pow;
-    static boost::phoenix::function<unary_func<detail::unary_op::pos> > const _pos;
-    static boost::phoenix::function<unary_func<detail::unary_op::neg> > const _neg;
-    static boost::phoenix::function<unary_func<detail::unary_op::logical_not> > const _logical_not;
-    static boost::phoenix::function<assign_func<std::string> > const _ident;
-    static boost::phoenix::function<assign_func<boost::uint64_t> > const _uint;
-    static boost::phoenix::function<copy_func> const _copy;
-    static boost::phoenix::function<trim_func> const _trim;
-
-// the actual grammar
+    // the actual grammar
 
     template <typename Iterator>
     struct expr_grammar : qi::grammar<Iterator, formast::Expr(), ascii::space_type> {
 
         expr_grammar() : expr_grammar::base_type(expr) {
+
+        boost::phoenix::function<binary_func<detail::binary_op::logical_or> > const _logical_or;
+        boost::phoenix::function<binary_func<detail::binary_op::logical_and> > const _logical_and;
+        boost::phoenix::function<binary_func<detail::binary_op::bit_or> > const _bit_or;
+        boost::phoenix::function<binary_func<detail::binary_op::bit_xor> > const _bit_xor;
+        boost::phoenix::function<binary_func<detail::binary_op::bit_and> > const _bit_and;
+        boost::phoenix::function<binary_func<detail::binary_op::equal> > const _equal;
+        boost::phoenix::function<binary_func<detail::binary_op::not_equal> > const _not_equal;
+        boost::phoenix::function<binary_func<detail::binary_op::less> > const _less;
+        boost::phoenix::function<binary_func<detail::binary_op::less_equal> > const _less_equal;
+        boost::phoenix::function<binary_func<detail::binary_op::greater> > const _greater;
+        boost::phoenix::function<binary_func<detail::binary_op::greater_equal> > const _greater_equal;
+        boost::phoenix::function<binary_func<detail::binary_op::shift_left> > const _shift_left;
+        boost::phoenix::function<binary_func<detail::binary_op::shift_right> > const _shift_right;
+        boost::phoenix::function<binary_func<detail::binary_op::plus> > const _add;
+        boost::phoenix::function<binary_func<detail::binary_op::minus> > const _sub;
+        boost::phoenix::function<binary_func<detail::binary_op::times> > const _mul;
+        boost::phoenix::function<binary_func<detail::binary_op::divide> > const _div;
+        boost::phoenix::function<binary_func<detail::binary_op::mod> > const _mod;
+        boost::phoenix::function<binary_func<detail::binary_op::pow> > const _pow;
+        boost::phoenix::function<unary_func<detail::unary_op::pos> > const _pos;
+        boost::phoenix::function<unary_func<detail::unary_op::neg> > const _neg;
+        boost::phoenix::function<unary_func<detail::unary_op::logical_not> > const _logical_not;
+        boost::phoenix::function<assign_func<std::string> > const _ident;
+        boost::phoenix::function<assign_func<boost::uint64_t> > const _uint;
+        boost::phoenix::function<copy_func> const _copy;
+        boost::phoenix::function<trim_func> const _trim;
 
         qi::lexeme_type lexeme;
         qi::lit_type lit;
@@ -308,7 +307,7 @@ public:
     qi::rule<Iterator, boost::uint64_t(), ascii::space_type> uint_or_version;
     };
 
-// helper function for parsing expression from stream
+    // helper function for parsing expression from stream
     void _expr_parse_stream(std::istream & is, formast::Expr & e) {
         // disable white space skipping
         is.unsetf(std::ios::skipws);
@@ -327,15 +326,15 @@ public:
         }
     }
 
-// helper function for parsing expression from string
+    // helper function for parsing expression from string
     void _expr_xml_parse_string(std::string const & s, formast::Expr & e) {
         std::istringstream is(s);
         _expr_parse_stream(is, e);
     }
 
-// parse s
-// if expr contains nothing, assign parsed expression
-// otherwise, && with parsed expression
+    // parse s
+    // if expr contains nothing, assign parsed expression
+    // otherwise, && with parsed expression
     void _expr_xml_parse_helper(std::string const & s, formast::Expr & e) {
         formast::Expr e2;
         _expr_xml_parse_string(s, e2);
@@ -344,7 +343,7 @@ public:
             binary_func<detail::binary_op::logical_and> const _logical_and_impl;
             _logical_and_impl(e, e2);
         } else {
-            e = e2;
+            e._impl->tree = e2._impl->tree;
         }
     }
 
