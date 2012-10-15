@@ -36,7 +36,7 @@ public:
         std::string xmlout =
             "<class><name>Test</name><stats><if><expr>"
             + out
-            + "</expr><then><stats><attr><type>uint</type><name>test</name></attr></stats></then></if></stats></class>";
+            + "</expr><then><stats><field><type>uint</type><name>test</name></field></stats></then></if></stats></class>";
         BOOST_CHECK_NO_THROW(parser.parse_string(xmlin, ast));
 
         std::ostringstream os;

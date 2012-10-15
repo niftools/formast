@@ -67,7 +67,7 @@ class RuntimeClassInit(formast.Visitor):
         if obj._ast_class.stats.is_initialized():
             self.stats(obj._ast_class.stats.get())
 
-    def stats_attr(self, a):
+    def stats_field(self, a):
         # note: in the example, type is always int, so this is rather simple
         if not a.arr1.is_initialized():
             setattr(self.obj, api_name(a.name), 0)
@@ -88,7 +88,7 @@ class RuntimeClassRead(formast.Visitor):
         if obj._ast_class.stats.is_initialized():
             self.stats(obj._ast_class.stats.get())
 
-    def stats_attr(self, a):
+    def stats_field(self, a):
         # everything is an integer, so this is rather simple
         if not a.arr1.is_initialized():
             setattr(self.obj, api_name(a.name), read_int(self.stream))

@@ -135,8 +135,8 @@ public:
         }
     }
 
-    void operator()(formast::Field const & attr) {
-        visitor.stats_attr(attr);
+    void operator()(formast::Field const & field) {
+        visitor.stats_field(field);
     }
 
     void operator()(formast::If const & if_) {
@@ -175,7 +175,7 @@ void formast::Visitor::stats(Stats const & stats)
 
 void formast::Visitor::module_class(Class const & class_) {};
 
-void formast::Visitor::stats_attr(Field const & attr) {};
+void formast::Visitor::stats_field(Field const & field) {};
 void formast::Visitor::stats_if(If const & if_) {};
 
 void formast::Visitor::expr_uint(boost::uint64_t const & n) {};

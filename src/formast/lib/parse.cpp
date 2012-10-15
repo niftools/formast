@@ -401,27 +401,27 @@ void formast::XmlParser::parse_stream(std::istream & is, formast::Module & modul
             formast::Stats stats;
             BOOST_FOREACH(boost::property_tree::ptree::value_type & add, decl.second) {
                 if (add.first == "add") {
-                    Field attr;
-                    attr.type_ = add.second.get<std::string>("<xmlattr>.type");
-                    attr.name = add.second.get<std::string>("<xmlattr>.name");
+                    Field field;
+                    field.type_ = add.second.get<std::string>("<xmlattr>.type");
+                    field.name = add.second.get<std::string>("<xmlattr>.name");
                     std::string doc = add.second.data();
                     boost::algorithm::trim(doc);
                     if (!doc.empty()) {
-                        attr.doc = doc;
+                        field.doc = doc;
                     }
                     boost::optional<std::string> arr1 =
                         add.second.get_optional<std::string>("<xmlattr>.arr1");
                     if (arr1) {
                         Expr e;
                         _impl->_expr_xml_parse_string(arr1.get(), e);
-                        attr.arr1 = e;
+                        field.arr1 = e;
                     }
                     boost::optional<std::string> arr2 =
                         add.second.get_optional<std::string>("<xmlattr>.arr2");
                     if (arr2) {
                         Expr e;
                         _impl->_expr_xml_parse_string(arr2.get(), e);
-                        attr.arr2 = e;
+                        field.arr2 = e;
                     }
                     boost::optional<std::string> ver1 =
                         add.second.get_optional<std::string>("<xmlattr>.ver1");
@@ -453,10 +453,10 @@ void formast::XmlParser::parse_stream(std::istream & is, formast::Module & modul
                     if (e._impl->tree) {
                         formast::If if_;
                         if_.expr = e;
-                        if_.then._impl->push_back(attr);
+                        if_.then._impl->push_back(field);
                         stats._impl->push_back(if_);
                     } else {
-                        stats._impl->push_back(attr);
+                        stats._impl->push_back(field);
                     }
                 };
             };

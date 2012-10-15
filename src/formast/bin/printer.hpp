@@ -41,20 +41,20 @@ public:
         close_tag("stats", false);
     }
 
-    virtual void stats_attr(Field const & attr) {
-        open_tag("attr", false);
+    virtual void stats_field(Field const & field) {
+        open_tag("field", false);
         open_tag("type", true);
-        os << attr.type_;
+        os << field.type_;
         close_tag("type", true);
         open_tag("name", true);
-        os << attr.name;
+        os << field.name;
         close_tag("name", true);
-        if (attr.doc) {
+        if (field.doc) {
             open_tag("doc", true);
-            os << attr.doc.get();
+            os << field.doc.get();
             close_tag("doc", true);
         }
-        close_tag("attr", false);
+        close_tag("field", false);
     }
 
     virtual void stats_if(If const & if_) {

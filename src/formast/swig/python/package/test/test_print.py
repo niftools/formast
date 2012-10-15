@@ -31,8 +31,8 @@ class Printer(formast.Visitor):
         formast.Visitor.stats(self, s)
         self.level -= 1
 
-    def stats_attr(self, a):
-        self.print_("attr:")
+    def stats_field(self, a):
+        self.print_("field:")
         self.level += 1
         self.print_("type: %s" % a.type_)
         self.print_("name: %s" % a.name)
@@ -240,7 +240,7 @@ class:
    uint: 99
    then:
     stats:
-     attr:
+     field:
       type: uint
       name: test""")
 
@@ -255,7 +255,7 @@ class:
     uint: 2
    then:
     stats:
-     attr:
+     field:
       type: uint
       name: test""")
 
@@ -280,7 +280,7 @@ class:
       uint: 4
    then:
     stats:
-     attr:
+     field:
       type: uint
       name: test""")
 
@@ -300,7 +300,7 @@ class:
 class:
  name: Test
  stats:
-  attr:
+  field:
    type: bool
    name: Has Image
   if:
@@ -315,6 +315,6 @@ class:
      uint: 167903232
    then:
     stats:
-     attr:
+     field:
       type: short
       name: PS2 L""")

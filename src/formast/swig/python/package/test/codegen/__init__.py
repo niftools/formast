@@ -61,7 +61,7 @@ class CodeGenClassInit(formast.Visitor, CodeGenIndent):
         formast.Visitor.__init__(self)
         CodeGenIndent.__init__(self, parent=parent)
 
-    def stats_attr(self, a):
+    def stats_field(self, a):
         # note: in the example, type is always int, so this is rather simple
         if not a.arr1.is_initialized():
             self.print_("self.%s = 0" % api_name(a.name))
@@ -79,7 +79,7 @@ class CodeGenClassRead(formast.Visitor, CodeGenIndent):
         formast.Visitor.__init__(self)
         CodeGenIndent.__init__(self, parent=parent)
 
-    def stats_attr(self, a):
+    def stats_field(self, a):
         # everything is an integer, so this is rather simple
         if not a.arr1.is_initialized():
             self.print_("self.%s = read_int(stream)" % api_name(a.name))
