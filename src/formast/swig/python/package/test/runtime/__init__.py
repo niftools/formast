@@ -119,12 +119,12 @@ class RuntimeModuleInit(formast.Visitor):
     def __init__(self, pymod):
         formast.Visitor.__init__(self)
         self.pymod = pymod
-        self.module(mod._ast_module)
+        self.module(pymod._ast_module)
 
     def module_class(self, c):
         # create class at runtime
         # see http://docs.python.org/library/functions.html#type
-        setattr(self.mod, c.name,
+        setattr(self.pymod, c.name,
                 type(c.name, (RuntimeClass,), dict(_ast_class=c)))
 
 if __name__ == "__main__":
