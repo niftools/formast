@@ -11,7 +11,7 @@ Short term
 
 * Refactor expression parser into a separate cpp file.
 
-* Complete documentation.
+* Complete user documentation and developer documentation.
 
 Long term
 ---------
