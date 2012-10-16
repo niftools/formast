@@ -34,7 +34,7 @@ and overload the desired methods.
    .. cpp:function:: void stats_field(Field const & field)
    .. cpp:function:: void stats_if(If const & if_)
 
-   .. cpp:function:: void expr(formast::Expr const & e)
+   .. cpp:function:: void expr(Expr const & e)
 
       Visits an :cpp:class:`formast::Expr`,
       dispatching
@@ -42,12 +42,12 @@ and overload the desired methods.
 
    .. cpp:function:: void expr_uint(boost::uint64_t const & n)
    .. cpp:function:: void expr_id(std::string const & i)
-   .. cpp:function:: void expr_pos(formast::Expr const & right)
-   .. cpp:function:: void expr_neg(formast::Expr const & right)
-   .. cpp:function:: void expr_add(formast::Expr const & left, formast::Expr const & right)
-   .. cpp:function:: void expr_sub(formast::Expr const & left, formast::Expr const & right)
-   .. cpp:function:: void expr_mul(formast::Expr const & left, formast::Expr const & right)
-   .. cpp:function:: void expr_div(formast::Expr const & left, formast::Expr const & right)
+   .. cpp:function:: void expr_pos(Expr const & right)
+   .. cpp:function:: void expr_neg(Expr const & right)
+   .. cpp:function:: void expr_add(Expr const & left, Expr const & right)
+   .. cpp:function:: void expr_sub(Expr const & left, Expr const & right)
+   .. cpp:function:: void expr_mul(Expr const & left, Expr const & right)
+   .. cpp:function:: void expr_div(Expr const & left, Expr const & right)
    .. cpp:function:: void expr_mod(Expr const & left, Expr const & right)
    .. cpp:function:: void expr_pow(Expr const & left, Expr const & right)
    .. cpp:function:: void expr_logical_and(Expr const & left, Expr const & right)
