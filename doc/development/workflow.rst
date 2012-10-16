@@ -37,17 +37,19 @@ Compile
 In buildenv, ``build/formast`` folder, run on Linux::
 
   make
+  make package
 
 or, on Windows::
 
   nmake
+  nmake package
 
 Wrapper packages for Java and Python will also be generated, you will
 find those in the build folders ``swig/java`` and ``swig/python/package``.
 
 By default, SWIG only creates a source package for Python.
-To create a binary package for Python, run ``python setup.py bdist``
-from the ``swig/python/package`` build folder.
+To create a binary package for Python, run ``python setup.py bdist_egg``
+from the ``src/formast/swig/python/package`` build folder.
 
 Run Regression Tests
 --------------------

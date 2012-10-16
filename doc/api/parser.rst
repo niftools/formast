@@ -5,13 +5,13 @@ Parser
 
    Abstract base class for parsers.
 
-   .. cpp:function:: Expr parse_stream(std::istream & is)
+   .. cpp:function:: void parse_stream(std::istream & is, Module & module)
 
-      Parse input stream into an abstract syntax tree.
+      Parse input stream into a :cpp:class:`Module`.
 
-   .. cpp:function:: Expr parse_string(std::string const & s)
+   .. cpp:function:: void parse_string(std::string const & s, Module & module)
 
-      Parse string into an abstract syntax tree.
+      Parse string into a :cpp:class:`Module`.
 
 .. cpp:class:: formast::XmlParser
 

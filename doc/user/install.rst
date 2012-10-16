@@ -10,12 +10,12 @@ MSVC
 Python
 ------
 
-.. warning::
-
-   This is a stub; FormAST isn't yet on pypi.
-
 Simply run::
 
+   easy_install formast
+
+.. note: pip does not yet support binary packages, so let's not recommend it yet
+..
    pip install formast
 
 Java

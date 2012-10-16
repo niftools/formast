@@ -6,7 +6,7 @@ mkdir build-formast
 cd build-formast
 cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DBUILD_JAVA=OFF ..\formast
 nmake
-cpack -G ZIP
-cd swig\python\package
+nmake package
+cd src\formast\swig\python\package
 python setup.py bdist_egg
 
