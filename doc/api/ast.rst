@@ -4,7 +4,7 @@ Abstract Syntax Tree
 The abstract syntax tree is created from xml code,
 via :cpp:func:`formast::Parser::parse_stream`
 or :cpp:func:`formast::Parser::parse_string`.
-The tree itself consists of hierarchical structure of nodes.
+The tree itself consists of a hierarchical structure of nodes.
 This hierarchical structure is exposed via :cpp:class:`formast::Visitor`\ s.
 
 .. cpp:class:: formast::Module
