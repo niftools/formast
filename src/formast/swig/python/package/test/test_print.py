@@ -15,7 +15,7 @@ class Printer(formast.Visitor):
     def print_(self, txt):
         self.lines.append(" " * self.level + txt)
 
-    def top_class(self, c):
+    def module_class(self, c):
         self.print_("class:")
         self.level += 1
         self.print_("name: %s" % c.name)
@@ -31,10 +31,10 @@ class Printer(formast.Visitor):
         formast.Visitor.stats(self, s)
         self.level -= 1
 
-    def stats_attr(self, a):
-        self.print_("attr:")
+    def stats_field(self, a):
+        self.print_("field:")
         self.level += 1
-        self.print_("class_name: %s" % a.class_name)
+        self.print_("type: %s" % a.type_)
         self.print_("name: %s" % a.name)
         self.level -= 1
 
@@ -216,9 +216,9 @@ class TestPrint:
         self.printer = Printer()
 
     def check(self, inp , out):
-        top = formast.Top()
-        self.parser.parse_string(self.make_input_from_cond(inp), top)
-        self.printer.top(top)
+        module = formast.Module()
+        self.parser.parse_string(self.make_input_from_cond(inp), module)
+        self.printer.module(module)
         nose.tools.assert_equal(str(self.printer), out)
 
     def make_input_from_cond(self, cond):
@@ -240,8 +240,8 @@ class:
    uint: 99
    then:
     stats:
-     attr:
-      class_name: uint
+     field:
+      type: uint
       name: test""")
 
     def test_add(self):
@@ -255,8 +255,8 @@ class:
     uint: 2
    then:
     stats:
-     attr:
-      class_name: uint
+     field:
+      type: uint
       name: test""")
 
     def test_complicated(self):
@@ -280,12 +280,12 @@ class:
       uint: 4
    then:
     stats:
-     attr:
-      class_name: uint
+     field:
+      type: uint
       name: test""")
 
     def test_conditioning(self):
-        top = formast.Top()
+        module = formast.Module()
         self.parser.parse_string("""
 <niftoolsxml>
   <compound name="Test">
@@ -293,15 +293,15 @@ class:
     <add name="PS2 L" type="short" cond="Has Image" ver1="3.03" ver2="10.2.0.0" />
   </compound>
 </niftoolsxml>
-""", top)
-        self.printer.top(top)
+""", module)
+        self.printer.module(module)
         # note: 50332416 = 0x03000300 and 167903232 = 0x0A020000
         nose.tools.assert_equal(str(self.printer), """\
 class:
  name: Test
  stats:
-  attr:
-   class_name: bool
+  field:
+   type: bool
    name: Has Image
   if:
    logical_and:
@@ -315,6 +315,6 @@ class:
      uint: 167903232
    then:
     stats:
-     attr:
-      class_name: short
+     field:
+      type: short
       name: PS2 L""")

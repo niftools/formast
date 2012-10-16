@@ -14,7 +14,7 @@ class Printer : public Visitor
 public:
     Printer(std::ostream & os) : Visitor(), os(os), level(0) {};
 
-    virtual void top_class(Class const & class_) {
+    virtual void module_class(Class const & class_) {
         open_tag("class", false);
         open_tag("name", true);
         os << class_.name;
@@ -41,20 +41,20 @@ public:
         close_tag("stats", false);
     }
 
-    virtual void stats_attr(Attr const & attr) {
-        open_tag("attr", false);
-        open_tag("class_name", true);
-        os << attr.class_name;
-        close_tag("class_name", true);
+    virtual void stats_field(Field const & field) {
+        open_tag("field", false);
+        open_tag("type", true);
+        os << field.type_;
+        close_tag("type", true);
         open_tag("name", true);
-        os << attr.name;
+        os << field.name;
         close_tag("name", true);
-        if (attr.doc) {
+        if (field.doc) {
             open_tag("doc", true);
-            os << attr.doc.get();
+            os << field.doc.get();
             close_tag("doc", true);
         }
-        close_tag("attr", false);
+        close_tag("field", false);
     }
 
     virtual void stats_if(If const & if_) {

@@ -17,12 +17,12 @@ def open_text(filename):
 
 # returns the actual module, so we can use it in further tests
 def get_runtime():
-    top = formast.Top()
+    module = formast.Module()
     with open_text("codegen/integers.xml") as stream:
-        formast.XmlParser().parse_string(stream.read(), top)
-    return runtime.RuntimeModule(top)
+        formast.XmlParser().parse_string(stream.read(), module)
+    return runtime.RuntimeModule(module)
 
-def test_runtime_top():
+def test_runtime_module():
     mod = get_runtime()
     nose.tools.assert_in("IntegerData", dir(mod))
 

@@ -37,10 +37,10 @@
 namespace formast
 {
 
-class Top
+class Module
 {
 public:
-    FORMAST_API Top();
+    FORMAST_API Module();
 private:
     // pimpl idiom
     FORMAST_HIDDEN class Impl;
@@ -80,10 +80,10 @@ private:
 
 typedef std::string Doc;
 
-class Attr
+class Field
 {
 public:
-    std::string class_name;
+    std::string type_;
     std::string name;
     boost::optional<Doc> doc;
     boost::optional<Expr> arr1;
@@ -112,8 +112,8 @@ class Parser
 public:
     FORMAST_API Parser();
     FORMAST_API virtual ~Parser();
-    FORMAST_API virtual void parse_stream(std::istream & is, Top & top) = 0;
-    FORMAST_API void parse_string(std::string const & s, Top & top);
+    FORMAST_API virtual void parse_stream(std::istream & is, Module & module) = 0;
+    FORMAST_API void parse_string(std::string const & s, Module & module);
 private:
     // pimpl idiom
     FORMAST_HIDDEN class Impl;
@@ -125,7 +125,7 @@ class XmlParser : public Parser
 {
 public:
     FORMAST_API XmlParser();
-    FORMAST_API virtual void parse_stream(std::istream & is, Top & top);
+    FORMAST_API virtual void parse_stream(std::istream & is, Module & module);
 };
 
 class Visitor
@@ -134,11 +134,11 @@ public:
     FORMAST_API Visitor();
     FORMAST_API virtual ~Visitor();
 
-    FORMAST_API virtual void top(Top const & top);
-    FORMAST_API virtual void top_class(Class const & class_);
+    FORMAST_API virtual void module(Module const & module);
+    FORMAST_API virtual void module_class(Class const & class_);
 
     FORMAST_API virtual void stats(Stats const & stats);
-    FORMAST_API virtual void stats_attr(Attr const & attr);
+    FORMAST_API virtual void stats_field(Field const & field);
     FORMAST_API virtual void stats_if(If const & if_);
 
     FORMAST_API virtual void expr(Expr const & e);
@@ -170,8 +170,8 @@ private:
     // pimpl idiom
     FORMAST_HIDDEN class ExprVisitor;
     boost::shared_ptr<ExprVisitor> _expr_visitor;
-    FORMAST_HIDDEN class TopVisitor;
-    boost::shared_ptr<TopVisitor> _top_visitor;
+    FORMAST_HIDDEN class ModuleVisitor;
+    boost::shared_ptr<ModuleVisitor> _module_visitor;
     FORMAST_HIDDEN class StatsVisitor;
     boost::shared_ptr<StatsVisitor> _stats_visitor;
 };

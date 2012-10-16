@@ -67,7 +67,7 @@ class RuntimeClassInit(formast.Visitor):
         if obj._ast_class.stats.is_initialized():
             self.stats(obj._ast_class.stats.get())
 
-    def stats_attr(self, a):
+    def stats_field(self, a):
         # note: in the example, type is always int, so this is rather simple
         if not a.arr1.is_initialized():
             setattr(self.obj, api_name(a.name), 0)
@@ -88,7 +88,7 @@ class RuntimeClassRead(formast.Visitor):
         if obj._ast_class.stats.is_initialized():
             self.stats(obj._ast_class.stats.get())
 
-    def stats_attr(self, a):
+    def stats_field(self, a):
         # everything is an integer, so this is rather simple
         if not a.arr1.is_initialized():
             setattr(self.obj, api_name(a.name), read_int(self.stream))
@@ -109,26 +109,26 @@ class RuntimeClassRead(formast.Visitor):
 class RuntimeModule(object):
     """Module-like object that is populated with classes at runtime."""
 
-    def __init__(self, top):
-        self._ast_top = top
+    def __init__(self, module):
+        self._ast_module = module
         RuntimeModuleInit(self)
 
 class RuntimeModuleInit(formast.Visitor):
     """Populate module with classes."""
 
-    def __init__(self, mod):
+    def __init__(self, pymod):
         formast.Visitor.__init__(self)
-        self.mod = mod
-        self.top(mod._ast_top)
+        self.pymod = pymod
+        self.module(pymod._ast_module)
 
-    def top_class(self, c):
+    def module_class(self, c):
         # create class at runtime
         # see http://docs.python.org/library/functions.html#type
-        setattr(self.mod, c.name,
+        setattr(self.pymod, c.name,
                 type(c.name, (RuntimeClass,), dict(_ast_class=c)))
 
 if __name__ == "__main__":
-    top = formast.Top()
+    module = formast.Module()
     with open("../codegen/integers.xml", "rb") as stream:
-        formast.XmlParser().parse_string(stream.read(), top)
-    mod = RuntimeModule(top)
+        formast.XmlParser().parse_string(stream.read(), module)
+    pymod = RuntimeModule(module)

@@ -27,7 +27,7 @@ class ParseFixture
 public:
     ParseFixture() {};
     void parse_check(std::string const & in, std::string const & out) const {
-        formast::Top ast;
+        formast::Module ast;
         formast::XmlParser parser;
         std::string xmlin =
             "<niftoolsxml><compound name=\"Test\"><add type=\"uint\" name=\"test\" cond=\""
@@ -36,12 +36,12 @@ public:
         std::string xmlout =
             "<class><name>Test</name><stats><if><expr>"
             + out
-            + "</expr><then><stats><attr><class_name>uint</class_name><name>test</name></attr></stats></then></if></stats></class>";
+            + "</expr><then><stats><field><type>uint</type><name>test</name></field></stats></then></if></stats></class>";
         BOOST_CHECK_NO_THROW(parser.parse_string(xmlin, ast));
 
         std::ostringstream os;
         TestPrinter print(os);
-        print.top(ast);
+        print.module(ast);
         BOOST_CHECK_EQUAL(os.str(), xmlout);
     };
 };

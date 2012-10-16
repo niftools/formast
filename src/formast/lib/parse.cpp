@@ -16,13 +16,13 @@
 #include "formast.hpp"
 #include "expr_impl.hpp"
 #include "stats_impl.hpp"
-#include "top_impl.hpp"
+#include "module_impl.hpp"
 
 // upgrade structs to fusion sequences
 
 BOOST_FUSION_ADAPT_STRUCT(
-    formast::Attr,
-    (std::string, class_name)
+    formast::Field,
+    (std::string, type_)
     (std::string, name)
     (boost::optional<formast::Doc>, doc)
 )
@@ -358,10 +358,10 @@ formast::Parser::~Parser()
 {
 }
 
-void formast::Parser::parse_string(std::string const & s, formast::Top & top)
+void formast::Parser::parse_string(std::string const & s, formast::Module & module)
 {
     std::istringstream is(s);
-    parse_stream(is, top);
+    parse_stream(is, module);
 }
 
 formast::XmlParser::XmlParser()
@@ -369,7 +369,7 @@ formast::XmlParser::XmlParser()
 {
 }
 
-void formast::XmlParser::parse_stream(std::istream & is, formast::Top & top)
+void formast::XmlParser::parse_stream(std::istream & is, formast::Module & module)
 {
     // disable skipping of whitespace
     is.unsetf(std::ios::skipws);
@@ -388,7 +388,7 @@ void formast::XmlParser::parse_stream(std::istream & is, formast::Top & top)
             if (!doc.empty()) {
                 class_.doc = doc;
             }
-            top._impl->push_back(class_);
+            module._impl->push_back(class_);
         } else if (decl.first == "compound" || decl.first == "niobject") {
             Class class_;
             class_.name = decl.second.get<std::string>("<xmlattr>.name");
@@ -401,27 +401,27 @@ void formast::XmlParser::parse_stream(std::istream & is, formast::Top & top)
             formast::Stats stats;
             BOOST_FOREACH(boost::property_tree::ptree::value_type & add, decl.second) {
                 if (add.first == "add") {
-                    Attr attr;
-                    attr.class_name = add.second.get<std::string>("<xmlattr>.type");
-                    attr.name = add.second.get<std::string>("<xmlattr>.name");
+                    Field field;
+                    field.type_ = add.second.get<std::string>("<xmlattr>.type");
+                    field.name = add.second.get<std::string>("<xmlattr>.name");
                     std::string doc = add.second.data();
                     boost::algorithm::trim(doc);
                     if (!doc.empty()) {
-                        attr.doc = doc;
+                        field.doc = doc;
                     }
                     boost::optional<std::string> arr1 =
                         add.second.get_optional<std::string>("<xmlattr>.arr1");
                     if (arr1) {
                         Expr e;
                         _impl->_expr_xml_parse_string(arr1.get(), e);
-                        attr.arr1 = e;
+                        field.arr1 = e;
                     }
                     boost::optional<std::string> arr2 =
                         add.second.get_optional<std::string>("<xmlattr>.arr2");
                     if (arr2) {
                         Expr e;
                         _impl->_expr_xml_parse_string(arr2.get(), e);
-                        attr.arr2 = e;
+                        field.arr2 = e;
                     }
                     boost::optional<std::string> ver1 =
                         add.second.get_optional<std::string>("<xmlattr>.ver1");
@@ -453,17 +453,17 @@ void formast::XmlParser::parse_stream(std::istream & is, formast::Top & top)
                     if (e._impl->tree) {
                         formast::If if_;
                         if_.expr = e;
-                        if_.then._impl->push_back(attr);
+                        if_.then._impl->push_back(field);
                         stats._impl->push_back(if_);
                     } else {
-                        stats._impl->push_back(attr);
+                        stats._impl->push_back(field);
                     }
                 };
             };
             if (!stats._impl->empty()) {
                 class_.stats = stats;
             };
-            top._impl->push_back(class_);
+            module._impl->push_back(class_);
         };
     };
 }

@@ -14,7 +14,7 @@ namespace formast
 namespace detail
 {
 
-typedef boost::make_recursive_variant<formast::Attr, formast::If>::type StatDecl;
+typedef boost::make_recursive_variant<formast::Field, formast::If>::type StatDecl;
 
 }
 }
