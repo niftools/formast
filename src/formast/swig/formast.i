@@ -31,7 +31,6 @@ namespace boost {
                     // SWIG_CATCH_STDEXCEPT turns invalid_argument into SWIG_ValueError
                     throw std::invalid_argument("not initialized");
                 }
-                //fail:
             };
         }
 
