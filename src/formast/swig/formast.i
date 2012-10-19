@@ -3,6 +3,8 @@
 #include "formast.hpp"
 %}
 
+%include "exception.i"
+
 // tell swig about boost::uint64_t
 namespace boost {
     typedef unsigned long long uint64_t;
@@ -17,7 +19,20 @@ namespace boost {
     class optional
     {
     public:
-        T & get();
+        // ensure get() throws an appropriate exception
+        // (C++ implementation uses BOOST_ASSERT which may not be caught)
+        %extend {
+            T & get() {
+                if (self->is_initialized()) {
+                    return self->get();
+                } else {
+                    // SWIG_CATCH_STDEXCEPT turns invalid_argument into SWIG_ValueError
+                    throw std::invalid_argument("not initialized");
+                }
+                //fail:
+            };
+        }
+
         // bool conversion: different languages deal with this differently
 #ifdef SWIGPYTHON
         %extend {
@@ -45,7 +60,6 @@ namespace boost {
 %include "std_vector.i"
 %template(VectorIf) std::vector<formast::If>;
 
-%include "exception.i"
 %include "std_string.i"
 %ignore formast::Parser::parse_stream;
 %ignore formast::XmlParser::parse_stream;
