@@ -93,12 +93,12 @@ This hierarchical structure is exposed via :cpp:class:`formast::Visitor`\ s.
 
    See `boost documentation <http://www.boost.org/libs/optional>`_.
 
-   The SWIG wrappers exposes minimal, but sufficient, functionality:
+   The SWIG wrappers expose minimal, but sufficient, functionality:
 
    .. cpp:function:: T & get()
 
       Returns a reference to the contained value,
-      throwing an exception if no value is contained.
+      throwing a SWIG ValueError exception if no value is contained.
 
    .. cpp:function:: bool is_initialized() const
 
