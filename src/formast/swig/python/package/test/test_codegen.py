@@ -7,6 +7,9 @@ import sys
 import os.path
 import unittest
 
+# nose tools full support for older python versions
+import _compat
+
 unittest.TestCase.maxDiff = None
 
 def open_text(filename):
