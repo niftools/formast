@@ -4,6 +4,8 @@
 %}
 
 %include "exception.i"
+%include "std_string.i"
+%include "std_vector.i"
 
 // tell swig about boost::uint64_t
 namespace boost {
@@ -57,10 +59,6 @@ namespace boost {
 %template(OptionalStats) boost::optional<formast::Stats>;
 %template(OptionalString) boost::optional<std::string>;
 
-%include "std_vector.i"
-%template(VectorIf) std::vector<formast::If>;
-
-%include "std_string.i"
 %ignore formast::Parser::parse_stream;
 %ignore formast::XmlParser::parse_stream;
 %feature("director") formast::Visitor;
