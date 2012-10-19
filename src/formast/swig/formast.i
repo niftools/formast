@@ -9,13 +9,31 @@ namespace boost {
 }
 
 // tell swig about boost::optional
+// implementation note: class extensions need to be defined here
+// because the class is a template class, and in this case,
+// apparently, swig does not recognise %extend elsewhere
 namespace boost {
     template <typename T>
     class optional
     {
     public:
         T & get();
+        // bool conversion: different languages deal with this differently
+#ifdef SWIGPYTHON
+        %extend {
+            // Python 2.x bool conversion
+            bool __nonzero__() const {
+                return self->is_initialized();
+            }
+            // Python 3.x bool conversion
+            bool __bool__() const {
+                return self->is_initialized();
+            }
+        }
+#else
+        // default bool conversion
         bool is_initialized() const;
+#endif
     };
 }
 
