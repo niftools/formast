@@ -19,9 +19,9 @@ class Printer(formast.Visitor):
         self.print_("class:")
         self.level += 1
         self.print_("name: %s" % c.name)
-        if c.base_name.is_initialized():
+        if c.base_name:
             self.print_("base_name: %s" % c.base_name.get())
-        if c.stats.is_initialized():
+        if c.stats:
             self.stats(c.stats.get())
         self.level -= 1
 
@@ -46,7 +46,7 @@ class Printer(formast.Visitor):
         self.level += 1
         self.stats(if_.then)
         self.level -= 1
-        if if_.else_.is_initialized():
+        if if_.else_:
             self.print_("else:")
             self.level += 1
             self.stats(if_.else_.get())

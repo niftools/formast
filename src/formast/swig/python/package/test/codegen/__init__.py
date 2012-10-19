@@ -63,7 +63,7 @@ class CodeGenClassInit(formast.Visitor, CodeGenIndent):
 
     def stats_field(self, a):
         # note: in the example, type is always int, so this is rather simple
-        if not a.arr1.is_initialized():
+        if not a.arr1:
             self.print_("self.%s = 0" % api_name(a.name))
         else:
             self.print_("self.%s = []"  % api_name(a.name))
@@ -81,7 +81,7 @@ class CodeGenClassRead(formast.Visitor, CodeGenIndent):
 
     def stats_field(self, a):
         # everything is an integer, so this is rather simple
-        if not a.arr1.is_initialized():
+        if not a.arr1:
             self.print_("self.%s = read_int(stream)" % api_name(a.name))
         else:
             expr_eval = CodeGenExprEval()
@@ -123,7 +123,7 @@ def read_int(stream):
     def module_class(self, c):
         self.print_("class %s:" % c.name)
         self.indent += 1
-        if c.stats.is_initialized():
+        if c.stats:
             self.print_()
             self.print_("def __init__(self):")
             self.indent += 1

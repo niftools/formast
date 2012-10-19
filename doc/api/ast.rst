@@ -88,3 +88,26 @@ This hierarchical structure is exposed via :cpp:class:`formast::Visitor`\ s.
    .. cpp:member:: boost::optional<Stats> else_
 
       Applicable fields when expression evaluates to false (optional).
+
+.. cpp:class:: boost::optional<T>
+
+   See `boost documentation <http://www.boost.org/libs/optional>`_.
+
+   The SWIG wrappers expose minimal, but sufficient, functionality:
+
+   .. cpp:function:: T & get()
+
+      Returns a reference to the contained value,
+      throwing a SWIG ValueError exception if no value is contained.
+
+   .. cpp:function:: bool is_initialized() const
+
+      Returns ``true`` if the optional is initialized,
+      ``false`` otherwise.
+
+      .. note::
+
+         The Python wrapper does not expose :cpp:func:`is_initialized`.
+         Instead, it exposes :py:meth:`__nonzero__` (Python 2.x)
+         and :py:meth:`__bool__` (Python 3.x) for testing whether
+         a value is contained.

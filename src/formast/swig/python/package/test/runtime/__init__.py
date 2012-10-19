@@ -64,12 +64,12 @@ class RuntimeClassInit(formast.Visitor):
     def __init__(self, obj):
         formast.Visitor.__init__(self)
         self.obj = obj
-        if obj._ast_class.stats.is_initialized():
+        if obj._ast_class.stats:
             self.stats(obj._ast_class.stats.get())
 
     def stats_field(self, a):
         # note: in the example, type is always int, so this is rather simple
-        if not a.arr1.is_initialized():
+        if not a.arr1:
             setattr(self.obj, api_name(a.name), 0)
         else:
             setattr(self.obj, api_name(a.name), [])
@@ -85,12 +85,12 @@ class RuntimeClassRead(formast.Visitor):
         formast.Visitor.__init__(self)
         self.obj = obj
         self.stream = stream
-        if obj._ast_class.stats.is_initialized():
+        if obj._ast_class.stats:
             self.stats(obj._ast_class.stats.get())
 
     def stats_field(self, a):
         # everything is an integer, so this is rather simple
-        if not a.arr1.is_initialized():
+        if not a.arr1:
             setattr(self.obj, api_name(a.name), read_int(self.stream))
         else:
             expr_eval = RuntimeExprEval(self.obj)
