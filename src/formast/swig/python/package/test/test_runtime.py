@@ -10,7 +10,7 @@ unittest.TestCase.maxDiff = None
 
 def open_text(filename):
     # swig expects a str
-    if sys.version_info.major < 3:
+    if sys.version_info[0] < 3:
         return open(filename, "rb")
     else:
         return codecs.open(filename, "rb", "ascii")
