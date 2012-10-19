@@ -9,13 +9,13 @@ class Evaluator(formast.Visitor):
         self.stack = []
 
     def module_class(self, c):
-        if c.stats.is_initialized():
+        if c.stats:
             self.stats(c.stats.get())
 
     def stats_if(self, if_):
         self.expr(if_.expr)
         self.stats(if_.then)
-        if if_.else_.is_initialized():
+        if if_.else_:
             self.stats(if_.else_.get())
 
     def expr_uint(self, v):
