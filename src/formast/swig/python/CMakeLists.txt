@@ -10,7 +10,14 @@ set_source_files_properties(formast.i PROPERTIES CPLUSPLUS ON)
 swig_add_module(formast python formast.i)
 swig_link_libraries(formast formastlib ${PYTHON_LIBRARIES})
 
-# build package
+# build packages
 
-add_subdirectory(package)
-add_subdirectory(package_system)
+option(BUILD_PYTHON_PACKAGE "Build Python package." ON)
+option(BUILD_PYTHON_PACKAGE_SYSTEM "Build Python package using system libs." ON)
+
+if(BUILD_PYTHON_PACKAGE)
+  add_subdirectory(package)
+endif()
+if(BUILD_PYTHON_PACKAGE_SYSTEM)
+  add_subdirectory(package_system)
+endif()
