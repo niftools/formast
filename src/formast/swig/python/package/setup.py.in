@@ -1,5 +1,13 @@
 """Setup script for formast."""
 
+# set this to True if you want to link against system libs and
+# includes; this requires that you have the C++ boost and formast
+# dynamic libraries installed at default system locations (i.e.
+# /usr/lib and /usr/include on linux) or that you pass appropriate
+# --include-dirs and --library-dirs options to python setup.py
+# build_ext
+USE_SYSTEM_LIBS = @FORMAST_USE_SYSTEM_LIBS@
+
 from setuptools import setup
 from distutils.core import Extension
 import codecs
@@ -36,28 +44,38 @@ readme_lines = codecs.open("README.rst", "rb", "utf8").read().split('\n')
 
 extra_compile_args = []
 define_macros = []
-include_dirs=['include']
+if not USE_SYSTEM_LIBS:
+    include_dirs = ['include']
+else:
+    include_dirs = []
 
 ### library ###
 
-define_macros += [('FORMAST_STATIC', None)]
-clib_formast_sources = glob('lib/*.cpp')
-clib_formast = dict(
-    package='formast',
-    sources=clib_formast_sources,
-    extra_compile_args=extra_compile_args,
-    define_macros=define_macros,
-    include_dirs=include_dirs,
-    )
-libraries = [('formast_static', clib_formast)]
+if not USE_SYSTEM_LIBS:
+    define_macros += [('FORMAST_STATIC', None)]
+    clib_formast_sources = glob('lib/*.cpp')
+    clib_formast = dict(
+        package='formast',
+        sources=clib_formast_sources,
+        extra_compile_args=extra_compile_args,
+        define_macros=define_macros,
+        include_dirs=include_dirs,
+        )
+    libraries = [('formast_static', clib_formast)]
+else:
+    libraries = []
 
 ### extension module ###
 
 ext_formast_sources = ['formastPYTHON_wrap.cxx']
+if not USE_SYSTEM_LIBS:
+    ext_formast_libraries = ['formast_static']
+else:
+    ext_formast_libraries = ['formast']
 ext_formast = Extension(
     'formast._formast',
     sources=ext_formast_sources,
-    libraries=[library[0] for library in libraries],
+    libraries=ext_formast_libraries,
     extra_compile_args=extra_compile_args,
     define_macros=define_macros,
     include_dirs=include_dirs,
