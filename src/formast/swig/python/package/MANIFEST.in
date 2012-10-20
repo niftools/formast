@@ -1,3 +1,5 @@
 include README.rst
 include formastPYTHON_wrap.cxx
 include formastPYTHON_wrap.h
+recursive-include include *.hpp
+recursive-include lib *.cpp *.hpp

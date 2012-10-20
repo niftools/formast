@@ -12,11 +12,14 @@ file(COPY
     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
 )
 file(COPY
+    @Boost_INCLUDE_DIR@/boost/algorithm
+    @Boost_INCLUDE_DIR@/boost/fusion
     @Boost_INCLUDE_DIR@/boost/lexical_cast.hpp
     @Boost_INCLUDE_DIR@/boost/optional.hpp
+    @Boost_INCLUDE_DIR@/boost/optional
     @Boost_INCLUDE_DIR@/boost/shared_ptr.hpp
     @Boost_INCLUDE_DIR@/boost/spirit
-    @Boost_INCLUDE_DIR@/boost/variant.hpp
+    @Boost_INCLUDE_DIR@/boost/variant
     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/include/boost
 )
 
