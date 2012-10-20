@@ -44,34 +44,28 @@ readme_lines = codecs.open("README.rst", "rb", "utf8").read().split('\n')
 
 extra_compile_args = []
 define_macros = []
+include_dirs = []
 if not USE_SYSTEM_LIBS:
-    include_dirs = ['include']
-else:
-    include_dirs = []
+    include_dirs += ['include']
+ext_formast_libraries = []
+ext_formast_sources = ['formastPYTHON_wrap.cxx']
+
+### platform specific configuration ###
+
+if sys.platform == 'win32':
+    extra_compile_args += ['/EHsc']
 
 ### library ###
 
 if not USE_SYSTEM_LIBS:
+    # implementation note: don't use build_clib, it's broken on windows
     define_macros += [('FORMAST_STATIC', None)]
-    clib_formast_sources = glob('lib/*.cpp')
-    clib_formast = dict(
-        package='formast',
-        sources=clib_formast_sources,
-        extra_compile_args=extra_compile_args,
-        define_macros=define_macros,
-        include_dirs=include_dirs,
-        )
-    libraries = [('formast_static', clib_formast)]
+    ext_formast_sources += glob('lib/*.cpp')
 else:
-    libraries = []
+    ext_formast_libraries += ['formast']
 
 ### extension module ###
 
-ext_formast_sources = ['formastPYTHON_wrap.cxx']
-if not USE_SYSTEM_LIBS:
-    ext_formast_libraries = ['formast_static']
-else:
-    ext_formast_libraries = ['formast']
 ext_formast = Extension(
     'formast._formast',
     sources=ext_formast_sources,
@@ -81,11 +75,6 @@ ext_formast = Extension(
     include_dirs=include_dirs,
     )
 
-### platform specific configuration ###
-
-if sys.platform == "win32":
-    extra_compile_args += ['/EHsc']
-
 ### setup configuration ###
 
 setup(
@@ -94,7 +83,6 @@ setup(
     author='Amorilia',
     author_email='amorilia@users.sourceforge.net',
     packages=['formast'],
-    libraries=libraries,
     ext_modules=[ext_formast],
     download_url=r'http://pypi.python.org/pypi/formast/',
     platforms=['any'],
