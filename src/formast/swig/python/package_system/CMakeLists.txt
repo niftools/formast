@@ -1,8 +1,17 @@
 # build python package using system libs
 
+# OSPATH and OSPATHSEP for setup.cfg.in and tox.ini.in
+set(OSPATH "$ENV{PATH}")
+if(WIN32)
+  set(OSPATHSEP ";")
+else()
+  set(OSPATHSEP ":")
+endif()
+
 # copy source files
 set(FORMAST_USE_SYSTEM_LIBS True)
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/../package/setup.py.in" "${CMAKE_CURRENT_BINARY_DIR}/setup_use_system_libs.py")
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/../package/setup.py.in" "${CMAKE_CURRENT_BINARY_DIR}/setup.py")
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/setup.cfg.in" "${CMAKE_CURRENT_BINARY_DIR}/setup.cfg")
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/tox.ini.in" "${CMAKE_CURRENT_BINARY_DIR}/tox.ini")
 
 # target for source package
@@ -14,12 +23,6 @@ file(COPY
     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-if(WIN32)
-  set(OSPATHSEP ";")
-else()
-  set(OSPATHSEP ":")
-endif()
-
 # generate source package
 # must copy swig generated files into current directory
 add_custom_command(
@@ -29,10 +32,9 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E copy ../formastPYTHON_wrap.cxx .
   COMMAND ${CMAKE_COMMAND} -E copy ../formastPYTHON_wrap.h .
   COMMENT "Creating python sdist file (with system libs)..."
-  COMMAND ${PYTHON_EXECUTABLE} setup_use_system_libs.py sdist --format=zip --quiet
+  COMMAND ${PYTHON_EXECUTABLE} setup.py sdist --format=zip --quiet
   COMMENT "Creating python bdist file (with system libs)..."
-  COMMAND ${PYTHON_EXECUTABLE} setup_use_system_libs.py build_ext --include-dirs=@formast_SOURCE_DIR@/include@OSPATHSEP@@Boost_INCLUDE_DIR@ --library-dirs=@formast_BINARY_DIR@/src/formast/lib
-  COMMAND ${PYTHON_EXECUTABLE} setup_use_system_libs.py bdist --format=zip --quiet
+  COMMAND ${PYTHON_EXECUTABLE} setup.py bdist --format=zip --quiet
   DEPENDS ${SWIG_MODULE_formast_REAL_NAME}
 )
 
