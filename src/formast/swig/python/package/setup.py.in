@@ -29,7 +29,7 @@ Programming Language :: Python :: 3.3
 Operating System :: OS Independent"""
 #Topic :: Formats and Protocols :: Data Formats
 
-long_description = codecs.open("README.rst", "rb", "utf8").read()
+readme_lines = codecs.open("README.rst", "rb", "utf8").read().split('\n')
 
 sources = ['formastPYTHON_wrap.cxx']
 extra_compile_args = []
@@ -66,8 +66,8 @@ setup(
     download_url=r'http://pypi.python.org/pypi/formast/',
     platforms=['any'],
     zip_safe=False,
-    description=long_description.split('\n')[0],
-    long_description=long_description,
+    description=readme_lines[0],
+    long_description="\n".join(readme_lines[2:]),
     classifiers=[_f for _f in classifiers.split('\n') if _f],
     license='BSD',
     keywords='file format, abstract syntax tree',
