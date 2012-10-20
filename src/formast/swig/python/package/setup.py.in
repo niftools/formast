@@ -47,8 +47,8 @@ define_macros = []
 include_dirs = []
 if not USE_SYSTEM_LIBS:
     include_dirs += ['include']
-ext_formast_libraries = []
-ext_formast_sources = ['formastPYTHON_wrap.cxx']
+libraries = []
+sources = ['formastPYTHON_wrap.cxx']
 
 ### platform specific configuration ###
 
@@ -60,16 +60,16 @@ if sys.platform == 'win32':
 if not USE_SYSTEM_LIBS:
     # implementation note: don't use build_clib, it's broken on windows
     define_macros += [('FORMAST_STATIC', None)]
-    ext_formast_sources += glob('lib/*.cpp')
+    sources += glob('lib/*.cpp')
 else:
-    ext_formast_libraries += ['formast']
+    libraries += ['formast']
 
 ### extension module ###
 
 ext_formast = Extension(
     'formast._formast',
-    sources=ext_formast_sources,
-    libraries=ext_formast_libraries,
+    sources=sources,
+    libraries=libraries,
     extra_compile_args=extra_compile_args,
     define_macros=define_macros,
     include_dirs=include_dirs,
