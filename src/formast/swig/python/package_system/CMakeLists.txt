@@ -38,5 +38,5 @@ add_custom_command(
   DEPENDS ${SWIG_MODULE_formast_REAL_NAME}
 )
 
-add_test(python-tox
+add_test(python-system-libs-tox
     ${PYTHON_EXECUTABLE} -c "import tox; tox.cmdline()")
