@@ -12,10 +12,18 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/setup.py.in" "${CMAKE_CURRENT_BINARY
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/tox.ini.in" "${CMAKE_CURRENT_BINARY_DIR}/tox.ini")
 file(COPY 
     ${formast_SOURCE_DIR}/README.rst
+    ${formast_SOURCE_DIR}/src/formast/lib
+    ${formast_SOURCE_DIR}/include
     ${CMAKE_CURRENT_SOURCE_DIR}/MANIFEST.in
     ${CMAKE_CURRENT_SOURCE_DIR}/test
     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
-    )
+)
+file(COPY
+    @Boost_INCLUDE_DIR@/boost/spirit
+    @Boost_INCLUDE_DIR@/boost/shared_ptr.hpp
+    @Boost_INCLUDE_DIR@/boost/optional.hpp
+    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/include/boost
+)
 
 # target for source package
 set(FORMAST_PYTHON_SDIST_FILE dist/formast-${VERSION}.zip)
