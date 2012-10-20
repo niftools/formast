@@ -1,13 +1,6 @@
 # create python package that includes all sources
 
-if(WIN32)
-  set(OSPATHSEP ";")
-else()
-  set(OSPATHSEP ":")
-endif()
-
 # copy source files
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/setup.cfg.in" "${CMAKE_CURRENT_BINARY_DIR}/setup.cfg")
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/setup.py.in" "${CMAKE_CURRENT_BINARY_DIR}/setup.py")
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/tox.ini.in" "${CMAKE_CURRENT_BINARY_DIR}/tox.ini")
 file(COPY 
@@ -19,9 +12,11 @@ file(COPY
     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
 )
 file(COPY
-    @Boost_INCLUDE_DIR@/boost/spirit
-    @Boost_INCLUDE_DIR@/boost/shared_ptr.hpp
+    @Boost_INCLUDE_DIR@/boost/lexical_cast.hpp
     @Boost_INCLUDE_DIR@/boost/optional.hpp
+    @Boost_INCLUDE_DIR@/boost/shared_ptr.hpp
+    @Boost_INCLUDE_DIR@/boost/spirit
+    @Boost_INCLUDE_DIR@/boost/variant.hpp
     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/include/boost
 )
 
@@ -39,6 +34,7 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E copy ../formastPYTHON_wrap.cxx .
   COMMAND ${CMAKE_COMMAND} -E copy ../formastPYTHON_wrap.h .
   COMMAND ${PYTHON_EXECUTABLE} setup.py sdist --format=zip --quiet
+  COMMAND ${PYTHON_EXECUTABLE} setup.py bdist --format=zip --quiet
   DEPENDS ${SWIG_MODULE_formast_REAL_NAME}
 )
 

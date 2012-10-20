@@ -3,6 +3,7 @@
 from setuptools import setup
 from distutils.core import Extension
 import codecs
+from glob import glob
 import re
 import sys
 
@@ -31,28 +32,41 @@ Operating System :: OS Independent"""
 
 readme_lines = codecs.open("README.rst", "rb", "utf8").read().split('\n')
 
-sources = ['formastPYTHON_wrap.cxx']
+### global settings for library and extension module ###
+
 extra_compile_args = []
 define_macros = []
+include_dirs=['include']
+
+### library ###
+
+define_macros += [('FORMAST_STATIC', None)]
+clib_formast_sources = glob('lib/*.cpp')
+clib_formast = dict(
+    package='formast',
+    sources=formast_clib_sources,
+    extra_compile_args=extra_compile_args,
+    define_macros=define_macros,
+    include_dirs=include_dirs,
+    )
+libraries = [('formast_static', clib_formast)]
+
+### extension module ###
+
+ext_formast_sources = ['formastPYTHON_wrap.cxx']
+ext_formast = Extension(
+    'formast._formast',
+    sources=ext_formast_sources,
+    libraries=[library[0] for library in libraries],
+    extra_compile_args=extra_compile_args,
+    define_macros=define_macros,
+    include_dirs=include_dirs,
+    )
 
 ### platform specific configuration ###
 
 if sys.platform == "win32":
     extra_compile_args += ['/EHsc']
-    define_macros += [('FORMAST_STATIC', None)]
-    libraries = ['formast_static']
-else:
-    libraries = ['formast']
-
-### extension module ###
-
-ext_formast = Extension(
-    'formast._formast',
-    sources=sources,
-    libraries=libraries,
-    extra_compile_args=extra_compile_args,
-    define_macros=define_macros,
-    )
 
 ### setup configuration ###
 
@@ -62,6 +76,7 @@ setup(
     author='Amorilia',
     author_email='amorilia@users.sourceforge.net',
     packages=['formast'],
+    libraries=libraries,
     ext_modules=[ext_formast],
     download_url=r'http://pypi.python.org/pypi/formast/',
     platforms=['any'],

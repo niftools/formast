@@ -1,5 +1,0 @@
-[build_ext]
-# location of formast library
-library-dirs=@formast_BINARY_DIR@/src/formast/lib
-# location of formast headers and boost headers
-include-dirs=@formast_SOURCE_DIR@/include@OSPATHSEP@@Boost_INCLUDE_DIR@
