@@ -14,15 +14,46 @@ file(COPY
     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
 )
 file(COPY
-    @Boost_INCLUDE_DIR@/boost/algorithm
-    @Boost_INCLUDE_DIR@/boost/fusion
-    @Boost_INCLUDE_DIR@/boost/lexical_cast.hpp
-    @Boost_INCLUDE_DIR@/boost/optional.hpp
-    @Boost_INCLUDE_DIR@/boost/optional
-    @Boost_INCLUDE_DIR@/boost/shared_ptr.hpp
-    @Boost_INCLUDE_DIR@/boost/spirit
-    @Boost_INCLUDE_DIR@/boost/variant
-    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/include/boost
+    @Boost_INCLUDE_DIR@/boost
+    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/include
+    # try to include only what we need
+    FILES_MATCHING
+    PATTERN "boost/*.hpp"
+    REGEX "boost/algorithm/.*"
+    REGEX "boost/archive/.*"
+    REGEX "boost/bind/.*"
+    REGEX "boost/config/.*"
+    REGEX "boost/concept/.*"
+    REGEX "boost/detail/.*"
+    REGEX "boost/exception/.*"
+    REGEX "boost/function/.*"
+    REGEX "boost/function_types/.*"
+    REGEX "boost/functional/.*"
+    REGEX "boost/fusion/.*"
+    REGEX "boost/iostreams/.*"
+    REGEX "boost/iterator/.*"
+    REGEX "boost/math/.*"
+    REGEX "boost/mpl/.*"
+    REGEX "boost/multi_index/.*"
+    REGEX "boost/optional/.*"
+    REGEX "boost/preprocessor/.*"
+    REGEX "boost/property_tree/.*"
+    REGEX "boost/proto/.*"
+    REGEX "boost/range/.*"
+    REGEX "boost/regex/.*"
+    REGEX "boost/smart_ptr/.*"
+    REGEX "boost/serialization/.*"
+    REGEX "boost/spirit/.*"
+    REGEX "boost/typeof/.*"
+    REGEX "boost/tuple/.*"
+    REGEX "boost/type_traits/.*"
+    REGEX "boost/utility/.*"
+    REGEX "boost/variant/.*"
+    REGEX "boost/spirit/home/classic/.*" EXCLUDE
+    REGEX "boost/spirit/home/lex/.*" EXCLUDE
+    REGEX "boost/spirit/home/support/detail/lexer/.*" EXCLUDE
+    REGEX "boost/spirit/include/classic.*" EXCLUDE
+    REGEX "boost/spirit/include/phoenix1.*" EXCLUDE
 )
 
 # target for source package
