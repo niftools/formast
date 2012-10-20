@@ -7,5 +7,4 @@ target_link_libraries(formastapp formastlib)
 install(
     TARGETS formastapp
     RUNTIME DESTINATION bin
-    COMPONENT applications
 )

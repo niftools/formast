@@ -20,9 +20,9 @@ if(BUILD_SHARED_LIBRARY)
 
   install(
     TARGETS formastlib
-    RUNTIME DESTINATION bin COMPONENT libraries
-    LIBRARY DESTINATION lib COMPONENT libraries
-    ARCHIVE DESTINATION lib COMPONENT libraries
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
   )
 endif()
 
@@ -39,8 +39,8 @@ if(BUILD_STATIC_LIBRARY)
 
   install(
     TARGETS formaststaticlib
-    RUNTIME DESTINATION bin COMPONENT libraries
-    LIBRARY DESTINATION lib COMPONENT libraries
-    ARCHIVE DESTINATION lib COMPONENT libraries
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
   )
 endif()
