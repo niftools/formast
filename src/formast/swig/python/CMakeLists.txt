@@ -13,3 +13,4 @@ swig_link_libraries(formast formastlib ${PYTHON_LIBRARIES})
 # build package
 
 add_subdirectory(package)
+add_subdirectory(package_system)
