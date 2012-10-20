@@ -1,9 +1,9 @@
 # build python package using system libs
-# (not tested, these are delegated to ../package)
 
 # copy source files
 set(FORMAST_USE_SYSTEM_LIBS True)
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/../package/setup.py.in" "${CMAKE_CURRENT_BINARY_DIR}/setup_use_system_libs.py")
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/tox.ini.in" "${CMAKE_CURRENT_BINARY_DIR}/tox.ini")
 
 # target for source package
 set(FORMAST_PYTHON_SDIST_SYSTEM_LIBS_FILE dist/formast-${VERSION}.zip)
