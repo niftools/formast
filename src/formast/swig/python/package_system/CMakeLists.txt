@@ -32,9 +32,9 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E copy ../formastPYTHON_wrap.cxx .
   COMMAND ${CMAKE_COMMAND} -E copy ../formastPYTHON_wrap.h .
   COMMENT "Creating python sdist file (with system libs)..."
-  COMMAND ${PYTHON_EXECUTABLE} setup.py sdist --format=zip --quiet
-  COMMENT "Creating python bdist file (with system libs)..."
-  COMMAND ${PYTHON_EXECUTABLE} setup.py bdist --format=zip --quiet
+  COMMAND ${PYTHON_EXECUTABLE} setup.py sdist --format=bztar --quiet
+  COMMENT "Creating python bdist_egg file (with system libs)..."
+  COMMAND ${PYTHON_EXECUTABLE} setup.py bdist_egg --quiet
   DEPENDS ${SWIG_MODULE_formast_REAL_NAME}
 )
 
