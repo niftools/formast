@@ -111,7 +111,7 @@ This hierarchical structure is exposed via :cpp:class:`formast::Visitor`\ s.
    Contains :cpp:class:`formast::EnumConst` nodes;
    use :cpp:func:`formast::Visitor::enum_stats` to iterate over them.
 
-.. cpp:class:: Enum
+.. cpp:class:: formast::Enum
 
    Enum type declaration.
 
