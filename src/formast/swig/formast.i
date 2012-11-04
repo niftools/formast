@@ -7,9 +7,10 @@
 %include "std_string.i"
 %include "std_vector.i"
 
-// tell swig about boost::uint64_t
+// tell swig about boost::uint64_t and boost::int64_t
 namespace boost {
     typedef unsigned long long uint64_t;
+    typedef signed long long int64_t;
 }
 
 // tell swig about boost::optional
@@ -54,6 +55,7 @@ namespace boost {
 }
 
 %template(OptionalDoc) boost::optional<formast::Doc>;
+%template(OptionalEnumStats) boost::optional<formast::EnumStats>;
 %template(OptionalExpr) boost::optional<formast::Expr>;
 %template(OptionalStats) boost::optional<formast::Stats>;
 %template(OptionalString) boost::optional<std::string>;

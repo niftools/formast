@@ -14,6 +14,7 @@
 #include <sstream>
 
 #include "formast.hpp"
+#include "enum_stats_impl.hpp"
 #include "expr_impl.hpp"
 #include "stats_impl.hpp"
 #include "module_impl.hpp"
@@ -389,6 +390,37 @@ void formast::XmlParser::parse_stream(std::istream & is, formast::Module & modul
                 class_.doc = doc;
             }
             module._impl->push_back(class_);
+        } else if (decl.first == "enum") {
+            Enum enum_;
+            enum_.name = decl.second.get<std::string>("<xmlattr>.name");
+            enum_.base_name = decl.second.get<std::string>("<xmlattr>.storage");
+            std::string doc = decl.second.data();
+            boost::algorithm::trim(doc);
+            if (!doc.empty()) {
+                enum_.doc = doc;
+            }
+            formast::EnumStats stats;
+            BOOST_FOREACH(boost::property_tree::ptree::value_type & option, decl.second) {
+                if (option.first == "option") {
+                    EnumConst const_;
+                    const_.name = option.second.get<std::string>("<xmlattr>.name");
+                    try {
+                        const_.value = option.second.get<boost::int64_t>("<xmlattr>.value");
+                    } catch (boost::property_tree::ptree_bad_data const & e) {
+                        throw std::runtime_error("could not convert enum constant " + option.second.get<std::string>("<xmlattr>.value") + " to integer");
+                    }
+                    std::string doc = option.second.data();
+                    boost::algorithm::trim(doc);
+                    if (!doc.empty()) {
+                        const_.doc = doc;
+                    }
+                    stats._impl->push_back(const_);
+                }
+            }
+            if (!stats._impl->empty()) {
+                enum_.stats = stats;
+            }
+            module._impl->push_back(enum_);
         } else if (decl.first == "compound" || decl.first == "niobject") {
             Class class_;
             class_.name = decl.second.get<std::string>("<xmlattr>.name");

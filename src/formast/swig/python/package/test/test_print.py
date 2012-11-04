@@ -25,6 +25,15 @@ class Printer(formast.Visitor):
             self.stats(c.stats.get())
         self.level -= 1
 
+    def module_enum(self, e):
+        self.print_("enum:")
+        self.level += 1
+        self.print_("name: %s" % e.name)
+        self.print_("base_name: %s" % e.base_name)
+        if e.stats:
+            self.enum_stats(e.stats.get())
+        self.level -= 1
+
     def stats(self, s):
         self.print_("stats:")
         self.level += 1
@@ -51,6 +60,19 @@ class Printer(formast.Visitor):
             self.level += 1
             self.stats(if_.else_.get())
             self.level -= 1
+        self.level -= 1
+
+    def enum_stats(self, s):
+        self.print_("stats:")
+        self.level += 1
+        formast.Visitor.enum_stats(self, s)
+        self.level -= 1
+
+    def enum_stats_const(self, c):
+        self.print_("const:")
+        self.level += 1
+        self.print_("name: %s" % c.name)
+        self.print_("value: %s" % c.value)
         self.level -= 1
 
     def expr_uint(self, v):
@@ -318,3 +340,35 @@ class:
      field:
       type: short
       name: PS2 L""")
+
+    def test_enum(self):
+        module = formast.Module()
+        self.parser.parse_string("""
+<niftoolsxml>
+  <enum name="AlphaFormat" storage="uint">
+    An unsigned 32-bit integer, describing how transparency is handled in a texture.
+    <option value="0" name="ALPHA_NONE">No alpha blending; the texture is fully opaque.</option>
+    <option value="1" name="ALPHA_BINARY">Texture is either fully transparent or fully opaque.  There are no partially transparent areas.</option>
+    <option value="2" name="ALPHA_SMOOTH">Full range of alpha values can be used from fully transparent to fully opaque including all partially transparent values in between.</option>
+    <option value="3" name="ALPHA_DEFAULT">Use default setting.</option>
+  </enum>
+</niftoolsxml>
+""", module)
+        self.printer.module(module)
+        nose.tools.assert_equal(str(self.printer), """\
+enum:
+ name: AlphaFormat
+ base_name: uint
+ stats:
+  const:
+   name: ALPHA_NONE
+   value: 0
+  const:
+   name: ALPHA_BINARY
+   value: 1
+  const:
+   name: ALPHA_SMOOTH
+   value: 2
+  const:
+   name: ALPHA_DEFAULT
+   value: 3""")

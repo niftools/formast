@@ -107,6 +107,36 @@ public:
     boost::optional<Stats> else_;
 };
 
+class EnumConst
+{
+public:
+    std::string name;
+    boost::int64_t value; // TODO use boost::multiprecision:cpp_int
+    boost::optional<Doc> doc;
+};
+
+class EnumStats
+{
+public:
+    FORMAST_API EnumStats();
+private:
+    // pimpl idiom
+    FORMAST_HIDDEN class Impl;
+    boost::shared_ptr<Impl> _impl;
+    friend class Visitor;
+    friend class Parser;
+    friend class XmlParser;
+};
+
+class Enum
+{
+public:
+    std::string name;
+    std::string base_name;
+    boost::optional<Doc> doc;
+    boost::optional<EnumStats> stats;
+};
+
 class Parser
 {
 public:
@@ -136,13 +166,17 @@ public:
 
     FORMAST_API virtual void module(Module const & module);
     FORMAST_API virtual void module_class(Class const & class_);
+    FORMAST_API virtual void module_enum(Enum const & enum_);
 
     FORMAST_API virtual void stats(Stats const & stats);
     FORMAST_API virtual void stats_field(Field const & field);
     FORMAST_API virtual void stats_if(If const & if_);
 
+    FORMAST_API virtual void enum_stats(EnumStats const & stats);
+    FORMAST_API virtual void enum_stats_const(EnumConst const & const_);
+
     FORMAST_API virtual void expr(Expr const & e);
-    FORMAST_API virtual void expr_uint(boost::uint64_t const & n);
+    FORMAST_API virtual void expr_uint(boost::uint64_t const & n); // TODO use unsigned boost::multiprecision::cpp_int
     FORMAST_API virtual void expr_id(std::string const & i);
     FORMAST_API virtual void expr_pos(Expr const & right);
     FORMAST_API virtual void expr_neg(Expr const & right);
@@ -174,6 +208,8 @@ private:
     boost::shared_ptr<ModuleVisitor> _module_visitor;
     FORMAST_HIDDEN class StatsVisitor;
     boost::shared_ptr<StatsVisitor> _stats_visitor;
+    FORMAST_HIDDEN class EnumStatsVisitor;
+    boost::shared_ptr<EnumStatsVisitor> _enum_stats_visitor;
 };
 
 } // namespace formast
