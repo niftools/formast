@@ -24,6 +24,7 @@ and overload the desired methods.
       to the appropriate ``module_...`` method.
 
    .. cpp:function:: void module_class(Class const & class_)
+   .. cpp:function:: void module_enum(Enum const & enum_)
 
    .. cpp:function:: void stats(Stats const & stats)
 
@@ -33,6 +34,14 @@ and overload the desired methods.
 
    .. cpp:function:: void stats_field(Field const & field)
    .. cpp:function:: void stats_if(If const & if_)
+
+   .. cpp:function:: void enum_stats(EnumStats const & stats)
+
+      Visits a :cpp:class:`formast::EnumStats`,
+      dispatching each of its children
+      to the appropriate ``enum_stats_...`` method.
+
+   .. cpp:function:: void enum_stats_const(EnumConst const & const_)
 
    .. cpp:function:: void expr(Expr const & e)
 
