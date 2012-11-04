@@ -89,6 +89,48 @@ This hierarchical structure is exposed via :cpp:class:`formast::Visitor`\ s.
 
       Applicable fields when expression evaluates to false (optional).
 
+.. cpp:class:: formast::EnumConst
+
+   Declare an enum constant.
+
+   .. cpp:member:: std::string name
+
+      Name of the constant.
+
+   .. cpp:member:: boost::int64_t value
+
+      Value of the constant.
+
+   .. cpp:member:: boost::optional<Doc> doc
+
+      Documentation (optional).
+
+.. cpp:class:: formast::EnumStats
+
+   A node containing enum constant statements.
+   Contains :cpp:class:`formast::EnumConst` nodes;
+   use :cpp:func:`formast::Visitor::enum_stats` to iterate over them.
+
+.. cpp:class:: Enum
+
+   Enum type declaration.
+
+   .. cpp:member:: std::string name
+
+      Name of the enum type.
+
+   .. cpp:member:: std::string base_name
+
+      Name of the base type (must be an integral type).
+
+   .. cpp:member:: boost::optional<Doc> doc
+
+      Documentation (optional).
+
+   .. cpp:member:: boost::optional<EnumStats> stats
+
+      Constant declarations.
+
 .. cpp:class:: boost::optional<T>
 
    See `boost documentation <http://www.boost.org/libs/optional>`_.
