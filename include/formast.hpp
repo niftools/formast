@@ -207,6 +207,8 @@ private:
     boost::shared_ptr<ModuleVisitor> _module_visitor;
     FORMAST_HIDDEN class StatsVisitor;
     boost::shared_ptr<StatsVisitor> _stats_visitor;
+    FORMAST_HIDDEN class EnumStatsVisitor;
+    boost::shared_ptr<EnumStatsVisitor> _enum_stats_visitor;
 };
 
 } // namespace formast

@@ -4,6 +4,7 @@
 #include <stdexcept>
 
 #include "formast.hpp"
+#include "enum_stats_impl.hpp"
 #include "expr_impl.hpp"
 #include "stats_impl.hpp"
 #include "module_impl.hpp"
@@ -151,11 +152,38 @@ public:
 
 };
 
+class formast::Visitor::EnumStatsVisitor
+{
+private:
+    // see http://www.boost.org/doc/libs/1_51_0/libs/smart_ptr/sp_techniques.html#pimpl
+    EnumStatsVisitor(EnumStatsVisitor const &);
+    EnumStatsVisitor & operator=(EnumStatsVisitor const &);
+
+public:
+    typedef void result_type;
+
+    EnumStatsVisitor(Visitor & visitor) : visitor(visitor) {};
+
+    void enum_stats(formast::EnumStats const & s) {
+        BOOST_FOREACH(formast::detail::EnumStatDecl const & decl, *s._impl) {
+            boost::apply_visitor(*this, decl);
+        }
+    }
+
+    void operator()(formast::EnumConst const & const_) {
+        visitor.enum_stats_const(const_);
+    }
+
+    Visitor & visitor;
+
+};
+
 formast::Visitor::Visitor()
 {
     _expr_visitor = boost::shared_ptr<ExprVisitor>(new ExprVisitor(*this));
     _module_visitor = boost::shared_ptr<ModuleVisitor>(new ModuleVisitor(*this));
     _stats_visitor = boost::shared_ptr<StatsVisitor>(new StatsVisitor(*this));
+    _enum_stats_visitor = boost::shared_ptr<EnumStatsVisitor>(new EnumStatsVisitor(*this));
 }
 
 formast::Visitor::~Visitor()
@@ -177,10 +205,18 @@ void formast::Visitor::stats(Stats const & stats)
     _stats_visitor->stats(stats);
 };
 
+void formast::Visitor::enum_stats(EnumStats const & enum_stats)
+{
+    _enum_stats_visitor->enum_stats(enum_stats);
+};
+
 void formast::Visitor::module_class(Class const & class_) {};
+void formast::Visitor::module_enum(Enum const & enum_) {};
 
 void formast::Visitor::stats_field(Field const & field) {};
 void formast::Visitor::stats_if(If const & if_) {};
+
+void formast::Visitor::enum_stats_const(EnumConst const & const_) {};
 
 void formast::Visitor::expr_uint(boost::uint64_t const & n) {};
 void formast::Visitor::expr_id(std::string const & i) {};
