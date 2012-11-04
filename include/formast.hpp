@@ -133,6 +133,7 @@ class Enum
 public:
     std::string name;
     std::string base_name;
+    boost::optional<Doc> doc;
     boost::optional<EnumStats> stats;
 };
 
