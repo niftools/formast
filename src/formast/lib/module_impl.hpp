@@ -1,8 +1,8 @@
 // for friend classes: their cpp files can use this header to access
 // implementation
 
-#ifndef FORMAST_TOP_IMPL_HPP_INCLUDED
-#define FORMAST_TOP_IMPL_HPP_INCLUDED
+#ifndef FORMAST_MODULE_IMPL_HPP_INCLUDED
+#define FORMAST_MODULE_IMPL_HPP_INCLUDED
 
 #include <boost/shared_ptr.hpp>
 #include <boost/variant/recursive_variant.hpp>
