@@ -14,7 +14,7 @@ namespace formast
 namespace detail
 {
 
-typedef boost::make_recursive_variant<formast::Class>::type ModuleDecl;
+typedef boost::make_recursive_variant<formast::Class, formast::Enum>::type ModuleDecl;
 
 }
 }
