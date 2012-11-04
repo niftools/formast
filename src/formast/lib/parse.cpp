@@ -404,7 +404,11 @@ void formast::XmlParser::parse_stream(std::istream & is, formast::Module & modul
                 if (option.first == "option") {
                     EnumConst const_;
                     const_.name = option.second.get<std::string>("<xmlattr>.name");
-                    const_.value = option.second.get<boost::int64_t>("<xmlattr>.value");
+                    try {
+                        const_.value = option.second.get<boost::int64_t>("<xmlattr>.value");
+                    } catch (boost::property_tree::ptree_bad_data const & e) {
+                        throw std::runtime_error("could not convert enum constant " + option.second.get<std::string>("<xmlattr>.value") + " to integer");
+                    }
                     std::string doc = option.second.data();
                     boost::algorithm::trim(doc);
                     if (!doc.empty()) {
