@@ -357,7 +357,7 @@ class:
         self.printer.module(module)
         nose.tools.assert_equal(str(self.printer), """\
 enum:
- name: Test
+ name: AlphaFormat
  base_name: uint
  stats:
   const:
