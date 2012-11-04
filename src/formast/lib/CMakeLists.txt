@@ -2,6 +2,7 @@ option(BUILD_SHARED_LIBRARY "Build shared library." ON)
 option(BUILD_STATIC_LIBRARY "Build static library." ON)
 
 set(FORMAST_LIBRARY_SOURCES
+  enum_stats.cpp
   expr.cpp
   parse.cpp
   stats.cpp
