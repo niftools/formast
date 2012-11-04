@@ -113,6 +113,10 @@ public:
         return visitor.module_class(class_);
     }
 
+    void operator()(formast::Enum const & enum_) {
+        return visitor.module_enum(enum_);
+    }
+
     Visitor & visitor;
 
 };
