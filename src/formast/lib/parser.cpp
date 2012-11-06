@@ -160,7 +160,6 @@ void formast::XmlParser::parse_stream(std::istream & is, formast::Module & modul
                 if (option.first == "option") {
                     EnumConst const_;
                     const_.name = option.second.get<std::string>("<xmlattr>.name");
-                    std::cout << option.second.get<std::string>("<xmlattr>.value") << std::endl;
                     _impl->_integer_xml_parse_string(option.second.get<std::string>("<xmlattr>.value"), const_.value);
                     std::string doc = option.second.data();
                     boost::algorithm::trim(doc);
