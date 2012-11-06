@@ -4,7 +4,9 @@ option(BUILD_STATIC_LIBRARY "Build static library." ON)
 set(FORMAST_LIBRARY_SOURCES
   enum_stats.cpp
   expr.cpp
-  parse.cpp
+  parser.cpp
+  parser_expr_grammar.cpp
+  parser_integer_grammar.cpp
   stats.cpp
   module.cpp
   visitor.cpp

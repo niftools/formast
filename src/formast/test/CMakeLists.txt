@@ -6,6 +6,7 @@ foreach(TEST
         header_formast_test
         header_enum_stats_impl_test
         header_expr_impl_test
+        header_parser_impl_test
         header_stats_impl_test
         header_module_impl_test
         )
