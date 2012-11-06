@@ -15,7 +15,6 @@
 
 namespace qi = boost::spirit::qi;
 namespace ascii = boost::spirit::ascii;
-namespace detail = formast::detail;
 
 // parser implementation
 
