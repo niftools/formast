@@ -125,9 +125,9 @@ public:
 
         expr_grammar();
 
-    qi::rule<Iterator, formast::Expr(), ascii::space_type> expr, or_test, and_test, not_test, comparison, bit_or_expr, bit_xor_expr, bit_and_expr, bit_shift_expr, arith_expr, term, factor, power, atom;
-    qi::rule<Iterator, std::string(), ascii::space_type> ident, ident_ws;
-    qi::rule<Iterator, boost::uint64_t(), ascii::space_type> uint_or_version;
+        qi::rule<Iterator, formast::Expr(), ascii::space_type> expr, or_test, and_test, not_test, comparison, bit_or_expr, bit_xor_expr, bit_and_expr, bit_shift_expr, arith_expr, term, factor, power, atom;
+        qi::rule<Iterator, std::string(), ascii::space_type> ident, ident_ws;
+        qi::rule<Iterator, boost::uint64_t(), ascii::space_type> uint_or_version;
     };
 
     // helper function for parsing expression from stream
