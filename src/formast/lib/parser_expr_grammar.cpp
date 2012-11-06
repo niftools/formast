@@ -40,17 +40,12 @@ formast::Parser::Impl::expr_grammar::expr_grammar() : expr_grammar::base_type(ex
     boost::phoenix::function<trim_func> const _trim;
 
     qi::lexeme_type lexeme;
-    qi::lit_type lit;
     qi::char_type char_;
-    qi::uint_type ulong_long;
     qi::_val_type _val;
     qi::_1_type _1;
     qi::_2_type _2;
     qi::_3_type _3;
     qi::_4_type _4;
-
-    using qi::on_error;
-    using qi::fail;
 
     expr = or_test.alias();
 
@@ -129,7 +124,7 @@ formast::Parser::Impl::expr_grammar::expr_grammar() : expr_grammar::base_type(ex
         ;
 
     atom =
-        uint_or_version                 [_uint(_val, _1)]
+        integer                         [_uint(_val, _1)]
         |   ident                       [_ident(_val, _1)]
         |   ('(' > expr                 [_copy(_val, _1)] > ')')
         ;
@@ -138,22 +133,11 @@ formast::Parser::Impl::expr_grammar::expr_grammar() : expr_grammar::base_type(ex
     ident_ws %= lexeme[(char_("a-zA-Z") >> *(char_(" ?") | char_("0-9a-zA-Z")))];
     ident = ident_ws [_trim(_val, _1)];
 
-    uint_or_version %=
-        (lit("2.3")       [_val = 0x02030000])
-        |   (lit("3.03")  [_val = 0x03000300]) // special case
-        |   (lit("3.0")   [_val = 0x03000000])
-        |   (lit("3.1")   [_val = 0x03010000])
-        |   ((ulong_long                [_val = _1])
-             >> -('.' >> (ulong_long    [_val = _val * 256 + _1])
-                  >> '.' > (ulong_long  [_val = _val * 256 + _1])
-                  > '.' > (ulong_long   [_val = _val * 256 + _1])))
-        ;
-
     // Debugging and error handling and reporting support.
     BOOST_SPIRIT_DEBUG_NODE(expr);
     BOOST_SPIRIT_DEBUG_NODE(term);
     BOOST_SPIRIT_DEBUG_NODE(factor);
 
     // Error handling
-    on_error<fail>(expr, error_handler(_4, _3, _2));
+    qi::on_error<qi::fail>(expr, error_handler(_4, _3, _2));
 }

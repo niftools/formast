@@ -6,6 +6,7 @@ set(FORMAST_LIBRARY_SOURCES
   expr.cpp
   parser.cpp
   parser_expr_grammar.cpp
+  parser_integer_grammar.cpp
   stats.cpp
   module.cpp
   visitor.cpp

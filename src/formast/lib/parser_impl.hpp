@@ -116,13 +116,19 @@ public:
 
     // the actual grammar
 
+    struct integer_grammar : boost::spirit::qi::grammar<Iterator, boost::uint64_t()> {
+        integer_grammar();
+
+        boost::spirit::qi::rule<Iterator, boost::uint64_t()> uint_or_version;
+    };
+
     struct expr_grammar : boost::spirit::qi::grammar<Iterator, formast::Expr(), SpaceType> {
 
         expr_grammar();
 
         boost::spirit::qi::rule<Iterator, formast::Expr(), SpaceType> expr, or_test, and_test, not_test, comparison, bit_or_expr, bit_xor_expr, bit_and_expr, bit_shift_expr, arith_expr, term, factor, power, atom;
         boost::spirit::qi::rule<Iterator, std::string(), SpaceType> ident, ident_ws;
-        boost::spirit::qi::rule<Iterator, boost::uint64_t(), SpaceType> uint_or_version;
+        integer_grammar integer;
     };
 
     // helper function for parsing expression from stream
