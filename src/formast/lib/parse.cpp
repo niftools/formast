@@ -62,28 +62,28 @@ public:
     Impl() {};
     typedef boost::spirit::istream_iterator Iterator;
 
-// error handler
+    // error handler
 
-struct error_handler_ {
-    template <typename, typename, typename>
-    struct result {
-        typedef void type;
+    struct error_handler_ {
+        template <typename, typename, typename>
+        struct result {
+            typedef void type;
+        };
+
+        void operator()(
+            qi::info const& what, Iterator err_pos, Iterator last) const {
+            std::cerr
+                    << "Error! Expecting "
+                    << what
+                    << " here: \""
+                    << std::string(err_pos, last)
+                    << "\""
+                    << std::endl
+                    ;
+        }
     };
 
-    void operator()(
-        qi::info const& what, Iterator err_pos, Iterator last) const {
-        std::cerr
-                << "Error! Expecting "
-                << what
-                << " here: \""
-                << std::string(err_pos, last)
-                << "\""
-                << std::endl
-                ;
-    }
-};
-
-static boost::phoenix::function<error_handler_> const error_handler;
+    static boost::phoenix::function<error_handler_> const error_handler;
 
     // phoenix functions for constructing the abstract syntax tree with
     // semantic actions
