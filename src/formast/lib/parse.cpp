@@ -38,6 +38,10 @@ BOOST_FUSION_ADAPT_STRUCT(
     (boost::optional<formast::Stats>, else_)
 )
 
+// shorthand
+
+namespace qi = boost::spirit::qi;
+
 // parser implementation
 
 formast::Parser::Impl::Impl() {};
@@ -199,7 +203,7 @@ void formast::Parser::Impl::_expr_parse_stream(std::istream & is, formast::Expr 
     Iterator iter(is);
     Iterator end;
     expr_grammar grammar;
-    ascii::space_type space;
+    SpaceType space;
 
     bool success = qi::phrase_parse(iter, end, grammar, space, e);
     if (!success) {

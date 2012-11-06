@@ -11,11 +11,6 @@
 #include "formast.hpp"
 #include "expr_impl.hpp"
 
-// a few shorthands
-
-namespace qi = boost::spirit::qi;
-namespace ascii = boost::spirit::ascii;
-
 // parser implementation
 
 class formast::Parser::Impl
@@ -29,6 +24,7 @@ public:
     Impl();
 
     typedef boost::spirit::istream_iterator Iterator;
+    typedef boost::spirit::ascii::space_type SpaceType;
 
     // error handler
 
@@ -39,7 +35,7 @@ public:
         };
 
         void operator()(
-            qi::info const& what, Iterator err_pos, Iterator last) const {
+            boost::spirit::qi::info const& what, Iterator err_pos, Iterator last) const {
             std::cerr
                     << "Error! Expecting "
                     << what
@@ -120,13 +116,13 @@ public:
 
     // the actual grammar
 
-    struct expr_grammar : qi::grammar<Iterator, formast::Expr(), ascii::space_type> {
+    struct expr_grammar : boost::spirit::qi::grammar<Iterator, formast::Expr(), SpaceType> {
 
         expr_grammar();
 
-        qi::rule<Iterator, formast::Expr(), ascii::space_type> expr, or_test, and_test, not_test, comparison, bit_or_expr, bit_xor_expr, bit_and_expr, bit_shift_expr, arith_expr, term, factor, power, atom;
-        qi::rule<Iterator, std::string(), ascii::space_type> ident, ident_ws;
-        qi::rule<Iterator, boost::uint64_t(), ascii::space_type> uint_or_version;
+        boost::spirit::qi::rule<Iterator, formast::Expr(), SpaceType> expr, or_test, and_test, not_test, comparison, bit_or_expr, bit_xor_expr, bit_and_expr, bit_shift_expr, arith_expr, term, factor, power, atom;
+        boost::spirit::qi::rule<Iterator, std::string(), SpaceType> ident, ident_ws;
+        boost::spirit::qi::rule<Iterator, boost::uint64_t(), SpaceType> uint_or_version;
     };
 
     // helper function for parsing expression from stream
