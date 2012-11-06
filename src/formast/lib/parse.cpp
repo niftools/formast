@@ -49,6 +49,19 @@ namespace qi = boost::spirit::qi;
 namespace ascii = boost::spirit::ascii;
 namespace detail = formast::detail;
 
+// parser implementation
+
+class formast::Parser::Impl
+{
+private:
+    // see http://www.boost.org/doc/libs/1_51_0/libs/smart_ptr/sp_techniques.html#pimpl
+    Impl(Impl const &);
+    Impl & operator=(Impl const &);
+
+public:
+    Impl() {};
+    typedef boost::spirit::istream_iterator Iterator;
+
 // error handler
 
 struct error_handler_ {
@@ -57,7 +70,6 @@ struct error_handler_ {
         typedef void type;
     };
 
-    template <typename Iterator>
     void operator()(
         qi::info const& what, Iterator err_pos, Iterator last) const {
         std::cerr
@@ -71,19 +83,7 @@ struct error_handler_ {
     }
 };
 
-boost::phoenix::function<error_handler_> const error_handler = error_handler_();
-
-// parser implementation
-
-class formast::Parser::Impl
-{
-private:
-    // see http://www.boost.org/doc/libs/1_51_0/libs/smart_ptr/sp_techniques.html#pimpl
-    Impl(Impl const &);
-    Impl & operator=(Impl const &);
-
-public:
-    Impl() {};
+static boost::phoenix::function<error_handler_> const error_handler;
 
     // phoenix functions for constructing the abstract syntax tree with
     // semantic actions
@@ -152,7 +152,6 @@ public:
 
     // the actual grammar
 
-    template <typename Iterator>
     struct expr_grammar : qi::grammar<Iterator, formast::Expr(), ascii::space_type> {
 
         expr_grammar() : expr_grammar::base_type(expr) {
@@ -312,10 +311,9 @@ public:
     void _expr_parse_stream(std::istream & is, formast::Expr & e) {
         // disable white space skipping
         is.unsetf(std::ios::skipws);
-        typedef boost::spirit::istream_iterator iterator_type;
-        iterator_type iter(is);
-        iterator_type end;
-        expr_grammar<iterator_type> grammar;
+        Iterator iter(is);
+        Iterator end;
+        expr_grammar grammar;
         ascii::space_type space;
 
         bool success = qi::phrase_parse(iter, end, grammar, space, e);
@@ -499,3 +497,5 @@ void formast::XmlParser::parse_stream(std::istream & is, formast::Module & modul
         };
     };
 }
+
+boost::phoenix::function<formast::Parser::Impl::error_handler_> const formast::Parser::Impl::error_handler = formast::Parser::Impl::error_handler_();
