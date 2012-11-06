@@ -13,7 +13,7 @@ namespace qi = boost::spirit::qi;
 formast::Parser::Impl::integer_grammar::integer_grammar() : integer_grammar::base_type(uint_or_version)
 {
 
-    qi::uint_parser<boost::uint64_t, 16, 1, 16> hex_parser;
+    qi::uint_parser<boost::uint64_t, 16> hex_parser;
     qi::lit_type lit;
     qi::uint_type ulong_long;
     qi::_val_type _val;
