@@ -104,7 +104,7 @@ public:
         os << c.name;
         close_tag("name", true);
         open_tag("value", true);
-        os << c.value;
+        os <<  boost::lexical_cast<std::string>(c.value);
         close_tag("value", true);
         if (c.doc) {
             open_tag("doc", true);
