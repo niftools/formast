@@ -7,10 +7,9 @@
 %include "std_string.i"
 %include "std_vector.i"
 
-// tell swig about boost::uint64_t and boost::int64_t
+// tell swig about boost::uint64_t
 namespace boost {
     typedef unsigned long long uint64_t;
-    typedef signed long long int64_t;
 }
 
 // tell swig about boost::optional
