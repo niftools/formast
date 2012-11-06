@@ -5,6 +5,7 @@ set(FORMAST_LIBRARY_SOURCES
   enum_stats.cpp
   expr.cpp
   parser.cpp
+  parser_expr_grammar.cpp
   stats.cpp
   module.cpp
   visitor.cpp
