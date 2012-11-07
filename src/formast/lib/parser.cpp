@@ -81,6 +81,31 @@ void formast::Parser::Impl::_expr_xml_parse_helper(std::string const & s, formas
     }
 }
 
+// helper function for parsing integer from stream
+void formast::Parser::Impl::_integer_parse_stream(std::istream & is, boost::uint64_t & v)
+{
+    // disable white space skipping
+    is.unsetf(std::ios::skipws);
+    Iterator iter(is);
+    Iterator end;
+    integer_grammar grammar;
+
+    bool success = boost::spirit::qi::parse(iter, end, grammar, v);
+    if (!success) {
+        throw std::runtime_error("Syntax error.");
+    }
+    if (iter != end) {
+        throw std::runtime_error("End of stream not reached.");
+    }
+}
+
+// helper function for parsing integeression from string
+void formast::Parser::Impl::_integer_xml_parse_string(std::string const & s, boost::uint64_t & e)
+{
+    std::istringstream is(s);
+    _integer_parse_stream(is, e);
+}
+
 formast::Parser::Parser()
     : _impl(new Impl)
 {
@@ -135,11 +160,7 @@ void formast::XmlParser::parse_stream(std::istream & is, formast::Module & modul
                 if (option.first == "option") {
                     EnumConst const_;
                     const_.name = option.second.get<std::string>("<xmlattr>.name");
-                    try {
-                        const_.value = option.second.get<boost::int64_t>("<xmlattr>.value");
-                    } catch (boost::property_tree::ptree_bad_data const & e) {
-                        throw std::runtime_error("could not convert enum constant " + option.second.get<std::string>("<xmlattr>.value") + " to integer");
-                    }
+                    _impl->_integer_xml_parse_string(option.second.get<std::string>("<xmlattr>.value"), const_.value);
                     std::string doc = option.second.data();
                     boost::algorithm::trim(doc);
                     if (!doc.empty()) {

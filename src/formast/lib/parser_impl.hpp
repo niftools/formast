@@ -120,6 +120,7 @@ public:
         integer_grammar();
 
         boost::spirit::qi::rule<Iterator, boost::uint64_t()> uint_or_version;
+        boost::spirit::qi::rule<Iterator, boost::uint64_t()> hex;
     };
 
     struct expr_grammar : boost::spirit::qi::grammar<Iterator, formast::Expr(), SpaceType> {
@@ -142,6 +143,11 @@ public:
     // otherwise, && with parsed expression
     void _expr_xml_parse_helper(std::string const & s, formast::Expr & e);
 
+    // helper function for parsing integer from stream
+    void _integer_parse_stream(std::istream & is, boost::uint64_t & v);
+
+    // helper function for parsing integer from string
+    void _integer_xml_parse_string(std::string const & s, boost::uint64_t & v);
 };
 
 #endif

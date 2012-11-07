@@ -35,6 +35,25 @@ public:
         close_tag("class", false);
     }
 
+    virtual void module_enum(Enum const & enum_) {
+        open_tag("enum", false);
+        open_tag("name", true);
+        os << enum_.name;
+        close_tag("name", true);
+        open_tag("base_name", true);
+        os << enum_.base_name;
+        close_tag("base_name", true);
+        if (enum_.doc) {
+            open_tag("doc", true);
+            os << enum_.doc.get();
+            close_tag("doc", true);
+        }
+        if (enum_.stats) {
+            enum_stats(enum_.stats.get());
+        }
+        close_tag("enum", false);
+    }
+
     virtual void stats(Stats const & s) {
         open_tag("stats", false);
         Visitor::stats(s);
@@ -71,6 +90,28 @@ public:
             close_tag("else", false);
         }
         close_tag("if", false);
+    }
+
+    virtual void enum_stats(EnumStats const & s) {
+        open_tag("enum_stats", false);
+        Visitor::enum_stats(s);
+        close_tag("enum_stats", false);
+    }
+
+    virtual void enum_stats_const(EnumConst const & c) {
+        open_tag("const", false);
+        open_tag("name", true);
+        os << c.name;
+        close_tag("name", true);
+        open_tag("value", true);
+        os <<  boost::lexical_cast<std::string>(c.value);
+        close_tag("value", true);
+        if (c.doc) {
+            open_tag("doc", true);
+            os << c.doc.get();
+            close_tag("doc", true);
+        }
+        close_tag("const", false);
     }
 
     virtual void expr_uint(boost::uint64_t const & n) {

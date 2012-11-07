@@ -111,7 +111,7 @@ class EnumConst
 {
 public:
     std::string name;
-    boost::int64_t value; // TODO use boost::multiprecision:cpp_int
+    boost::uint64_t value; // TODO allow signed, use boost::multiprecision:cpp_int
     boost::optional<Doc> doc;
 };
 
