@@ -183,11 +183,23 @@ void formast::XmlParser::parse_stream(std::istream & is, formast::Module & modul
             }
             class_.base_name = decl.second.get_optional<std::string>("<xmlattr>.inherit");
             formast::Stats stats;
+            class_.has_template = false;
+            class_.has_argument = false;
             BOOST_FOREACH(boost::property_tree::ptree::value_type & add, decl.second) {
                 if (add.first == "add") {
                     Field field;
                     field.type_ = add.second.get<std::string>("<xmlattr>.type");
+                    if (field.type_ == "TEMPLATE") {
+                        class_.has_template = true;
+                    }
                     field.name = add.second.get<std::string>("<xmlattr>.name");
+                    field.template_ = add.second.get_optional<std::string>("<xmlattr>.template");
+                    if (field.template_) {
+                        if (field.template_.get() == "TEMPLATE") {
+                            class_.has_template = true;
+                        }
+                    }
+                    field.argument = add.second.get_optional<std::string>("<xmlattr>.arg");
                     std::string doc = add.second.data();
                     boost::algorithm::trim(doc);
                     if (!doc.empty()) {
