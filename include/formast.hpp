@@ -84,12 +84,12 @@ class Field
 {
 public:
     std::string type_;
+    boost::optional<std::string> template_;
+    boost::optional<std::string> argument;
     std::string name;
     boost::optional<Doc> doc;
     boost::optional<Expr> arr1;
     boost::optional<Expr> arr2;
-    boost::optional<std::string> template_;
-    boost::optional<std::string> argument;
 };
 
 class Class
