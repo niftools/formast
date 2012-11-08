@@ -126,6 +126,134 @@ formast::XmlParser::XmlParser()
 {
 }
 
+// helper class to detect "ARG" in expressions
+class ArgDetector : public formast::Visitor
+{
+public:
+    ArgDetector() : formast::Visitor(), has_argument(false) {};
+
+    bool has_argument;
+
+    void expr(formast::Expr const & e) {
+        if (!has_argument) {
+            formast::Visitor::expr(e);
+        }
+    }
+
+    void expr_id(std::string const & i) {
+        if (i == "ARG") {
+            has_argument = true;
+        }
+    }
+
+    void expr_pos(formast::Expr const & right) {
+        expr(right);
+    }
+
+    void expr_neg(formast::Expr const & right) {
+        expr(right);
+    }
+
+    void expr_add(formast::Expr const & left, formast::Expr const & right) {
+        expr(left);
+        expr(right);
+    }
+
+    void expr_sub(formast::Expr const & left, formast::Expr const & right) {
+        expr(left);
+        expr(right);
+    }
+
+    void expr_mul(formast::Expr const & left, formast::Expr const & right) {
+        expr(left);
+        expr(right);
+    }
+
+    void expr_div(formast::Expr const & left, formast::Expr const & right) {
+        expr(left);
+        expr(right);
+    }
+
+    void expr_mod(formast::Expr const & left, formast::Expr const & right) {
+        expr(left);
+        expr(right);
+    }
+
+    void expr_pow(formast::Expr const & left, formast::Expr const & right) {
+        expr(left);
+        expr(right);
+    }
+
+    void expr_logical_and(formast::Expr const & left, formast::Expr const & right) {
+        expr(left);
+        expr(right);
+    }
+
+    void expr_logical_or(formast::Expr const & left, formast::Expr const & right) {
+        expr(left);
+        expr(right);
+    }
+
+    void expr_logical_not(formast::Expr const & right) {
+        expr(right);
+    }
+
+    void expr_bitwise_and(formast::Expr const & left, formast::Expr const & right) {
+        expr(left);
+        expr(right);
+    }
+
+    void expr_bitwise_or(formast::Expr const & left, formast::Expr const & right) {
+        expr(left);
+        expr(right);
+    }
+
+    void expr_bitwise_xor(formast::Expr const & left, formast::Expr const & right) {
+        expr(left);
+        expr(right);
+    }
+
+    void expr_compare_eq(formast::Expr const & left, formast::Expr const & right) {
+        expr(left);
+        expr(right);
+    }
+
+    void expr_compare_ne(formast::Expr const & left, formast::Expr const & right) {
+        expr(left);
+        expr(right);
+    }
+
+    void expr_compare_gt(formast::Expr const & left, formast::Expr const & right) {
+        expr(left);
+        expr(right);
+    }
+
+    void expr_compare_lt(formast::Expr const & left, formast::Expr const & right) {
+        expr(left);
+        expr(right);
+    }
+
+    void expr_compare_ge(formast::Expr const & left, formast::Expr const & right) {
+        expr(left);
+        expr(right);
+    }
+
+    void expr_compare_le(formast::Expr const & left, formast::Expr const & right) {
+        expr(left);
+        expr(right);
+    }
+
+    void expr_shift_left(formast::Expr const & left, formast::Expr const & right) {
+        expr(left);
+        expr(right);
+    }
+
+    void expr_shift_right(formast::Expr const & left, formast::Expr const & right) {
+        expr(left);
+        expr(right);
+    }
+};
+
 void formast::XmlParser::parse_stream(std::istream & is, formast::Module & module)
 {
     // disable skipping of whitespace
@@ -185,6 +313,7 @@ void formast::XmlParser::parse_stream(std::istream & is, formast::Module & modul
             formast::Stats stats;
             class_.has_template = false;
             class_.has_argument = false;
+            ArgDetector arg_detector;
             BOOST_FOREACH(boost::property_tree::ptree::value_type & add, decl.second) {
                 if (add.first == "add") {
                     Field field;
@@ -211,6 +340,7 @@ void formast::XmlParser::parse_stream(std::istream & is, formast::Module & modul
                         Expr e;
                         _impl->_expr_xml_parse_string(arr1.get(), e);
                         field.arr1 = e;
+                        arg_detector.expr(e);
                     }
                     boost::optional<std::string> arr2 =
                         add.second.get_optional<std::string>("<xmlattr>.arr2");
@@ -218,6 +348,7 @@ void formast::XmlParser::parse_stream(std::istream & is, formast::Module & modul
                         Expr e;
                         _impl->_expr_xml_parse_string(arr2.get(), e);
                         field.arr2 = e;
+                        arg_detector.expr(e);
                     }
                     boost::optional<std::string> ver1 =
                         add.second.get_optional<std::string>("<xmlattr>.ver1");
@@ -251,6 +382,7 @@ void formast::XmlParser::parse_stream(std::istream & is, formast::Module & modul
                         if_.expr = e;
                         if_.then._impl->push_back(field);
                         stats._impl->push_back(if_);
+                        arg_detector.expr(e);
                     } else {
                         stats._impl->push_back(field);
                     }
@@ -259,6 +391,7 @@ void formast::XmlParser::parse_stream(std::istream & is, formast::Module & modul
             if (!stats._impl->empty()) {
                 class_.stats = stats;
             };
+            class_.has_argument = arg_detector.has_argument;
             module._impl->push_back(class_);
         };
     };
