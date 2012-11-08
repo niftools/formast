@@ -80,21 +80,33 @@ private:
 
 typedef std::string Doc;
 
+class ClassDecl;
+
 class Field
 {
 public:
-    std::string type_;
+    ClassDecl class_decl;
     std::string name;
     boost::optional<Doc> doc;
     boost::optional<Expr> arr1;
     boost::optional<Expr> arr2;
 };
 
+// for the time being, only support a single template argument and a
+// single constructor argument
+class ClassDecl
+public:
+{
+    std::string name;
+    boost::optional<ClassDecl> template_;
+    boost::optional<Field> argument;
+};
+
 class Class
 {
 public:
-    std::string name;
-    boost::optional<std::string> base_name;
+    ClassDecl decl;
+    boost::optional<ClassDecl> base_decl;
     boost::optional<Doc> doc;
     boost::optional<Stats> stats;
 };
@@ -131,8 +143,8 @@ private:
 class Enum
 {
 public:
-    std::string name;
-    std::string base_name;
+    ClassDecl decl;
+    ClassDecl base_decl;
     boost::optional<Doc> doc;
     boost::optional<EnumStats> stats;
 };
