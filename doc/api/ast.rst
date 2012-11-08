@@ -81,6 +81,18 @@ This hierarchical structure is exposed via :cpp:class:`formast::Visitor`\ s.
 
       Field declarations.
 
+   .. cpp:member:: bool has_template
+
+      Whether the class takes a template parameter.
+
+   .. cpp:member:: bool has_argument
+
+      Whether the class takes an argument parameter.
+
+      .. note::
+
+         The argument is always of an integer type.
+
 .. cpp:class:: formast::If
 
    Declares fields to be conditional on some expression.
