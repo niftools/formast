@@ -33,7 +33,7 @@ This hierarchical structure is exposed via :cpp:class:`formast::Visitor`\ s.
 
    Field (of a class) declaration.
    
-   .. cpp:member:: std::string type_
+   .. cpp:member:: std::string type\_
 
       Type (a class name).
 
@@ -52,6 +52,14 @@ This hierarchical structure is exposed via :cpp:class:`formast::Visitor`\ s.
    .. cpp:member:: boost::optional<Expr> arr2
 
       Second array size (optional).
+
+   .. cpp:member:: boost::optional<std::string> template\_
+
+      If :cpp:member:`type_` is a template, this specifies the template class name (optional).
+
+   .. cpp:member:: boost::optional<std::string> argument
+
+      If :cpp:member:`type_` accepts an argument, this specifies the name of the sibling field to be passed as such (optional).
 
 .. cpp:class:: formast::Class
 
