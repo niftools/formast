@@ -8,16 +8,6 @@ class Evaluator(formast.Visitor):
         formast.Visitor.__init__(self)
         self.stack = []
 
-    def module_class(self, c):
-        if c.stats:
-            self.stats(c.stats.get())
-
-    def stats_if(self, if_):
-        self.expr(if_.expr)
-        self.stats(if_.then)
-        if if_.else_:
-            self.stats(if_.else_.get())
-
     def expr_uint(self, v):
         self.stack.append(v)
 
