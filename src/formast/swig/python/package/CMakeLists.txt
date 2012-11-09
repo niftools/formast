@@ -10,7 +10,6 @@ file(COPY
     ${formast_SOURCE_DIR}/src/formast/lib
     ${formast_SOURCE_DIR}/include
     ${CMAKE_CURRENT_SOURCE_DIR}/MANIFEST.in
-    ${CMAKE_CURRENT_SOURCE_DIR}/test
     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
 )
 file(COPY

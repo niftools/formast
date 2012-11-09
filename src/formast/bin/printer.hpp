@@ -19,6 +19,14 @@ public:
         open_tag("name", true);
         os << class_.name;
         close_tag("name", true);
+        if (class_.has_template) {
+            open_tag("has_template", true);
+            close_tag("has_template", true);
+        };
+        if (class_.has_argument) {
+            open_tag("has_argument", true);
+            close_tag("has_argument", true);
+        };
         if (class_.base_name) {
             open_tag("base_name", true);
             os << class_.base_name.get();
@@ -65,6 +73,16 @@ public:
         open_tag("type", true);
         os << field.type_;
         close_tag("type", true);
+        if (field.template_) {
+            open_tag("template", true);
+            os << field.template_.get();
+            close_tag("template", true);
+        };
+        if (field.argument) {
+            open_tag("argument", true);
+            os << field.argument.get();
+            close_tag("argument", true);
+        };
         open_tag("name", true);
         os << field.name;
         close_tag("name", true);

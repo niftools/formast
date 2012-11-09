@@ -21,7 +21,7 @@ public:
 
     ExprVisitor(Visitor & visitor) : visitor(visitor) {};
 
-    void expr(formast::Expr const & e) {
+    void expr(Expr const & e) {
         assert(e._impl->tree != 0);
         return boost::apply_visitor(*this, *e._impl->tree);
     }
@@ -198,47 +198,182 @@ void formast::Visitor::expr(Expr const & e)
 void formast::Visitor::module(Module const & module)
 {
     _module_visitor->module(module);
-};
+}
 
 void formast::Visitor::stats(Stats const & stats)
 {
     _stats_visitor->stats(stats);
-};
+}
 
 void formast::Visitor::enum_stats(EnumStats const & enum_stats)
 {
     _enum_stats_visitor->enum_stats(enum_stats);
-};
+}
 
-void formast::Visitor::module_class(Class const & class_) {};
-void formast::Visitor::module_enum(Enum const & enum_) {};
+void formast::Visitor::module_class(Class const & class_)
+{
+    if (class_.stats) {
+        stats(class_.stats.get());
+    }
+}
 
-void formast::Visitor::stats_field(Field const & field) {};
-void formast::Visitor::stats_if(If const & if_) {};
+void formast::Visitor::module_enum(Enum const & enum_)
+{
+    if (enum_.stats) {
+        enum_stats(enum_.stats.get());
+    }
+}
+
+void formast::Visitor::stats_field(Field const & field)
+{
+    if (field.arr1) {
+        expr(field.arr1.get());
+    }
+    if (field.arr2) {
+        expr(field.arr2.get());
+    }
+}
+
+void formast::Visitor::stats_if(If const & if_)
+{
+    expr(if_.expr);
+    stats(if_.then);
+    if (if_.else_) {
+        stats(if_.else_.get());
+    }
+}
 
 void formast::Visitor::enum_stats_const(EnumConst const & const_) {};
 
 void formast::Visitor::expr_uint(boost::uint64_t const & n) {};
+
 void formast::Visitor::expr_id(std::string const & i) {};
-void formast::Visitor::expr_pos(Expr const & right) {};
-void formast::Visitor::expr_neg(Expr const & right) {};
-void formast::Visitor::expr_add(Expr const & left, Expr const & right) {};
-void formast::Visitor::expr_sub(Expr const & left, Expr const & right) {};
-void formast::Visitor::expr_mul(Expr const & left, Expr const & right) {};
-void formast::Visitor::expr_div(Expr const & left, Expr const & right) {};
-void formast::Visitor::expr_mod(Expr const & left, Expr const & right) {};
-void formast::Visitor::expr_pow(Expr const & left, Expr const & right) {};
-void formast::Visitor::expr_logical_and(Expr const & left, Expr const & right) {};
-void formast::Visitor::expr_logical_or(Expr const & left, Expr const & right) {};
-void formast::Visitor::expr_logical_not(Expr const & right) {};
-void formast::Visitor::expr_bitwise_and(Expr const & left, Expr const & right) {};
-void formast::Visitor::expr_bitwise_or(Expr const & left, Expr const & right) {};
-void formast::Visitor::expr_bitwise_xor(Expr const & left, Expr const & right) {};
-void formast::Visitor::expr_compare_eq(Expr const & left, Expr const & right) {};
-void formast::Visitor::expr_compare_ne(Expr const & left, Expr const & right) {};
-void formast::Visitor::expr_compare_gt(Expr const & left, Expr const & right) {};
-void formast::Visitor::expr_compare_lt(Expr const & left, Expr const & right) {};
-void formast::Visitor::expr_compare_ge(Expr const & left, Expr const & right) {};
-void formast::Visitor::expr_compare_le(Expr const & left, Expr const & right) {};
-void formast::Visitor::expr_shift_left(Expr const & left, Expr const & right) {};
-void formast::Visitor::expr_shift_right(Expr const & left, Expr const & right) {};
+
+void formast::Visitor::expr_pos(Expr const & right)
+{
+    expr(right);
+}
+
+void formast::Visitor::expr_neg(Expr const & right)
+{
+    expr(right);
+}
+
+void formast::Visitor::expr_add(Expr const & left, Expr const & right)
+{
+    expr(left);
+    expr(right);
+}
+
+void formast::Visitor::expr_sub(Expr const & left, Expr const & right)
+{
+    expr(left);
+    expr(right);
+}
+
+void formast::Visitor::expr_mul(Expr const & left, Expr const & right)
+{
+    expr(left);
+    expr(right);
+}
+
+void formast::Visitor::expr_div(Expr const & left, Expr const & right)
+{
+    expr(left);
+    expr(right);
+}
+
+void formast::Visitor::expr_mod(Expr const & left, Expr const & right)
+{
+    expr(left);
+    expr(right);
+}
+
+void formast::Visitor::expr_pow(Expr const & left, Expr const & right)
+{
+    expr(left);
+    expr(right);
+}
+
+void formast::Visitor::expr_logical_and(Expr const & left, Expr const & right)
+{
+    expr(left);
+    expr(right);
+}
+
+void formast::Visitor::expr_logical_or(Expr const & left, Expr const & right)
+{
+    expr(left);
+    expr(right);
+}
+
+void formast::Visitor::expr_logical_not(Expr const & right)
+{
+    expr(right);
+}
+
+void formast::Visitor::expr_bitwise_and(Expr const & left, Expr const & right)
+{
+    expr(left);
+    expr(right);
+}
+
+void formast::Visitor::expr_bitwise_or(Expr const & left, Expr const & right)
+{
+    expr(left);
+    expr(right);
+}
+
+void formast::Visitor::expr_bitwise_xor(Expr const & left, Expr const & right)
+{
+    expr(left);
+    expr(right);
+}
+
+void formast::Visitor::expr_compare_eq(Expr const & left, Expr const & right)
+{
+    expr(left);
+    expr(right);
+}
+
+void formast::Visitor::expr_compare_ne(Expr const & left, Expr const & right)
+{
+    expr(left);
+    expr(right);
+}
+
+void formast::Visitor::expr_compare_gt(Expr const & left, Expr const & right)
+{
+    expr(left);
+    expr(right);
+}
+
+void formast::Visitor::expr_compare_lt(Expr const & left, Expr const & right)
+{
+    expr(left);
+    expr(right);
+}
+
+void formast::Visitor::expr_compare_ge(Expr const & left, Expr const & right)
+{
+    expr(left);
+    expr(right);
+}
+
+void formast::Visitor::expr_compare_le(Expr const & left, Expr const & right)
+{
+    expr(left);
+    expr(right);
+}
+
+void formast::Visitor::expr_shift_left(Expr const & left, Expr const & right)
+{
+    expr(left);
+    expr(right);
+}
+
+void formast::Visitor::expr_shift_right(Expr const & left, Expr const & right)
+{
+    expr(left);
+    expr(right);
+}

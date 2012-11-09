@@ -126,6 +126,27 @@ formast::XmlParser::XmlParser()
 {
 }
 
+// helper class to detect "ARG" in expressions
+class ArgDetector : public formast::Visitor
+{
+public:
+    ArgDetector() : formast::Visitor(), has_argument(false) {};
+
+    bool has_argument;
+
+    void expr(formast::Expr const & e) {
+        if (!has_argument) {
+            formast::Visitor::expr(e);
+        }
+    }
+
+    void expr_id(std::string const & i) {
+        if (i == "ARG") {
+            has_argument = true;
+        }
+    }
+};
+
 void formast::XmlParser::parse_stream(std::istream & is, formast::Module & module)
 {
     // disable skipping of whitespace
@@ -183,11 +204,24 @@ void formast::XmlParser::parse_stream(std::istream & is, formast::Module & modul
             }
             class_.base_name = decl.second.get_optional<std::string>("<xmlattr>.inherit");
             formast::Stats stats;
+            class_.has_template = false;
+            class_.has_argument = false;
+            ArgDetector arg_detector;
             BOOST_FOREACH(boost::property_tree::ptree::value_type & add, decl.second) {
                 if (add.first == "add") {
                     Field field;
                     field.type_ = add.second.get<std::string>("<xmlattr>.type");
+                    if (field.type_ == "TEMPLATE") {
+                        class_.has_template = true;
+                    }
                     field.name = add.second.get<std::string>("<xmlattr>.name");
+                    field.template_ = add.second.get_optional<std::string>("<xmlattr>.template");
+                    if (field.template_) {
+                        if (field.template_.get() == "TEMPLATE") {
+                            class_.has_template = true;
+                        }
+                    }
+                    field.argument = add.second.get_optional<std::string>("<xmlattr>.arg");
                     std::string doc = add.second.data();
                     boost::algorithm::trim(doc);
                     if (!doc.empty()) {
@@ -199,6 +233,7 @@ void formast::XmlParser::parse_stream(std::istream & is, formast::Module & modul
                         Expr e;
                         _impl->_expr_xml_parse_string(arr1.get(), e);
                         field.arr1 = e;
+                        arg_detector.expr(e);
                     }
                     boost::optional<std::string> arr2 =
                         add.second.get_optional<std::string>("<xmlattr>.arr2");
@@ -206,6 +241,7 @@ void formast::XmlParser::parse_stream(std::istream & is, formast::Module & modul
                         Expr e;
                         _impl->_expr_xml_parse_string(arr2.get(), e);
                         field.arr2 = e;
+                        arg_detector.expr(e);
                     }
                     boost::optional<std::string> ver1 =
                         add.second.get_optional<std::string>("<xmlattr>.ver1");
@@ -239,6 +275,7 @@ void formast::XmlParser::parse_stream(std::istream & is, formast::Module & modul
                         if_.expr = e;
                         if_.then._impl->push_back(field);
                         stats._impl->push_back(if_);
+                        arg_detector.expr(e);
                     } else {
                         stats._impl->push_back(field);
                     }
@@ -247,6 +284,7 @@ void formast::XmlParser::parse_stream(std::istream & is, formast::Module & modul
             if (!stats._impl->empty()) {
                 class_.stats = stats;
             };
+            class_.has_argument = arg_detector.has_argument;
             module._impl->push_back(class_);
         };
     };
