@@ -7,10 +7,17 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/setup.py.in" "${CMAKE_CURRENT_BINARY
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/tox.ini.in" "${CMAKE_CURRENT_BINARY_DIR}/tox.ini")
 file(COPY
     ${formast_SOURCE_DIR}/README.rst
+    ${formast_SOURCE_DIR}/LICENSE.rst
+    ${formast_SOURCE_DIR}/AUTHORS.rst
+    ${formast_SOURCE_DIR}/CHANGELOG.rst
     ${formast_SOURCE_DIR}/src/formast/lib
     ${formast_SOURCE_DIR}/include
     ${CMAKE_CURRENT_SOURCE_DIR}/MANIFEST.in
     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
+)
+file(COPY
+    ${formast_SOURCE_DIR}/BOOST_LICENSE_1_0.txt
+    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/include/boost
 )
 file(COPY
     @Boost_INCLUDE_DIR@/boost
@@ -53,6 +60,10 @@ file(COPY
     REGEX "boost/spirit/home/support/detail/lexer/.*" EXCLUDE
     REGEX "boost/spirit/include/classic.*" EXCLUDE
     REGEX "boost/spirit/include/phoenix1.*" EXCLUDE
+)
+file(COPY
+    ${formast_SOURCE_DIR}/BOOST_LICENSE_1_0.txt
+    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/include/boost
 )
 
 # target for source package
