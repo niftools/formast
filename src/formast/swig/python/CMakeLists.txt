@@ -1,8 +1,8 @@
 # build wrapper
 
 set(Python_ADDITIONAL_VERSIONS 3.2mu) # cmake bug: it is unaware of ABI tags
-find_package(PythonLibs 3.2 REQUIRED)
-find_package(PythonInterp 3.2 REQUIRED)
+find_package(PythonLibs 3.2.3 EXACT REQUIRED)
+find_package(PythonInterp 3.2.3 EXACT REQUIRED)
 set(CMAKE_SWIG_FLAGS ${CMAKE_SWIG_GLOBAL_FLAGS})
 set(CMAKE_SWIG_OUTDIR ${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${PYTHON_INCLUDE_PATH})
