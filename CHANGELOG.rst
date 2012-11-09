@@ -12,6 +12,18 @@ Version 0.1.0a1 (in development)
 
 * Fix exception handling in Python wrapper.
 
+* Python packaging improvements.
+
+* Add enum support.
+
+* Refactor parser and reuse integer parser for enum constants.
+
+* Add template and arg support.
+
+* Reorganize Python tests
+
+* Improve Visitor base implementation to visit all nodes.
+
 Version 0.1.0a0 (7 October 2012)
 ================================
 
