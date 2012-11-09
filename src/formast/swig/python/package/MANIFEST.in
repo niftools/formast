@@ -1,0 +1,9 @@
+include README.rst
+include LICENSE.rst
+include AUTHORS.rst
+include CHANGELOG.rst
+include include/boost/BOOST_LICENSE_1_0.txt
+include formastPYTHON_wrap.cxx
+include formastPYTHON_wrap.h
+recursive-include include *.hpp
+recursive-include lib *.cpp *.hpp

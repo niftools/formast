@@ -1,10 +1,6 @@
 API Documentation
 =================
 
-.. warning::
-
-   Documentation is very incomplete.
-
 Contents:
 
 .. toctree::

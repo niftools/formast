@@ -34,36 +34,111 @@
 #include <string>
 #include <vector>
 
-#include "formast/detail/ast.hpp"
-
 namespace formast
 {
 
-typedef formast::detail::ast::Top Top;
-typedef formast::detail::ast::Stats Stats;
-typedef formast::detail::ast::Expr Expr;
+class Module
+{
+public:
+    FORMAST_API Module();
+private:
+    // pimpl idiom
+    FORMAST_HIDDEN class Impl;
+    boost::shared_ptr<Impl> _impl;
+    friend class Visitor;
+    friend class Parser;
+    friend class XmlParser;
+};
+
+class Stats
+{
+public:
+    FORMAST_API Stats();
+private:
+    // pimpl idiom
+    FORMAST_HIDDEN class Impl;
+    boost::shared_ptr<Impl> _impl;
+    friend class Visitor;
+    friend class Parser;
+    friend class XmlParser;
+};
+
+class Expr
+{
+public:
+    FORMAST_API Expr();
+    FORMAST_API Expr(Expr const & e);
+    FORMAST_API Expr & operator=(Expr const & e);
+private:
+    // pimpl idiom
+    FORMAST_HIDDEN class Impl;
+    boost::shared_ptr<Impl> _impl;
+    friend class Visitor;
+    friend class Parser;
+    friend class XmlParser;
+};
 
 typedef std::string Doc;
 
-struct Attr {
-    std::string class_name;
+class Field
+{
+public:
+    std::string type_;
+    boost::optional<std::string> template_;
+    boost::optional<std::string> argument;
     std::string name;
     boost::optional<Doc> doc;
     boost::optional<Expr> arr1;
     boost::optional<Expr> arr2;
 };
 
-struct Class {
+class Class
+{
+public:
     std::string name;
+    bool has_template;
+    bool has_argument;
     boost::optional<std::string> base_name;
     boost::optional<Doc> doc;
     boost::optional<Stats> stats;
 };
 
-struct If {
+class If
+{
+public:
     Expr expr;
     Stats then;
     boost::optional<Stats> else_;
+};
+
+class EnumConst
+{
+public:
+    std::string name;
+    boost::uint64_t value; // TODO allow signed, use boost::multiprecision:cpp_int
+    boost::optional<Doc> doc;
+};
+
+class EnumStats
+{
+public:
+    FORMAST_API EnumStats();
+private:
+    // pimpl idiom
+    FORMAST_HIDDEN class Impl;
+    boost::shared_ptr<Impl> _impl;
+    friend class Visitor;
+    friend class Parser;
+    friend class XmlParser;
+};
+
+class Enum
+{
+public:
+    std::string name;
+    std::string base_name;
+    boost::optional<Doc> doc;
+    boost::optional<EnumStats> stats;
 };
 
 class Parser
@@ -71,15 +146,20 @@ class Parser
 public:
     FORMAST_API Parser();
     FORMAST_API virtual ~Parser();
-    FORMAST_API virtual void parse_stream(std::istream & is, Top & top) = 0;
-    FORMAST_API void parse_string(std::string const & s, Top & top);
+    FORMAST_API virtual void parse_stream(std::istream & is, Module & module) = 0;
+    FORMAST_API void parse_string(std::string const & s, Module & module);
+private:
+    // pimpl idiom
+    FORMAST_HIDDEN class Impl;
+    boost::shared_ptr<Impl> _impl;
+    friend class XmlParser;
 };
 
 class XmlParser : public Parser
 {
 public:
     FORMAST_API XmlParser();
-    FORMAST_API virtual void parse_stream(std::istream & is, Top & top);
+    FORMAST_API virtual void parse_stream(std::istream & is, Module & module);
 };
 
 class Visitor
@@ -88,15 +168,19 @@ public:
     FORMAST_API Visitor();
     FORMAST_API virtual ~Visitor();
 
-    FORMAST_API virtual void top(Top const & top);
-    FORMAST_API virtual void top_class(Class const & class_);
+    FORMAST_API virtual void module(Module const & module);
+    FORMAST_API virtual void module_class(Class const & class_);
+    FORMAST_API virtual void module_enum(Enum const & enum_);
 
     FORMAST_API virtual void stats(Stats const & stats);
-    FORMAST_API virtual void stats_attr(Attr const & attr);
+    FORMAST_API virtual void stats_field(Field const & field);
     FORMAST_API virtual void stats_if(If const & if_);
 
+    FORMAST_API virtual void enum_stats(EnumStats const & stats);
+    FORMAST_API virtual void enum_stats_const(EnumConst const & const_);
+
     FORMAST_API virtual void expr(Expr const & e);
-    FORMAST_API virtual void expr_uint(boost::uint64_t const & n);
+    FORMAST_API virtual void expr_uint(boost::uint64_t const & n); // TODO use unsigned boost::multiprecision::cpp_int
     FORMAST_API virtual void expr_id(std::string const & i);
     FORMAST_API virtual void expr_pos(Expr const & right);
     FORMAST_API virtual void expr_neg(Expr const & right);
@@ -124,10 +208,12 @@ private:
     // pimpl idiom
     FORMAST_HIDDEN class ExprVisitor;
     boost::shared_ptr<ExprVisitor> _expr_visitor;
-    FORMAST_HIDDEN class TopVisitor;
-    boost::shared_ptr<TopVisitor> _top_visitor;
+    FORMAST_HIDDEN class ModuleVisitor;
+    boost::shared_ptr<ModuleVisitor> _module_visitor;
     FORMAST_HIDDEN class StatsVisitor;
     boost::shared_ptr<StatsVisitor> _stats_visitor;
+    FORMAST_HIDDEN class EnumStatsVisitor;
+    boost::shared_ptr<EnumStatsVisitor> _enum_stats_visitor;
 };
 
 } // namespace formast
