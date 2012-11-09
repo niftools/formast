@@ -1,5 +1,5 @@
-Version 0.1.0a1 (in development)
-================================
+Version 0.1.0a1 (9 November 2012)
+=================================
 
 * CPack support for packaging.
 
@@ -20,7 +20,7 @@ Version 0.1.0a1 (in development)
 
 * Add template and arg support.
 
-* Reorganize Python tests
+* Reorganize Python tests.
 
 * Improve Visitor base implementation to visit all nodes.
 
