@@ -7,6 +7,5 @@ setenv=
 deps=
     nose
 commands=
-    # running in current folder fails due to missing extension module
-    # so pass "-w test" to chdir to test folder before running tests
-    nosetests --exe -w ../package/test
+    # pass "-w test" to chdir to test folder before running tests
+    nosetests --exe -w @formast_SOURCE_DIR@/src/formast/test
