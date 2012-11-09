@@ -198,27 +198,55 @@ void formast::Visitor::expr(Expr const & e)
 void formast::Visitor::module(Module const & module)
 {
     _module_visitor->module(module);
-};
+}
 
 void formast::Visitor::stats(Stats const & stats)
 {
     _stats_visitor->stats(stats);
-};
+}
 
 void formast::Visitor::enum_stats(EnumStats const & enum_stats)
 {
     _enum_stats_visitor->enum_stats(enum_stats);
-};
+}
 
-void formast::Visitor::module_class(Class const & class_) {};
-void formast::Visitor::module_enum(Enum const & enum_) {};
+void formast::Visitor::module_class(Class const & class_)
+{
+    if (class_.stats) {
+        stats(class_.stats.get());
+    }
+}
 
-void formast::Visitor::stats_field(Field const & field) {};
-void formast::Visitor::stats_if(If const & if_) {};
+void formast::Visitor::module_enum(Enum const & enum_)
+{
+    if (enum_.stats) {
+        enum_stats(enum_.stats.get());
+    }
+}
+
+void formast::Visitor::stats_field(Field const & field)
+{
+    if (field.arr1) {
+        expr(field.arr1.get());
+    }
+    if (field.arr2) {
+        expr(field.arr2.get());
+    }
+}
+
+void formast::Visitor::stats_if(If const & if_)
+{
+    expr(if_.expr);
+    stats(if_.then);
+    if (if_.else_) {
+        stats(if_.else_.get());
+    }
+}
 
 void formast::Visitor::enum_stats_const(EnumConst const & const_) {};
 
 void formast::Visitor::expr_uint(boost::uint64_t const & n) {};
+
 void formast::Visitor::expr_id(std::string const & i) {};
 
 void formast::Visitor::expr_pos(Expr const & right)
