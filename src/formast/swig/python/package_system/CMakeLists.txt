@@ -19,6 +19,9 @@ set(FORMAST_PYTHON_SDIST_SYSTEM_LIBS_FILE dist/formast-${VERSION}.zip)
 add_custom_target(formast-python-system-libs-sdist ALL DEPENDS ${FORMAST_PYTHON_SDIST_SYSTEM_LIBS_FILE})
 file(COPY
     ${formast_SOURCE_DIR}/README.rst
+    ${formast_SOURCE_DIR}/LICENSE.rst
+    ${formast_SOURCE_DIR}/AUTHORS.rst
+    ${formast_SOURCE_DIR}/CHANGELOG.rst
     ${CMAKE_CURRENT_SOURCE_DIR}/../package/MANIFEST.in
     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
 )
