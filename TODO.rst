@@ -7,9 +7,7 @@ Short term
 * Refactor runtime and codegen tests so they share the same tests
   (with a different backend).
 
-* Implement missing xml attributes (arg, template, maybe more).
-
-* Refactor expression parser into a separate cpp file.
+* Implement version xml tags attributes.
 
 * Complete user documentation and developer documentation.
 
