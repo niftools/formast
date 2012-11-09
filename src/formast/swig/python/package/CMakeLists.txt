@@ -16,10 +16,6 @@ file(COPY
     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
 )
 file(COPY
-    ${formast_SOURCE_DIR}/BOOST_LICENSE_1_0.txt
-    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/include/boost
-)
-file(COPY
     @Boost_INCLUDE_DIR@/boost
     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/include
     # try to include only what we need
@@ -62,7 +58,7 @@ file(COPY
     REGEX "boost/spirit/include/phoenix1.*" EXCLUDE
 )
 file(COPY
-    ${formast_SOURCE_DIR}/BOOST_LICENSE_1_0.txt
+    ${CMAKE_CURRENT_SOURCE_DIR}/BOOST_LICENSE_1_0.txt
     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/include/boost
 )
 
