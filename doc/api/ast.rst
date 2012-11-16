@@ -175,6 +175,10 @@ This hierarchical structure is exposed via :cpp:class:`formast::Visitor`\ s.
       Returns a reference to the contained value,
       throwing a SWIG ValueError exception if no value is contained.
 
+   .. cpp:function:: void set(T const &)
+
+      Assigns the value.
+
    .. cpp:function:: bool is_initialized() const
 
       Returns ``true`` if the optional is initialized,

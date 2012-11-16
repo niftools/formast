@@ -34,6 +34,13 @@ namespace boost {
             };
         }
 
+        // setter
+        %extend {
+            void set(const T & value) {
+                *self = value;
+            };
+        }
+
         // bool conversion: different languages deal with this differently
 #ifdef SWIGPYTHON
         %extend {
