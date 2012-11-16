@@ -23,14 +23,23 @@ namespace boost {
     public:
         // ensure get() throws an appropriate exception
         // (C++ implementation uses BOOST_ASSERT which may not be caught)
+        // note: return constant reference, which is needed for swig
+        // to convert to native string type when T is std::string
         %extend {
-            T & get() {
+            T const & get() {
                 if (self->is_initialized()) {
                     return self->get();
                 } else {
                     // SWIG_CATCH_STDEXCEPT turns invalid_argument into SWIG_ValueError
                     throw std::invalid_argument("not initialized");
                 }
+            };
+        }
+
+        // setter
+        %extend {
+            void set(const T & value) {
+                *self = value;
             };
         }
 
