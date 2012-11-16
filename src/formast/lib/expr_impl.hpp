@@ -4,8 +4,8 @@
 #ifndef FORMAST_EXPR_IMPL_HPP_INCLUDED
 #define FORMAST_EXPR_IMPL_HPP_INCLUDED
 
-#include <boost/shared_ptr.hpp>
 #include <boost/variant/recursive_variant.hpp>
+#include <memory>
 
 #include "formast.hpp"
 
@@ -83,13 +83,13 @@ public:
     Impl();
 
     template <typename T>
-    static boost::shared_ptr<const formast::detail::ExprTree> create(T const & value) {
+    static std::shared_ptr<const formast::detail::ExprTree> create(T const & value) {
         return
-            boost::shared_ptr<const formast::detail::ExprTree>(
+            std::shared_ptr<const formast::detail::ExprTree>(
                 new formast::detail::ExprTree(value));
     };
 
-    boost::shared_ptr<const formast::detail::ExprTree> tree;
+    std::shared_ptr<const formast::detail::ExprTree> tree;
 };
 
 #endif

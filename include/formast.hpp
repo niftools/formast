@@ -30,7 +30,7 @@
 
 #include <boost/cstdint.hpp>
 #include <boost/optional.hpp>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -44,7 +44,7 @@ public:
 private:
     // pimpl idiom
     FORMAST_HIDDEN class Impl;
-    boost::shared_ptr<Impl> _impl;
+    std::shared_ptr<Impl> _impl;
     friend class Visitor;
     friend class Parser;
     friend class XmlParser;
@@ -57,7 +57,7 @@ public:
 private:
     // pimpl idiom
     FORMAST_HIDDEN class Impl;
-    boost::shared_ptr<Impl> _impl;
+    std::shared_ptr<Impl> _impl;
     friend class Visitor;
     friend class Parser;
     friend class XmlParser;
@@ -72,7 +72,7 @@ public:
 private:
     // pimpl idiom
     FORMAST_HIDDEN class Impl;
-    boost::shared_ptr<Impl> _impl;
+    std::shared_ptr<Impl> _impl;
     friend class Visitor;
     friend class Parser;
     friend class XmlParser;
@@ -126,7 +126,7 @@ public:
 private:
     // pimpl idiom
     FORMAST_HIDDEN class Impl;
-    boost::shared_ptr<Impl> _impl;
+    std::shared_ptr<Impl> _impl;
     friend class Visitor;
     friend class Parser;
     friend class XmlParser;
@@ -151,7 +151,7 @@ public:
 private:
     // pimpl idiom
     FORMAST_HIDDEN class Impl;
-    boost::shared_ptr<Impl> _impl;
+    std::shared_ptr<Impl> _impl;
     friend class XmlParser;
 };
 
@@ -207,13 +207,13 @@ public:
 private:
     // pimpl idiom
     FORMAST_HIDDEN class ExprVisitor;
-    boost::shared_ptr<ExprVisitor> _expr_visitor;
+    std::shared_ptr<ExprVisitor> _expr_visitor;
     FORMAST_HIDDEN class ModuleVisitor;
-    boost::shared_ptr<ModuleVisitor> _module_visitor;
+    std::shared_ptr<ModuleVisitor> _module_visitor;
     FORMAST_HIDDEN class StatsVisitor;
-    boost::shared_ptr<StatsVisitor> _stats_visitor;
+    std::shared_ptr<StatsVisitor> _stats_visitor;
     FORMAST_HIDDEN class EnumStatsVisitor;
-    boost::shared_ptr<EnumStatsVisitor> _enum_stats_visitor;
+    std::shared_ptr<EnumStatsVisitor> _enum_stats_visitor;
 };
 
 } // namespace formast

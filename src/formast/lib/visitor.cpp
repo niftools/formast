@@ -180,10 +180,10 @@ public:
 
 formast::Visitor::Visitor()
 {
-    _expr_visitor = boost::shared_ptr<ExprVisitor>(new ExprVisitor(*this));
-    _module_visitor = boost::shared_ptr<ModuleVisitor>(new ModuleVisitor(*this));
-    _stats_visitor = boost::shared_ptr<StatsVisitor>(new StatsVisitor(*this));
-    _enum_stats_visitor = boost::shared_ptr<EnumStatsVisitor>(new EnumStatsVisitor(*this));
+    _expr_visitor = std::shared_ptr<ExprVisitor>(new ExprVisitor(*this));
+    _module_visitor = std::shared_ptr<ModuleVisitor>(new ModuleVisitor(*this));
+    _stats_visitor = std::shared_ptr<StatsVisitor>(new StatsVisitor(*this));
+    _enum_stats_visitor = std::shared_ptr<EnumStatsVisitor>(new EnumStatsVisitor(*this));
 }
 
 formast::Visitor::~Visitor()
