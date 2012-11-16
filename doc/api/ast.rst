@@ -7,6 +7,19 @@ or :cpp:func:`formast::Parser::parse_string`.
 The tree itself consists of a hierarchical structure of nodes.
 This hierarchical structure is exposed via :cpp:class:`formast::Visitor`\ s.
 
+.. todo::
+
+   Small example in various languages.
+
+.. note::
+
+   When using the SWIG interface, make sure you keep a reference to
+   your :cpp:class:`Module` object, as long as you keep references to
+   the abstract syntax tree. SWIG stores only pointers to structures,
+   which may become invalid if :cpp:class:`Module` is, for instance,
+   garbage collected, causing the underlying C++ object to be
+   deallocated.
+
 .. cpp:class:: formast::Module
 
    Top level node of the abstract syntax tree.
