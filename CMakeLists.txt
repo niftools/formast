@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 2.6)
 project(formast)
 file(STRINGS "VERSION" VERSION)
 
+# activate c++11 features
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
 # find boost
 find_package(Boost 1.48.0 REQUIRED COMPONENTS unit_test_framework)
 include_directories(${Boost_INCLUDE_DIRS})
