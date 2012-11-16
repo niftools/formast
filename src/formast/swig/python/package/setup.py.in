@@ -53,7 +53,12 @@ sources = ['formastPYTHON_wrap.cxx']
 ### platform specific configuration ###
 
 if sys.platform == 'win32':
+    # assume msvc: activate C++ exception features
+    # (c++11 activated by default)
     extra_compile_args += ['/EHsc']
+else:
+    # assume gcc: activate c++11 features
+    extra_compile_args += ['-std=c++11']
 
 ### library ###
 
