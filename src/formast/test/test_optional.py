@@ -6,7 +6,7 @@ def test_optional():
     nose.tools.assert_false(stats)
     nose.tools.assert_raises(ValueError, lambda: stats.get())
 
-def test_optional_get_set():
+def test_optional_string_get_set():
     s = formast.OptionalString()
     s.set("hello")
     nose.tools.assert_equal(s.get(), "hello")

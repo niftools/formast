@@ -170,7 +170,7 @@ This hierarchical structure is exposed via :cpp:class:`formast::Visitor`\ s.
 
    The SWIG wrappers expose minimal, but sufficient, functionality:
 
-   .. cpp:function:: T & get()
+   .. cpp:function:: T const & get()
 
       Returns a reference to the contained value,
       throwing a SWIG ValueError exception if no value is contained.
