@@ -17,7 +17,7 @@ namespace detail
 struct binary_op;
 struct unary_op;
 
-typedef boost::variant<boost::uint64_t, std::string,
+typedef boost::variant<std::uint64_t, std::string,
         boost::recursive_wrapper<binary_op>,
         boost::recursive_wrapper<unary_op>
         >

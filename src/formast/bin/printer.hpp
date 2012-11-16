@@ -132,7 +132,7 @@ public:
         close_tag("const", false);
     }
 
-    virtual void expr_uint(boost::uint64_t const & n) {
+    virtual void expr_uint(std::uint64_t const & n) {
         open_tag("uint", true);
         os << boost::lexical_cast<std::string>(n);
         close_tag("uint", true);

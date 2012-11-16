@@ -26,7 +26,7 @@ public:
         return boost::apply_visitor(*this, *e._impl->tree);
     }
 
-    void operator()(boost::uint64_t const& n) {
+    void operator()(std::uint64_t const& n) {
         return visitor.expr_uint(n);
     }
 
@@ -245,7 +245,7 @@ void formast::Visitor::stats_if(If const & if_)
 
 void formast::Visitor::enum_stats_const(EnumConst const & const_) {};
 
-void formast::Visitor::expr_uint(boost::uint64_t const & n) {};
+void formast::Visitor::expr_uint(std::uint64_t const & n) {};
 
 void formast::Visitor::expr_id(std::string const & i) {};
 

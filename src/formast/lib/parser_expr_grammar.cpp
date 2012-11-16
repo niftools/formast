@@ -35,7 +35,7 @@ formast::Parser::Impl::expr_grammar::expr_grammar() : expr_grammar::base_type(ex
     boost::phoenix::function<unary_func<detail::unary_op::neg> > const _neg;
     boost::phoenix::function<unary_func<detail::unary_op::logical_not> > const _logical_not;
     boost::phoenix::function<assign_func<std::string> > const _ident;
-    boost::phoenix::function<assign_func<boost::uint64_t> > const _uint;
+    boost::phoenix::function<assign_func<std::uint64_t> > const _uint;
     boost::phoenix::function<copy_func> const _copy;
     boost::phoenix::function<trim_func> const _trim;
 

@@ -80,7 +80,7 @@ and overload the desired methods.
       dispatching
       to the appropriate ``expr_...`` method.
 
-   .. cpp:function:: void expr_uint(boost::uint64_t const & n)
+   .. cpp:function:: void expr_uint(std::uint64_t const & n)
 
       This is a terminal node; the default implementation does nothing.
 

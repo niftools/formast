@@ -130,7 +130,7 @@ This hierarchical structure is exposed via :cpp:class:`formast::Visitor`\ s.
 
       Name of the constant.
 
-   .. cpp:member:: boost::uint64_t value
+   .. cpp:member:: std::uint64_t value
 
       Value of the constant.
 

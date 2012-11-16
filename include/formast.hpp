@@ -28,8 +28,8 @@
 #  endif
 #endif
 
-#include <boost/cstdint.hpp>
 #include <boost/optional.hpp>
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <vector>
@@ -115,7 +115,7 @@ class EnumConst
 {
 public:
     std::string name;
-    boost::uint64_t value; // TODO allow signed, use boost::multiprecision:cpp_int
+    std::uint64_t value;
     boost::optional<Doc> doc;
 };
 
@@ -180,7 +180,7 @@ public:
     FORMAST_API virtual void enum_stats_const(EnumConst const & const_);
 
     FORMAST_API virtual void expr(Expr const & e);
-    FORMAST_API virtual void expr_uint(boost::uint64_t const & n); // TODO use unsigned boost::multiprecision::cpp_int
+    FORMAST_API virtual void expr_uint(std::uint64_t const & n);
     FORMAST_API virtual void expr_id(std::string const & i);
     FORMAST_API virtual void expr_pos(Expr const & right);
     FORMAST_API virtual void expr_neg(Expr const & right);

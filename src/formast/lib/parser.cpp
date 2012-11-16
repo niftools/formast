@@ -82,7 +82,7 @@ void formast::Parser::Impl::_expr_xml_parse_helper(std::string const & s, formas
 }
 
 // helper function for parsing integer from stream
-void formast::Parser::Impl::_integer_parse_stream(std::istream & is, boost::uint64_t & v)
+void formast::Parser::Impl::_integer_parse_stream(std::istream & is, std::uint64_t & v)
 {
     // disable white space skipping
     is.unsetf(std::ios::skipws);
@@ -100,7 +100,7 @@ void formast::Parser::Impl::_integer_parse_stream(std::istream & is, boost::uint
 }
 
 // helper function for parsing integeression from string
-void formast::Parser::Impl::_integer_xml_parse_string(std::string const & s, boost::uint64_t & e)
+void formast::Parser::Impl::_integer_xml_parse_string(std::string const & s, std::uint64_t & e)
 {
     std::istringstream is(s);
     _integer_parse_stream(is, e);
