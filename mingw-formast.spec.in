@@ -1,0 +1,90 @@
+%{?mingw_package_header}
+
+Name:           mingw-formast
+Version:        @VERSION@
+Release:        1%{?dist}
+Summary:        MinGW compiled formast library
+
+License:        BSD
+URL:            https://github.com/amorilia/formast
+Source0:        formast-%{version}-Source.zip
+
+BuildArch:      noarch
+
+BuildRequires:  mingw32-filesystem >= 95
+BuildRequires:  mingw32-gcc
+BuildRequires:  mingw32-boost
+
+BuildRequires:  mingw64-filesystem >= 95
+BuildRequires:  mingw64-boost
+BuildRequires:  mingw64-gcc
+
+BuildRequires:  cmake
+
+%description
+MinGW compiled formast library.
+
+%{?mingw_debug_package}
+
+%prep
+%setup -q -n formast-%{version}-Source
+
+%build
+%mingw_cmake . -DBUILD_SHARED_LIBRARY=ON -DBUILD_STATIC_LIBRARY=ON -DBUILD_PYTHON=OFF -DBUILD_JAVA=OFF -DBUILD_PHP=OFF -DBUILD_CSHARP=OFF
+%mingw_make %{?_smp_mflags}
+
+%install
+%mingw_make_install DESTDIR=$RPM_BUILD_ROOT
+# remove binary
+rm -r $RPM_BUILD_ROOT%{mingw32_bindir}/formast.exe
+rm -r $RPM_BUILD_ROOT%{mingw64_bindir}/formast.exe
+
+
+%package -n mingw32-formast
+Summary:        MinGW compiled formast library for the Win32 target
+
+%description -n mingw32-formast
+MinGW compiled formast library for the Win32 target.
+
+%package -n mingw32-formast-static
+Summary:        Static version of the MinGW Win32 compiled formast library
+Requires:       mingw32-formast = %{version}-%{release}
+
+%description -n mingw32-formast-static
+Static version of the MinGW Win32 compiled formast library.
+
+%package -n mingw64-formast
+Summary:        MinGW compiled formast library for the Win64 target
+
+%description -n mingw64-formast
+MinGW compiled formast library for the Win64 target.
+
+%package -n mingw64-formast-static
+Summary:        Static version of the MinGW Win64 compiled formast library
+Requires:       mingw64-formast = %{version}-%{release}
+
+%description -n mingw64-formast-static
+Static version of the MinGW Win64 compiled formast library.
+
+# Win32
+%files -n mingw32-formast
+%{mingw32_bindir}/libformast.dll
+%{mingw32_includedir}/formast.hpp
+%{mingw32_libdir}/libformast.dll.a
+
+%files -n mingw32-formast-static
+%{mingw32_libdir}/libformast_static.a
+
+# Win64
+%files -n mingw64-formast
+%{mingw64_bindir}/libformast.dll
+%{mingw64_includedir}/formast.hpp
+%{mingw64_libdir}/libformast.dll.a
+
+%files -n mingw64-formast-static
+%{mingw64_libdir}/libformast_static.a
+
+%changelog
+* Sun Nov 18 2012 Amorilia <amorilia@users.sourceforge.net>
+- Initial release.
+
