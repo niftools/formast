@@ -6,5 +6,5 @@ set_target_properties(formastapp
 target_link_libraries(formastapp formastlib)
 install(
     TARGETS formastapp
-    RUNTIME DESTINATION bin
+    RUNTIME DESTINATION ${BIN_INSTALL_DIR}
 )

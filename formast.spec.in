@@ -1,0 +1,75 @@
+Name:           formast
+Version:        @VERSION@
+Release:        1%{?dist}
+Summary:        Expose file format descriptions through a simple API
+
+License:        BSD
+URL:            https://github.com/amorilia/formast
+Source0:        formast-%{version}-Source.zip
+
+BuildRequires:  cmake
+BuildRequires:  boost-devel
+BuildRequires:  python2-devel
+BuildRequires:  python3-devel
+
+%description
+FormAST stands for file format abstract syntax tree.
+Its primary purpose is to expose the abstract syntax tree
+of a file format description.
+
+%package devel
+Summary:        Development headers for formast
+Requires:       formast = %{version}-%{release}
+
+%description devel
+This package contains the development headers for formast.
+
+%package -n python-formast
+Summary:        Python 2 bindings for formast
+Requires:       formast = %{version}-%{release}
+
+%description -n python-formast
+This package contains Python 2 bindings for formast.
+
+%package -n python3-formast
+Summary:        Python 3 bindings for formast
+Requires:       formast = %{version}-%{release}
+
+%description -n python3-formast
+This package contains Python 3 bindings for formast.
+
+%prep
+%setup -q -n formast-%{version}-Source
+
+%build
+%cmake . -DBUILD_PYTHON_PACKAGE=OFF -DBUILD_STATIC_LIBRARY=OFF
+make %{?_smp_mflags}
+pushd src/formast/swig/python/package_system
+CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
+CFLAGS="$RPM_OPT_FLAGS" %{__python3} setup.py build
+
+%install
+rm -rf $RPM_BUILD_ROOT
+%make_install
+pushd src/formast/swig/python/package_system
+%{__python} setup.py install --skip-build --root $RPM_BUILD_ROOT
+%{__python3} setup.py install --skip-build --root $RPM_BUILD_ROOT
+
+%files
+%doc README.rst LICENSE.rst TODO.rst AUTHORS.rst CHANGELOG.rst
+%{_bindir}/formast
+%{_libdir}/libformast.so
+
+%files devel
+%{_includedir}/formast.hpp
+
+%files -n python-formast
+%{python_sitearch}/formast
+
+%files -n python3-formast
+%{python3_sitearch}/formast
+
+%changelog
+* Sun Nov 18 2012 Amorilia <amorilia@users.sourceforge.net>
+- Initial release.
+
