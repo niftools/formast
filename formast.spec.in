@@ -7,10 +7,14 @@ License:        BSD
 URL:            https://github.com/amorilia/formast
 Source0:        formast-%{version}-Source.zip
 
-BuildRequires:  cmake
 BuildRequires:  boost-devel
-BuildRequires:  python2-devel
+BuildRequires:  cmake
+BuildRequires:  java-devel
+BuildRequires:  python-devel
+BuildRequires:  python-setuptools
 BuildRequires:  python3-devel
+BuildRequires:  python3-setuptools
+BuildRequires:  swig
 
 %description
 FormAST stands for file format abstract syntax tree.
