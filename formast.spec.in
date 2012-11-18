@@ -24,6 +24,7 @@ of a file format description.
 %package devel
 Summary:        Development headers for formast
 Requires:       formast = %{version}-%{release}
+Requires:       boost-devel
 
 %description devel
 This package contains the development headers for formast.
