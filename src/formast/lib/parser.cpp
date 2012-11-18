@@ -126,6 +126,11 @@ formast::XmlParser::XmlParser()
 {
 }
 
+// seems silly, but apparently mingw requires it to avoid vtable error
+formast::XmlParser::~XmlParser()
+{
+}
+
 // helper class to detect "ARG" in expressions
 class ArgDetector : public formast::Visitor
 {

@@ -159,6 +159,7 @@ class XmlParser : public Parser
 {
 public:
     FORMAST_API XmlParser();
+    FORMAST_API virtual ~XmlParser();
     FORMAST_API virtual void parse_stream(std::istream & is, Module & module);
 };
 
