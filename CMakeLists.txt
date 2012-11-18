@@ -43,8 +43,9 @@ install(
   DESTINATION ${INCLUDE_INSTALL_DIR}
 )
 
-# spec file for fedora
+# spec files for fedora
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/formast.spec.in" "${CMAKE_CURRENT_BINARY_DIR}/formast.spec")
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/mingw-formast.spec.in" "${CMAKE_CURRENT_BINARY_DIR}/mingw-formast.spec")
 
 # enable CPack
 set(CPACK_PACKAGE_VERSION ${VERSION})
