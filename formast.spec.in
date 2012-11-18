@@ -65,9 +65,11 @@ pushd src/formast/swig/python/package_system
 
 %files -n python-formast
 %{python_sitearch}/formast
+%{python_sitearch}/formast-%{version}-py*.egg-info
 
 %files -n python3-formast
 %{python3_sitearch}/formast
+%{python3_sitearch}/formast-%{version}-py*.egg-info
 
 %changelog
 * Sun Nov 18 2012 Amorilia <amorilia@users.sourceforge.net>
