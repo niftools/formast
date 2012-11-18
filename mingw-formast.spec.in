@@ -73,7 +73,7 @@ Static version of the MinGW Win64 compiled formast library.
 %{mingw32_libdir}/libformast.dll.a
 
 %files -n mingw32-formast-static
-%{mingw32_libdir}/libformast.a
+%{mingw32_libdir}/libformast_static.a
 
 # Win64
 %files -n mingw64-formast
@@ -82,7 +82,7 @@ Static version of the MinGW Win64 compiled formast library.
 %{mingw64_libdir}/libformast.dll.a
 
 %files -n mingw64-formast-static
-%{mingw64_libdir}/libformast.a
+%{mingw64_libdir}/libformast_static.a
 
 %changelog
 * Sun Nov 18 2012 Amorilia <amorilia@users.sourceforge.net>
